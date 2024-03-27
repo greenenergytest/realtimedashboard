@@ -18,4 +18,4 @@ const UserSchema = new mongoose.Schema({
         type:string,
         required:true
     }
-})
+});
