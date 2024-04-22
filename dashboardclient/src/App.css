@@ -34,9 +34,54 @@
 }
 
 .card {
+  width: 350px;
+  height:150px;
   padding: 2em;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
+
+.usernameLabel{
+  color:black
+}
+
+.testParagraph{
+  color:black;
+  margin-right:150px;
+}
+
+.usernameInputClass{
+  margin-left: 10px;
+  background-color: white;
+  color:black;
+}
+
+.userEmailInputClass{
+  margin-left:40px;
+  background-color: white;  
+  color:black;
+
+}
+
+.userPasswordInputClass{
+  margin-left:10px;
+  background-color: white;
+  color:black;
+
+}
+.userPasswordLabel{
+  color:black;
+}
+
+.userEmailLabel{
+  color:black;
 }
 
 .read-the-docs {
   color: #888;
+}
+
+.submitButton{
+  margin-top:5px
 }

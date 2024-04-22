@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
 //const moongoose =  require('mongoose');
-const bcrypt = require('bcryptjs')
+const bcrypt = require('bcrypt')
 const Usermodel = require('/Users/mitem/projects/realtimedashboard/backend/models/UserRegiatrationModel');
 const validateRegistrationInput = require("../../api/middlewares/validation/register")
+const validateLoginInput = require("../../api/middlewares/validation/login")
 
 //steps
 // make a post request with the user model
@@ -73,6 +74,65 @@ router.post("/register", (req,res)=>{
         console.error('Error connecting to MongoDB:', err);
     });
     //res.send('general ')
+})
+
+router.post("/login", (req,res)=> {
+
+    //check if password match
+    // retlogurn jwt token
+    //bcrpt compare password
+
+    const {errors, isValid} = validateLoginInput(req.body)
+
+    if(!isValid){
+        return res.status(400).json(errors)
+    }
+
+    async function comparePasswords(plaintextPassword, hashedPassword){
+        try {
+            return await bcrypt.compare(plaintextPassword, hashedPassword)
+        }
+        catch(error){
+            console.error('Error comparing passwords:', error);
+            return false
+        }
+    }
+
+    User.findOne({
+        email:req.body.email,
+    }).then(async (user)=>{
+        if(user){
+            console.log("user exists");
+            console.log(user);
+            // bcrypt.genSalt(10, (err, salt)  =>  {
+            //     bcrypt.hash(req.body.password, salt, async (err,hashedPassword)=>{
+                //console.log(hashedPassword)
+                console.log(user.password)
+                const isMatch =   await comparePasswords(req.body.password.toString(), user.password.toString());
+                console.log(isMatch)
+
+                if(isMatch){
+                    res.send('Login successful')
+                }
+                else{
+                    res.send("Incorrect password")
+                }
+            
+               // })
+                
+           // })
+        }
+        else{
+            res.send("Login faild, user does not exist");
+        }
+    })
+
+
+
+
+
+
+
 })
 
 module.exports = router;

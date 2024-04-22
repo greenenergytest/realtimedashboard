@@ -1,0 +1,51 @@
+.confirmPasswordClass {
+    background-color: white;
+}
+.usernameClass {
+    margin-left:65px;
+    background-color:white;
+}
+.emailInputClass {
+    background-color: white;
+    margin-left:96px;
+}
+.passwordInputClass {
+    background-color: white;
+    margin-left: 10px;
+}
+
+.submitButton {
+    margin-top:5px
+}
+
+.confirmPasswordClass {
+    background-color:white
+}
+
+.usernameLabel {
+    color:black
+}
+.emailLabel {
+    color:black
+}
+
+.passwordLabel {
+    color:black
+}
+
+.confirmPasswordLabel {
+    color:black
+}
+
+.alreadyAMemberClass{
+    margin-right: 340px;
+}
+
+.card {
+    width: 350px;
+    height:150px;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    background-color: #fff;
+  }
