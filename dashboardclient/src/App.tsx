@@ -3,10 +3,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
-
+import HomePage from './pages/Home';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Form, Button, Row, Col } from 'react-bootstrap';
 
@@ -48,7 +47,7 @@ function App() {
     <>
       <Router>
         <Routes>
-          {/* <Route path='/' element={<Home />} /> */}
+          <Route path='/' element={<HomePage />} />
           <Route path='/login' element={<LoginPage />} />
           <Route path='/register' element={<RegisterPage />} />
         </Routes>

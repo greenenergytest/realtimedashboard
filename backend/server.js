@@ -1,15 +1,27 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const userRoutes = require('./routes/api/users');
-const profileRoutes = require('./routes/api/profile')
-
+const profileRoutes = require('./routes/api/profile');
+const cors = require('cors')
 require('dotenv').config()
+const mongoose = require("mongoose")
+//const crypto = require('crypto');
 
 const app =  express();
 const port = 3000;
-const mongoose = require("mongoose")
+
+// const generateJWTSecret = () => {
+//   return crypto.randomBytes(32).toString('hex');
+// };
+
+// const JWT_SECRET = generateJWTSecret();
+
+// console.log('JWT Secret:', JWT_SECRET);
 
 
+
+//allow requests from any origin
+app.use(cors());
 
 const DB_URI = process.env.MONGODB_URI
 // make the connection to db
