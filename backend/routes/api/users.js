@@ -115,7 +115,7 @@ router.post('/login', (req, res) => {
             token: generateToken(user.id),
           });
         } else {
-          res.status(400).json({ errors: [{ msg: 'Invalid Credentials' }] });
+          res.status(400).json({ invalidCredentials: 'Invalid Credentials' });
         }
       } else {
         res.send('Login failed, user does not exist');

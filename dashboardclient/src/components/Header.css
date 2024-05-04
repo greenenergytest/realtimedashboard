@@ -1,0 +1,13 @@
+.headerStyle {
+  display: flex;
+  justify-content: space-between;
+}
+
+.headerRightItemStyle {
+  margin-left: auto;
+  margin-right: 10px;
+}
+
+.rightItemIcon {
+  margin-right: 5px;
+}

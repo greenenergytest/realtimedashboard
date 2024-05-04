@@ -2,8 +2,30 @@ import axios from 'axios';
 
 const API_URL = 'http://localhost:3000';
 
-//login user
+//Register user
+const register = async (userData: any) => {
+  console.log('in register service');
+  try {
+    const response = await axios.post(API_URL + '/register', userData, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
 
+    if ((response.status = 200 && response.data)) {
+      console.log('storing user to local host');
+      console.log(response);
+      localStorage.setItem('user', JSON.stringify(response.data));
+    }
+    return response.data;
+  } catch (error: any) {
+    console.log('in error register');
+    console.error('Error', error.response);
+    throw error.response;
+  }
+};
+
+//login user
 const login = async (userData: any) => {
   console.log('in login service');
   console.log(userData);
@@ -19,10 +41,16 @@ const login = async (userData: any) => {
     }
     return response.data;
   } catch (error: any) {
+    console.log('in error login');
     console.error('Error', error.response);
+    throw error.response;
   }
 };
 
-const authService = { login };
+const logout = () => {
+  localStorage.removeItem('user');
+};
+
+const authService = { login, logout, register };
 
 export default authService;

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
+import * as CircularJSON from 'circular-json';
 
 //retrieve user from local host
 var user: any = {};
@@ -18,30 +19,49 @@ const initialState = {
   message: '',
 };
 
-export const login: any = createAsyncThunk(
-  'auth/login',
-  async (user, thunkAPI) => {
+export const register: any = createAsyncThunk(
+  'auth/register',
+  async (user, { rejectWithValue }) => {
     try {
-      console.log('in login async ');
-      const serviceResponse = await authService.login(user);
-      return serviceResponse;
+      console.log('in register async');
+      const registerServiceResponse = await authService.register(user);
+      return registerServiceResponse;
     } catch (error: any) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      console.log('In catch error');
+      console.log(error);
+      return rejectWithValue(error.data);
     }
   }
 );
 
+export const login: any = createAsyncThunk(
+  'auth/login',
+  async (user, { rejectWithValue }) => {
+    try {
+      console.log('in login async ');
+      const loginServiceResponse = await authService.login(user);
+      return loginServiceResponse;
+    } catch (error: any) {
+      console.log('In catch error');
+      console.log(error);
+      return rejectWithValue(error.data);
+    }
+  }
+);
+
+export const logout: any = createAsyncThunk('auth/logout', async () => {
+  await authService.logout();
+});
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    reset: (state) => {},
+    reset: (state) => {
+      state.isLoading = false;
+      state.isSuccess = false;
+      state.isError = false;
+      state.message = '';
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -54,9 +74,28 @@ export const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(login.rejected, (state, action: any) => {
+        console.log(action);
         state.isLoading = false;
         state.isError = true;
         state.message = action.payload;
+        state.user = null;
+      })
+      .addCase(register.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(register.rejected, (state, action) => {
+        console.log(action.payloads);
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+        state.user = null;
+      })
+      .addCase(logout.fulfilled, (state, action: any) => {
         state.user = null;
       });
   },
