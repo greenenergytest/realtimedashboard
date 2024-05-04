@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Card, Form, Button, Row, Col } from 'react-bootstrap';
+import { InputGroup, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import './login.css';
 import { login, reset } from '../features/auth/authSlice';
 import { Link, useNavigate } from 'react-router-dom';
+import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
+import { useLocation } from 'react-router-dom';
 
 function Login(props: any) {
   const navigate = useNavigate();
@@ -19,6 +21,8 @@ function Login(props: any) {
   });
 
   const { email, password } = formData;
+  const [showPlainTextPassword, setShowPlainTextPassword] = useState(false);
+  const location = useLocation();
 
   console.log('user');
   console.log(user);
@@ -40,6 +44,10 @@ function Login(props: any) {
     dispatch(login(userData));
   };
 
+  const showPlainTextPasswordClicked = () => {
+    setShowPlainTextPassword(!showPlainTextPassword);
+  };
+
   const handleChange = (e: any) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -48,14 +56,36 @@ function Login(props: any) {
   };
 
   useEffect(() => {
-    if (isSuccess || user) {
-      navigate('/home');
+    if (isSuccess || (user && Object.keys(user).length > 0 && user != null)) {
+      console.log('is in user not where you want');
+      navigate('/');
+    } else {
+      setTimeout(() => {
+        navigate('/login'); // Navigate to '/newpage' route
+      }, 10);
     }
-    dispatch(reset());
-  }, [user, isError, isSuccess, message, navigate, dispatch]);
+    const timer = setTimeout(() => {
+      // Reset state when navigating away from the page
+      dispatch(reset());
+    }, 100);
+
+    return () => clearTimeout(timer);
+    // return () => {
+
+    //   dispatch(reset());
+    // };
+  }, [user, isSuccess]);
+  // }, [user, isError, isSuccess, message, navigate, dispatch, location]);
   return (
     <>
-      <Card style={{ width: '40rem' }}>
+      <Card
+        style={{
+          width: '40rem',
+          marginRight: 'auto',
+          marginLeft: 'auto',
+          marginTop: '100px',
+        }}
+      >
         <Card.Body>
           <Form onSubmit={handleSubmit}>
             <Form.Group
@@ -85,26 +115,54 @@ function Login(props: any) {
                 Password
               </Form.Label>
               <Col sm='10'>
-                <Form.Control
-                  type='password'
-                  placeholder='Password'
-                  value={password}
-                  onChange={handleChange}
-                  name='password'
-                />
+                <InputGroup>
+                  <Form.Control
+                    type={showPlainTextPassword ? 'text' : 'password'}
+                    placeholder='Password'
+                    value={password}
+                    onChange={handleChange}
+                    name='password'
+                  />
+                  <Button
+                    variant='outline-secondary'
+                    onClick={showPlainTextPasswordClicked}
+                  >
+                    {showPlainTextPassword ? (
+                      <BsFillEyeFill />
+                    ) : (
+                      <BsFillEyeSlashFill />
+                    )}
+                  </Button>
+                </InputGroup>
               </Col>
             </Form.Group>
-            <Button variant='primary' type='submit'>
+            <>
+              {message &&
+                Object.keys(message).map((key: any, index) => {
+                  return (
+                    <div className='errorMessage' key={index}>
+                      {typeof message[key] === 'object'
+                        ? message[key].msg
+                        : message[key]}
+                    </div>
+                  );
+                })}
+            </>
+            <Button
+              className='loginSubmitButton'
+              variant='primary'
+              type='submit'
+            >
               Submit
             </Button>
           </Form>
-          <Link
+          {/* <Link
             to='/register'
             className='notAMemberClass'
             onClick={handleSignUpClick}
           >
             Not a member? sign up
-          </Link>
+          </Link> */}
         </Card.Body>
       </Card>
     </>

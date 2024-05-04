@@ -6,6 +6,7 @@ import './App.css';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
 import HomePage from './pages/Home';
+import Header from './components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Card, Form, Button, Row, Col } from 'react-bootstrap';
 
@@ -46,11 +47,14 @@ function App() {
   return (
     <>
       <Router>
-        <Routes>
-          <Route path='/' element={<HomePage />} />
-          <Route path='/login' element={<LoginPage />} />
-          <Route path='/register' element={<RegisterPage />} />
-        </Routes>
+        <div style={{ height: '100%' }}>
+          <Header />
+          <Routes>
+            <Route path='/' element={<HomePage />} />
+            <Route path='/login' element={<LoginPage />} />
+            <Route path='/register' element={<RegisterPage />} />
+          </Routes>
+        </div>
       </Router>
       {/* {notAMemberValue ? (
         <RegisterPage onClick={alreadyAMemberClicked} />

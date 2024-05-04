@@ -1,3 +1,11 @@
-.notAMemberClass{
-    margin-right: 350px;
+.notAMemberClass {
+  margin-right: 350px;
+}
+
+.errorMessage {
+  color: red;
+}
+
+.loginSubmitButton {
+  margin-top: 10px;
 }

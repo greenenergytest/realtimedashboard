@@ -1,8 +1,9 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 100%;
+  /* margin: 0 auto;
+  padding: 2rem; */
   text-align: center;
+  height: 100%;
 }
 
 .logo {
@@ -35,53 +36,51 @@
 
 .card {
   width: 350px;
-  height:150px;
+  height: 150px;
   padding: 2em;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   background-color: #fff;
 }
 
-.usernameLabel{
-  color:black
+.usernameLabel {
+  color: black;
 }
 
-.testParagraph{
-  color:black;
-  margin-right:150px;
+.testParagraph {
+  color: black;
+  margin-right: 150px;
 }
 
-.usernameInputClass{
+.usernameInputClass {
   margin-left: 10px;
   background-color: white;
-  color:black;
+  color: black;
 }
 
-.userEmailInputClass{
-  margin-left:40px;
-  background-color: white;  
-  color:black;
-
-}
-
-.userPasswordInputClass{
-  margin-left:10px;
+.userEmailInputClass {
+  margin-left: 40px;
   background-color: white;
-  color:black;
-
-}
-.userPasswordLabel{
-  color:black;
+  color: black;
 }
 
-.userEmailLabel{
-  color:black;
+.userPasswordInputClass {
+  margin-left: 10px;
+  background-color: white;
+  color: black;
+}
+.userPasswordLabel {
+  color: black;
+}
+
+.userEmailLabel {
+  color: black;
 }
 
 .read-the-docs {
   color: #888;
 }
 
-.submitButton{
-  margin-top:5px
+.submitButton {
+  margin-top: 5px;
 }
