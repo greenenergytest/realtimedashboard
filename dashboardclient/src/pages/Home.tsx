@@ -11,6 +11,7 @@ import Menu from '../components/Menu';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Card from '../components/Card';
 import FlaringGas from '../assets/flaringGas.jpeg';
+import FileUpload from '../components/FIleUpload';
 
 const Home = (props: any) => {
   type MenuItemType = {
@@ -19,6 +20,7 @@ const Home = (props: any) => {
   };
   //   const [, setFirstMenuItemClicked] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
+  const [file, setFile] = useState<string | null>(null);
 
   const menuItems: MenuItemType[] = [
     { name: 'Well1', icon: Greenenergyicon },
@@ -47,6 +49,28 @@ const Home = (props: any) => {
     setSelectedItem(itemName);
   };
 
+  // const uploadExcel = () => {
+  //   const [file, setFile] = useState(null);
+
+  //   const handleFileChange = (e) => {
+  //     setFile(e.target.files[0]);
+  //   };
+  // };
+
+  const handleUpload = (e: any) => {
+    if (!file) {
+      alert('Please select a file');
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+  };
+
+  const handleFileChange = (e: any) => {
+    setFile(e.target.files[0]);
+    console.log('handle file change ');
+  };
+
   return (
     <div style={{ display: 'flex', height: '100%' }}>
       <div style={{ width: '20%', height: '100%', backgroundColor: 'white' }}>
@@ -71,6 +95,15 @@ const Home = (props: any) => {
             </Dropdown.Menu>
           </Dropdown>
         </div>
+        <div>
+          <FileUpload />
+
+          {/* <div style={{ marginLeft: '30px', marginTop: '20px' }}>
+            <div>
+              <input type='file' onChange={handleFileChange} />
+            </div>
+          </div> */}
+        </div>
       </div>
       <div style={{ width: '80%', height: '100%', backgroundColor: 'white' }}>
         <div style={{ display: 'flex' }}>
@@ -82,7 +115,25 @@ const Home = (props: any) => {
             <SelectedItem selectedItem={selectedItem} />
           </Card>
           <div style={{ marginLeft: '20px' }}>
-            <Card title='Water Cut' imageUrl={FlaringGas} description='10%'>
+            <Card
+              title='Oil Production Rate'
+              imageUrl={FlaringGas}
+              description='10%'
+            >
+              <SelectedItem selectedItem={selectedItem} />
+            </Card>
+          </div>
+        </div>
+        <div style={{ display: 'flex' }}>
+          <Card title='Gas Oil Ratio' imageUrl={FlaringGas} description='10%'>
+            <SelectedItem selectedItem={selectedItem} />
+          </Card>
+          <div style={{ marginLeft: '20px' }}>
+            <Card
+              title='Gas Production Rate'
+              imageUrl={FlaringGas}
+              description='10%'
+            >
               <SelectedItem selectedItem={selectedItem} />
             </Card>
           </div>
