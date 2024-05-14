@@ -1,6 +1,7 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, Slice } from '@reduxjs/toolkit';
 import authService from './authService';
 import * as CircularJSON from 'circular-json';
+import { useDispatch } from 'react-redux';
 
 //retrieve user from local host
 var user: any = {};
@@ -11,12 +12,34 @@ if (localStorage.getItem('user')) {
   user = {};
 }
 //const user = {};
-const initialState = {
+
+interface UploadState {
+  user: any;
+  isLoading: boolean;
+  isSuccess: boolean;
+  isError: boolean;
+  message: string;
+  loading: boolean;
+  data: null;
+  error: null;
+  // loading: boolean;
+  // error: string | null;
+  // uploadedFileUrl: string | null;
+}
+// const initialState: UploadState = {
+//   loading: false,
+//   error: null,
+//   uploadedFileUrl: null,
+// };
+const initialState: UploadState = {
   user: user ? user : null,
   isLoading: false,
   isSuccess: false,
   isError: false,
   message: '',
+  loading: false,
+  data: null,
+  error: null,
 };
 
 export const register: any = createAsyncThunk(
@@ -52,6 +75,7 @@ export const login: any = createAsyncThunk(
 export const logout: any = createAsyncThunk('auth/logout', async () => {
   await authService.logout();
 });
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -102,4 +126,5 @@ export const authSlice = createSlice({
 });
 
 export const { reset } = authSlice.actions;
-export default authSlice.reducer;
+
+export const authReducer = authSlice.reducer;
