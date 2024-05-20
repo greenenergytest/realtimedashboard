@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import VerticalHeader from '../components/VerticalHeader';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
@@ -12,6 +13,7 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import Card from '../components/Card';
 import FlaringGas from '../assets/flaringGas.jpeg';
 import FileUpload from '../components/FIleUpload';
+import PlotGraph from '../components/PlotGraph';
 
 const Home = (props: any) => {
   type MenuItemType = {
@@ -21,28 +23,18 @@ const Home = (props: any) => {
   //   const [, setFirstMenuItemClicked] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
   const [file, setFile] = useState<string | null>(null);
+  const [selectedXHeadings, setSelectedXHeadings] = useState([]);
+  const [selectedYHeadings, setSelectedYHeadings] = useState([]);
+  const [headings, setHeadings] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const xData = useSelector((state: any) => state.graphData.xData);
+  const yData = useSelector((state: any) => state.graphData.yData);
 
-  const menuItems: MenuItemType[] = [
-    { name: 'Well1', icon: Greenenergyicon },
-    { name: 'Well2', icon: Greenenergyicon },
-    { name: 'Well3', icon: Greenenergyicon },
-    { name: 'Well4', icon: Greenenergyicon },
-    { name: 'Well5', icon: Greenenergyicon },
-    { name: 'Well6', icon: Greenenergyicon },
-    { name: 'Well7', icon: Greenenergyicon },
-    { name: 'Well8', icon: Greenenergyicon },
-    { name: 'Well9', icon: Greenenergyicon },
-    { name: 'Well10', icon: Greenenergyicon },
-    { name: 'Well11', icon: Greenenergyicon },
-    { name: 'Well12', icon: Greenenergyicon },
-    { name: 'Well13', icon: Greenenergyicon },
-    { name: 'Well14', icon: Greenenergyicon },
-    { name: 'Well15', icon: Greenenergyicon },
-    { name: 'Well16', icon: Greenenergyicon },
-    { name: 'Well17', icon: Greenenergyicon },
-    { name: 'Well18', icon: Greenenergyicon },
-    { name: 'Well19', icon: Greenenergyicon },
-  ];
+  // Log xData and yData to console for debugging
+  useEffect(() => {
+    console.log('xData:', xData);
+    console.log('yData:', yData);
+  }, [xData, yData]);
 
   const handleItemClick = (itemName: string) => {
     console.log(itemName);
@@ -71,6 +63,21 @@ const Home = (props: any) => {
     console.log('handle file change ');
   };
 
+  const handleSelectXData = (selectedHeadings: any) => {
+    setSelectedXHeadings(selectedHeadings);
+  };
+
+  const handleSelectYData = (selectedHeadings: any) => {
+    setSelectedYHeadings(selectedHeadings);
+  };
+
+  const handleCloseModal = () => {
+    setShowModal(false);
+    setSelectedXHeadings([]);
+    setSelectedYHeadings([]);
+  };
+  // Flatten yData
+  const flattenYData = yData.map((item: any) => item[0]);
   return (
     <div style={{ display: 'flex', height: '100%' }}>
       <div style={{ width: '20%', height: '100%', backgroundColor: 'white' }}>
@@ -96,7 +103,13 @@ const Home = (props: any) => {
           </Dropdown>
         </div>
         <div>
-          <FileUpload />
+          <FileUpload
+            headings={headings}
+            onSelectX={handleSelectXData}
+            onSelectY={handleSelectYData}
+            onClose={handleCloseModal}
+            show={showModal}
+          />
 
           {/* <div style={{ marginLeft: '30px', marginTop: '20px' }}>
             <div>
@@ -105,7 +118,7 @@ const Home = (props: any) => {
           </div> */}
         </div>
       </div>
-      <div style={{ width: '80%', height: '100%', backgroundColor: 'white' }}>
+      <div style={{ width: '20%', height: '100%', backgroundColor: 'white' }}>
         <div style={{ display: 'flex' }}>
           <Card
             title='Flaring and Venting'
@@ -114,7 +127,7 @@ const Home = (props: any) => {
           >
             <SelectedItem selectedItem={selectedItem} />
           </Card>
-          <div style={{ marginLeft: '20px' }}>
+          {/* <div style={{ marginLeft: '20px' }}>
             <Card
               title='Oil Production Rate'
               imageUrl={FlaringGas}
@@ -122,13 +135,13 @@ const Home = (props: any) => {
             >
               <SelectedItem selectedItem={selectedItem} />
             </Card>
-          </div>
+          </div> */}
         </div>
         <div style={{ display: 'flex' }}>
           <Card title='Gas Oil Ratio' imageUrl={FlaringGas} description='10%'>
             <SelectedItem selectedItem={selectedItem} />
           </Card>
-          <div style={{ marginLeft: '20px' }}>
+          {/* <div style={{ marginLeft: '20px' }}>
             <Card
               title='Gas Production Rate'
               imageUrl={FlaringGas}
@@ -136,8 +149,16 @@ const Home = (props: any) => {
             >
               <SelectedItem selectedItem={selectedItem} />
             </Card>
-          </div>
+          </div> */}
         </div>
+      </div>
+      <div style={{ width: '60%', height: '100%', backgroundColor: 'white' }}>
+        {xData &&
+          flattenYData &&
+          xData.length > 0 &&
+          flattenYData.length > 0 && (
+            <PlotGraph xData={xData} yData={flattenYData} />
+          )}
       </div>
     </div>
   );

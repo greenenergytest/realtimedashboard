@@ -9,6 +9,8 @@ import { AppThunk } from '../../store';
 
 interface FileUploadState {
   file: File | null;
+  headers: string[];
+  fileName: string;
   uploading: boolean;
   uploadSuccess: boolean;
   errorMessage: string | null;
@@ -17,6 +19,8 @@ interface FileUploadState {
 const initialState: FileUploadState = {
   file: null,
   uploading: false,
+  headers: [],
+  fileName: '',
   uploadSuccess: false,
   errorMessage: null,
 };
@@ -27,6 +31,12 @@ export const fileUploadSlice = createSlice({
   reducers: {
     setFile: (state, action: PayloadAction<File>) => {
       state.file = action.payload;
+    },
+    setHeaders: (state, action) => {
+      state.headers = action.payload;
+    },
+    setFileName: (state, action) => {
+      state.fileName = action.payload;
     },
     uploadFileStart: (state) => {
       state.uploading = true;
@@ -52,10 +62,12 @@ export const fileUploadSlice = createSlice({
 
 export const {
   setFile,
+  setHeaders,
   uploadFileStart,
   uploadFileSuccess,
   uploadFileFailure,
   resetUploadState,
+  setFileName,
 } = fileUploadSlice.actions;
 
 export default fileUploadSlice.reducer;
@@ -68,8 +80,11 @@ export const uploadFile =
     dispatch(uploadFileStart());
 
     try {
-      console.log(file);
-      await uploadFileService(file);
+      //console.log(file);
+      const response = await uploadFileService(file);
+      console.log(response);
+      dispatch(setHeaders(response.columnNames));
+      dispatch(setFileName(response.fileName));
       dispatch(uploadFileSuccess(true));
     } catch (error: any) {
       dispatch(uploadFileFailure(error.message));
