@@ -12,6 +12,7 @@ export const uploadAFile = async (file: File) => {
         'Content-Type': 'multipart/form-data',
       },
     });
+    console.log(response.data);
     return response.data;
   } catch (error) {
     throw new Error('Failed to upload file');

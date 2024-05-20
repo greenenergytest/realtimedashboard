@@ -3,11 +3,13 @@ import { ThunkAction } from 'redux-thunk';
 //import rootReducer, { RootState } from './reducers';
 import { authReducer } from './features/auth/authSlice';
 import fileUploadReducer from './features/upload/uploadSlice';
+import graphDataReducer from './features/graphData/graphDataSlice';
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
     fileUpload: fileUploadReducer,
+    graphData: graphDataReducer,
   },
 });
 
