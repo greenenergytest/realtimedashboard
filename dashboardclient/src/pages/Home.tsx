@@ -1,32 +1,32 @@
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import VerticalHeader from '../components/VerticalHeader';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+// import VerticalHeader from '../components/VerticalHeader';
+// import Container from 'react-bootstrap/Container';
+// import Row from 'react-bootstrap/Row';
+// import Col from 'react-bootstrap/Col';
 import './Home.css';
-import MenuItem from '../components/menuItem';
-import Greenenergyicon from '../assets/Greenenergyicon.png';
+// import MenuItem from '../components/menuItem';
+// import Greenenergyicon from '../assets/Greenenergyicon.png';
 import SelectedItem from '../components/SelectedItem';
-import Menu from '../components/Menu';
+// import Menu from '../components/Menu';
 import Dropdown from 'react-bootstrap/Dropdown';
 import Card from '../components/Card';
-import FlaringGas from '../assets/flaringGas.jpeg';
+// import FlaringGas from '../assets/flaringGas.jpeg';
 import FileUpload from '../components/FIleUpload';
 import PlotGraph from '../components/PlotGraph';
 
-const Home = (props: any) => {
-  type MenuItemType = {
-    name: string;
-    icon: string;
-  };
+const Home = () => {
+  // type MenuItemType = {
+  //   name: string;
+  //   icon: string;
+  // };
   //   const [, setFirstMenuItemClicked] = useState(false);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
-  const [file, setFile] = useState<string | null>(null);
-  const [selectedXHeadings, setSelectedXHeadings] = useState([]);
-  const [selectedYHeadings, setSelectedYHeadings] = useState([]);
-  const [headings, setHeadings] = useState([]);
-  const [showModal, setShowModal] = useState(false);
+  // const [file, setFile] = useState<string | null>(null);
+  const [selectedXHeadings, setSelectedXHeadings] = useState<string[]>([]);
+  const [selectedYHeadings, setSelectedYHeadings] = useState<string[]>([]);
+  // const [headings, setHeadings] = useState([]);
+  const [, setShowModal] = useState(false);
   const xData = useSelector((state: any) => state.graphData.xData);
   const yData = useSelector((state: any) => state.graphData.yData);
 
@@ -49,26 +49,26 @@ const Home = (props: any) => {
   //   };
   // };
 
-  const handleUpload = (e: any) => {
-    if (!file) {
-      alert('Please select a file');
-      return;
-    }
-    const formData = new FormData();
-    formData.append('file', file);
-  };
+  // const handleUpload = (e: any) => {
+  //   if (!file) {
+  //     alert('Please select a file');
+  //     return;
+  //   }
+  //   const formData = new FormData();
+  //   formData.append('file', file);
+  // };
 
-  const handleFileChange = (e: any) => {
-    setFile(e.target.files[0]);
-    console.log('handle file change ');
-  };
+  // const handleFileChange = (e: any) => {
+  //   setFile(e.target.files[0]);
+  //   console.log('handle file change ');
+  // };
 
   const handleSelectXData = (selectedHeadings: any) => {
-    setSelectedXHeadings(selectedHeadings);
+    setSelectedXHeadings([...selectedXHeadings, selectedHeadings]);
   };
 
   const handleSelectYData = (selectedHeadings: any) => {
-    setSelectedYHeadings(selectedHeadings);
+    setSelectedYHeadings([...selectedYHeadings, selectedHeadings]);
   };
 
   const handleCloseModal = () => {
@@ -104,11 +104,11 @@ const Home = (props: any) => {
         </div>
         <div>
           <FileUpload
-            headings={headings}
+            // headings={headings}
             onSelectX={handleSelectXData}
             onSelectY={handleSelectYData}
             onClose={handleCloseModal}
-            show={showModal}
+            // show={showModal}
           />
 
           {/* <div style={{ marginLeft: '30px', marginTop: '20px' }}>
@@ -122,7 +122,7 @@ const Home = (props: any) => {
         <div style={{ display: 'flex' }}>
           <Card
             title='Flaring and Venting'
-            imageUrl={FlaringGas}
+            // imageUrl={FlaringGas}
             description='10%'
           >
             <SelectedItem selectedItem={selectedItem} />
@@ -138,7 +138,7 @@ const Home = (props: any) => {
           </div> */}
         </div>
         <div style={{ display: 'flex' }}>
-          <Card title='Gas Oil Ratio' imageUrl={FlaringGas} description='10%'>
+          <Card title='Gas Oil Ratio' description='10%'>
             <SelectedItem selectedItem={selectedItem} />
           </Card>
           {/* <div style={{ marginLeft: '20px' }}>

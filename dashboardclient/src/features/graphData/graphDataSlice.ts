@@ -49,8 +49,7 @@ export const {
 } = graphDataSlice.actions;
 
 export const fetchGraphDataFromBackend =
-  (xColumns: any, yColumns: any, fileName: any) =>
-  async (dispatch: any, getState: any) => {
+  (xColumns: any, yColumns: any, fileName: any) => async (dispatch: any) => {
     console.log(fileName);
     console.log(xColumns);
     console.log(yColumns);

@@ -1,7 +1,7 @@
-import { createSlice, createAsyncThunk, Slice } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authService from './authService';
-import * as CircularJSON from 'circular-json';
-import { useDispatch } from 'react-redux';
+// import * as CircularJSON from 'circular-json';
+// import { useDispatch } from 'react-redux';
 
 //retrieve user from local host
 var user: any = {};
@@ -119,7 +119,7 @@ export const authSlice = createSlice({
         state.message = action.payload;
         state.user = null;
       })
-      .addCase(logout.fulfilled, (state, action: any) => {
+      .addCase(logout.fulfilled, (state) => {
         state.user = null;
       });
   },

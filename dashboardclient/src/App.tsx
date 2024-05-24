@@ -1,48 +1,48 @@
-import { useState } from 'react';
+//import { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+//import reactLogo from './assets/react.svg';
+//import viteLogo from '/vite.svg';
 import './App.css';
 import RegisterPage from './pages/register';
 import LoginPage from './pages/login';
 import HomePage from './pages/Home';
 import Header from './components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Card, Form, Button, Row, Col } from 'react-bootstrap';
+//import { Card, Form, Button, Row, Col } from 'react-bootstrap';
 
 function App() {
-  const [usernameValue, setusernameValue] = useState('');
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setuserPasswordValue] = useState('');
-  const [confirmPasswordValue, setConfirmPasswordValue] = useState('');
-  const [notAMemberValue, setNotAMemberValue] = useState(false);
-  const [alreadyAMember, setAlreadyAMember] = useState(true);
+  //const [usernameValue, setusernameValue] = useState('');
+  //const [emailValue, setEmailValue] = useState('');
+  // const [passwordValue, setuserPasswordValue] = useState('');
+  //const [confirmPasswordValue, setConfirmPasswordValue] = useState('');
+  //const [notAMemberValue, setNotAMemberValue] = useState(false);
+  // const [alreadyAMember, setAlreadyAMember] = useState(true);
 
-  const handleUsernameChange = (event: any) => {
-    setusernameValue(event.target.value);
-  };
+  // const handleUsernameChange = (event: any) => {
+  //   setusernameValue(event.target.value);
+  // };
 
-  const handleEmailChange = (event: any) => {
-    setEmailValue(event.target.value);
-  };
-  const handlePasswordChange = (event: any) => {
-    setuserPasswordValue(event.target.value);
-  };
-  const confirmPasswordChange = (event: any) => {
-    setConfirmPasswordValue(event.target.value);
-  };
+  // const handleEmailChange = (event: any) => {
+  //   setEmailValue(event.target.value);
+  // };
+  // const handlePasswordChange = (event: any) => {
+  //   setuserPasswordValue(event.target.value);
+  // };
+  // const confirmPasswordChange = (event: any) => {
+  //   setConfirmPasswordValue(event.target.value);
+  // };
 
-  const notAMemberClicked = (event: any) => {
-    console.log('not a member clicked');
-    setNotAMemberValue(true);
-    setAlreadyAMember(false);
-  };
+  // const notAMemberClicked = (event: any) => {
+  //   console.log('not a member clicked');
+  //   setNotAMemberValue(true);
+  //   setAlreadyAMember(false);
+  // };
 
-  const alreadyAMemberClicked = (event: any) => {
-    console.log('already a member clicked');
-    setAlreadyAMember(true);
-    setNotAMemberValue(false);
-  };
+  // const alreadyAMemberClicked = (event: any) => {
+  //   console.log('already a member clicked');
+  //   setAlreadyAMember(true);
+  //   setNotAMemberValue(false);
+  // };
 
   return (
     <>

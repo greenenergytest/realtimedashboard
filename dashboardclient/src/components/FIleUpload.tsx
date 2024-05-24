@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+//import axios from 'axios';
 import './FileUpload.css';
 import { useDispatch, useSelector } from 'react-redux';
 //import { RootState } from '../store';
@@ -11,20 +11,20 @@ import { fetchGraphDataFromBackend } from '../features/graphData/graphDataSlice'
 import { Form, FormGroup, Modal } from 'react-bootstrap';
 
 interface FileUploadModalProps {
-  headings: string[];
+  // headings: string[];
   onSelectX: (selectedHeadings: string[]) => void;
   onSelectY: (selectedHeadings: string[]) => void;
   onClose: () => void;
-  show: boolean;
+  //show: boolean;
 }
 
 const FileUpload: React.FC<FileUploadModalProps> = ({
-  headings = [],
+  //headings = [],
   onSelectX,
   onSelectY,
   onClose,
-  show,
-}: FileUploadModalProps) => {
+}: // show,
+FileUploadModalProps) => {
   const [selectedFile, setSelectedFile] = useState(null);
   const { uploading, uploadSuccess, errorMessage, headers, fileName } =
     useSelector((state: any) => state.fileUpload);
@@ -35,7 +35,7 @@ const FileUpload: React.FC<FileUploadModalProps> = ({
   const [selectedXHeadings, setSelectedXHeadings]: any = useState([]);
   const [selectedYHeadings, setSelectedYHeadings] = useState<string[]>([]);
 
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showYModal, setShowYModal] = useState(false);
 

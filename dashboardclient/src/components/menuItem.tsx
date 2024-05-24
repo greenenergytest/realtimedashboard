@@ -1,17 +1,17 @@
-import Greenenergyicon from '../assets/Greenenergyicon.png';
-import Greenicon from '../assets/Greenenergyicon.png';
-import icon from '../assets/Greenenergyicon.png';
+// import Greenenergyicon from '../assets/Greenenergyicon.png';
+// import Greenicon from '../assets/Greenenergyicon.png';
+// import icon from '../assets/Greenenergyicon.png';
 import React from 'react';
 
 type MenuItemProps = {
   name: string;
   price: string;
   onClick: (name: string) => void;
-  menuItems: any;
+  // menuItems: any;
 };
 
 const MenuItem: React.FC<MenuItemProps> = ({
-  menuItems,
+  // menuItems,
   name,
   price,
   onClick,

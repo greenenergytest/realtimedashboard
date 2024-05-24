@@ -3,17 +3,15 @@ import { useSelector, useDispatch } from 'react-redux';
 import { InputGroup, Card, Form, Button, Row, Col } from 'react-bootstrap';
 import './login.css';
 import { login, reset } from '../features/auth/authSlice';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
-import { useLocation } from 'react-router-dom';
+//import { useLocation } from 'react-router-dom';
 
-function Login(props: any) {
+function Login() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state: any) => state.auth
-  );
+  const { user, isSuccess, message } = useSelector((state: any) => state.auth);
 
   const [formData, setFormData] = useState({
     email: '',
@@ -22,14 +20,14 @@ function Login(props: any) {
 
   const { email, password } = formData;
   const [showPlainTextPassword, setShowPlainTextPassword] = useState(false);
-  const location = useLocation();
+  //const location = useLocation();
 
   console.log('user');
   console.log(user);
 
-  const handleSignUpClick = (event: any) => {
-    navigate('/register');
-  };
+  // const handleSignUpClick = (event: any) => {
+  //   navigate('/register');
+  // };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();

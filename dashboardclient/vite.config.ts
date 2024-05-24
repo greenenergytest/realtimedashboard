@@ -8,6 +8,11 @@ export default defineConfig({
       global: 'globalThis',
     }),
   ],
+  build: {
+    rollupOptions: {
+      external: ['globalThis'],
+    },
+  },
   resolve: {
     alias: {
       buffer: 'buffer',

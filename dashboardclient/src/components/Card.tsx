@@ -4,11 +4,11 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 type CardProps = {
   title?: string;
-  imageUrl?: string;
+  // imageUrl?: string;
   description?: string;
   children?: React.ReactNode;
 };
-const Card: React.FC<CardProps> = ({ title, imageUrl, description }) => {
+const Card: React.FC<CardProps> = ({ title, description }) => {
   return (
     <div className='card'>
       <div>
