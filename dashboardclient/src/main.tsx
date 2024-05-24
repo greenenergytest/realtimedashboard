@@ -6,6 +6,7 @@ import { Provider } from 'react-redux';
 import store from './store.ts';
 import { Buffer } from 'buffer';
 import process from 'process';
+import 'globalthis/auto';
 
 // Create a module augmentation for NodeJS.Global
 declare global {

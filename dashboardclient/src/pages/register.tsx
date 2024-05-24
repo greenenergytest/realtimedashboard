@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './register.css';
 import { InputGroup, Card, Form, Button, Row, Col } from 'react-bootstrap';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { register, reset } from '../features/auth/authSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { BsFillEyeFill, BsFillEyeSlashFill } from 'react-icons/bs';
@@ -11,10 +11,10 @@ import { useLocation } from 'react-router-dom';
 
 //a state to control the closing an opening of the eye
 //that same state to control showing a password or text
-function Register(props: any) {
-  const [usernameValue, setusernameValue] = useState('');
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
+function Register() {
+  // const [usernameValue, setusernameValue] = useState('');
+  // const [emailValue, setEmailValue] = useState('');
+  // const [passwordValue, setPasswordValue] = useState('');
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
@@ -25,9 +25,7 @@ function Register(props: any) {
   const dispatch = useDispatch();
 
   const { email, password, confirmPassword, name } = formData;
-  const { user, isLoading, isError, isSuccess, message } = useSelector(
-    (state: any) => state.auth
-  );
+  const { user, isSuccess, message } = useSelector((state: any) => state.auth);
   const location = useLocation();
   console.log('message');
   console.log(message);
@@ -38,21 +36,21 @@ function Register(props: any) {
   console.log('registered user');
   console.log(user);
 
-  const handleUsernameChange = () => {
-    console.log('usernameChange');
-  };
+  // const handleUsernameChange = () => {
+  //   console.log('usernameChange');
+  // };
 
-  const handlePasswordChange = () => {
-    console.log('passwordChange');
-  };
+  // const handlePasswordChange = () => {
+  //   console.log('passwordChange');
+  // };
 
-  const handleConfirmPasswordChange = () => {
-    console.log('confirmPasswordChange2');
-  };
+  // const handleConfirmPasswordChange = () => {
+  //   console.log('confirmPasswordChange2');
+  // };
 
-  const handleSignInClick = () => {
-    navigate('/login');
-  };
+  // const handleSignInClick = () => {
+  //   navigate('/login');
+  // };
 
   const handleChange = (e: any) => {
     setFormData((prevState) => ({

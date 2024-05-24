@@ -1,8 +1,8 @@
 import {
   createSlice,
   PayloadAction,
-  createAsyncThunk,
-  Slice,
+  //createAsyncThunk,
+  // Slice,
 } from '@reduxjs/toolkit';
 import { uploadAFile as uploadFileService } from '../../features/upload/uploadService';
 import { AppThunk } from '../../store';
@@ -43,7 +43,7 @@ export const fileUploadSlice = createSlice({
       state.uploadSuccess = false;
       state.errorMessage = null;
     },
-    uploadFileSuccess: (state, action) => {
+    uploadFileSuccess: (state) => {
       state.uploading = false;
       state.uploadSuccess = true;
     },
@@ -85,7 +85,7 @@ export const uploadFile =
       console.log(response);
       dispatch(setHeaders(response.columnNames));
       dispatch(setFileName(response.fileName));
-      dispatch(uploadFileSuccess(true));
+      dispatch(uploadFileSuccess());
     } catch (error: any) {
       dispatch(uploadFileFailure(error.message));
     }
