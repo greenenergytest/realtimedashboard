@@ -1,0 +1,15 @@
+{
+    "name": "realtimedashboard",
+    "version": "1.0.0",
+    "description": "Root package.json to point to backend",
+    "main": "backend/server.js",
+    "scripts": {
+      "start": "cd backend && npm start",
+      "heroku-postbuild": "cd backend && npm install && npm run build"
+    },
+    "dependencies": {},
+    "engines": {
+      "node": ">=14.0.0"
+    }
+  }
+  
