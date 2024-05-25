@@ -2,11 +2,11 @@
   "name": "realtimedashboard",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "start": "node server",
-    "server": "nodemon server",
-    "heroku-postbuild": "cd backend && npm install && npm run build"
+    "server": "nodemon server"
+
   },
   "keywords": [],
   "author": "",
