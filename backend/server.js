@@ -13,6 +13,10 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
+// Health check endpoint
+app.use('/healthcheck', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 const DB_URI = process.env.MONGODB_URI;
 console.log(DB_URI);
 app.use(bodyParser.json());
