@@ -7,6 +7,7 @@
     "start": "node server.js",
     "server": "nodemon server",
     "build": "npm-run-all build:*"
+    
   },
   "keywords": [],
   "author": "",
