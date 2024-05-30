@@ -6,7 +6,10 @@
   "scripts": {
     "start": "node server.js",
     "server": "nodemon server",
-    "build": "npm-run-all build:*"
+    "build": "npm-run-all build:*",
+    "build:clean": "rm -rf dist",
+    "build:copy": "cp -r src/static dist",
+    "build:minify": "uglifyjs src/app.js -o dist/app.min.js"
     
   },
   "keywords": [],
