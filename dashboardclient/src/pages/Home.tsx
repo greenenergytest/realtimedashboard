@@ -14,6 +14,7 @@ import Card from '../components/Card';
 // import FlaringGas from '../assets/flaringGas.jpeg';
 import FileUpload from '../components/FIleUpload';
 import PlotGraph from '../components/PlotGraph';
+import LoginPage from '../pages/login';
 
 const Home = () => {
   // type MenuItemType = {
@@ -29,6 +30,7 @@ const Home = () => {
   const [, setShowModal] = useState(false);
   const xData = useSelector((state: any) => state.graphData.xData);
   const yData = useSelector((state: any) => state.graphData.yData);
+  const { user } = useSelector((state: any) => state.auth);
 
   // Log xData and yData to console for debugging
   useEffect(() => {
@@ -79,55 +81,61 @@ const Home = () => {
   // Flatten yData
   const flattenYData = yData.map((item: any) => item[0]);
   return (
-    <div style={{ display: 'flex', height: '100%' }}>
-      <div style={{ width: '20%', height: '100%', backgroundColor: 'white' }}>
-        {/* <div>
+    <>
+      {user && Object.keys(user).length > 0 ? (
+        <div style={{ display: 'flex', height: '100%' }}>
+          <div
+            style={{ width: '20%', height: '100%', backgroundColor: 'white' }}
+          >
+            {/* <div>
           <Menu menuItems={menuItems} onItemClick={handleItemClick} />
         </div> */}
-        <div>
-          <Dropdown>
-            <Dropdown.Toggle variant='success' id='dropdown-basic'>
-              Wells
-            </Dropdown.Toggle>
+            <div>
+              <Dropdown>
+                <Dropdown.Toggle variant='success' id='dropdown-basic'>
+                  Wells
+                </Dropdown.Toggle>
 
-            <Dropdown.Menu>
-              <Dropdown.Item onClick={() => handleItemClick('Action 1')}>
-                well 1
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => handleItemClick('Action 2')}>
-                well 2
-              </Dropdown.Item>
-              <Dropdown.Item href='#'>well 3</Dropdown.Item>
-              <Dropdown.Item href='#'>Overall view</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-        </div>
-        <div>
-          <FileUpload
-            // headings={headings}
-            onSelectX={handleSelectXData}
-            onSelectY={handleSelectYData}
-            onClose={handleCloseModal}
-            // show={showModal}
-          />
+                <Dropdown.Menu>
+                  <Dropdown.Item onClick={() => handleItemClick('Action 1')}>
+                    well 1
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => handleItemClick('Action 2')}>
+                    well 2
+                  </Dropdown.Item>
+                  <Dropdown.Item href='#'>well 3</Dropdown.Item>
+                  <Dropdown.Item href='#'>Overall view</Dropdown.Item>
+                </Dropdown.Menu>
+              </Dropdown>
+            </div>
+            <div>
+              <FileUpload
+                // headings={headings}
+                onSelectX={handleSelectXData}
+                onSelectY={handleSelectYData}
+                onClose={handleCloseModal}
+                // show={showModal}
+              />
 
-          {/* <div style={{ marginLeft: '30px', marginTop: '20px' }}>
+              {/* <div style={{ marginLeft: '30px', marginTop: '20px' }}>
             <div>
               <input type='file' onChange={handleFileChange} />
             </div>
           </div> */}
-        </div>
-      </div>
-      <div style={{ width: '20%', height: '100%', backgroundColor: 'white' }}>
-        <div style={{ display: 'flex' }}>
-          <Card
-            title='Flaring and Venting'
-            // imageUrl={FlaringGas}
-            description='10%'
+            </div>
+          </div>
+          <div
+            style={{ width: '20%', height: '100%', backgroundColor: 'white' }}
           >
-            <SelectedItem selectedItem={selectedItem} />
-          </Card>
-          {/* <div style={{ marginLeft: '20px' }}>
+            <div style={{ display: 'flex' }}>
+              <Card
+                title='Flaring and Venting'
+                // imageUrl={FlaringGas}
+                description='10%'
+              >
+                <SelectedItem selectedItem={selectedItem} />
+              </Card>
+              {/* <div style={{ marginLeft: '20px' }}>
             <Card
               title='Oil Production Rate'
               imageUrl={FlaringGas}
@@ -136,12 +144,12 @@ const Home = () => {
               <SelectedItem selectedItem={selectedItem} />
             </Card>
           </div> */}
-        </div>
-        <div style={{ display: 'flex' }}>
-          <Card title='Gas Oil Ratio' description='10%'>
-            <SelectedItem selectedItem={selectedItem} />
-          </Card>
-          {/* <div style={{ marginLeft: '20px' }}>
+            </div>
+            <div style={{ display: 'flex' }}>
+              <Card title='Gas Oil Ratio' description='10%'>
+                <SelectedItem selectedItem={selectedItem} />
+              </Card>
+              {/* <div style={{ marginLeft: '20px' }}>
             <Card
               title='Gas Production Rate'
               imageUrl={FlaringGas}
@@ -150,17 +158,23 @@ const Home = () => {
               <SelectedItem selectedItem={selectedItem} />
             </Card>
           </div> */}
+            </div>
+          </div>
+          <div
+            style={{ width: '60%', height: '100%', backgroundColor: 'white' }}
+          >
+            {xData &&
+              flattenYData &&
+              xData.length > 0 &&
+              flattenYData.length > 0 && (
+                <PlotGraph xData={xData} yData={flattenYData} />
+              )}
+          </div>
         </div>
-      </div>
-      <div style={{ width: '60%', height: '100%', backgroundColor: 'white' }}>
-        {xData &&
-          flattenYData &&
-          xData.length > 0 &&
-          flattenYData.length > 0 && (
-            <PlotGraph xData={xData} yData={flattenYData} />
-          )}
-      </div>
-    </div>
+      ) : (
+        <LoginPage />
+      )}
+    </>
   );
 };
 
