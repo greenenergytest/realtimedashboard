@@ -10,29 +10,34 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
+    "@types/globalthis": "^1.0.4",
     "@types/node": "^20.12.12",
     "@types/plotly.js": "^2.29.4",
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
     "@types/react-plotly.js": "^2.6.3",
+    "@types/react-redux": "^7.1.33",
     "@typescript-eslint/eslint-plugin": "^7.2.0",
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^8.57.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "vite": "^5.2.12",
+    "vite-plugin-node-polyfills": "^0.22.0"
   },
   "dependencies": {
-    "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@reduxjs/toolkit": "^2.2.3",
+    "@rollup/plugin-commonjs": "^25.0.8",
     "@rollup/plugin-inject": "^5.0.5",
     "@types/circular-json": "^0.4.0",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.3",
+    "browserify": "^17.0.0",
     "buffer": "^6.0.3",
     "circular-json": "^0.5.9",
     "globalthis": "^1.0.4",
@@ -41,8 +46,11 @@
     "react-bootstrap": "^2.10.2",
     "react-icons": "^5.1.0",
     "react-plotly.js": "^2.6.0",
-    "react-redux": "^9.1.1",
+    "react-redux": "^9.1.2",
     "react-router-dom": "^6.22.3",
     "redux": "^5.0.1"
+  },
+  "resolutions": {
+    "esbuild": "0.20.2"
   }
 }
