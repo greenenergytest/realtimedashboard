@@ -1,6 +1,7 @@
 import axios from 'axios';
+import config from '../../config';
 
-const API_URL = 'http://localhost:3000';
+//const API_URL = 'http://localhost:3000';
 
 export const fetchGraphData = async (
   selectedXColumns: any,
@@ -8,7 +9,7 @@ export const fetchGraphData = async (
   fileName: any
 ) => {
   try {
-    const response = await axios.post(API_URL + '/getGraphData', {
+    const response = await axios.post(config.apiBaseUrl + '/getGraphData', {
       selectedXColumns,
       selectedYColumns,
       fileName,
