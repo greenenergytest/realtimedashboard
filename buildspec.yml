@@ -5,8 +5,9 @@ phases:
     runtime-versions:
       nodejs: 14
     commands:
-      - echo Installing frontend dependencies
+      - echo Entering dashboardclient directory
       - cd dashboardclient
+      - echo Installing frontend dependencies
       - npm install
   build:
     commands:
@@ -19,4 +20,4 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: 'dashboardclient/dist' # Adjust this to your frontend build output directory
+  base-directory: 'dashboardclient/dist' # Ensure this matches your build output directory
