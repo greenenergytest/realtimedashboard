@@ -5,26 +5,18 @@ phases:
     runtime-versions:
       nodejs: 14
     commands:
-      - echo Installing dependencies for backend and frontend
-      - cd backend && npm install && cd ../dashboardclient && npm install
-
+      - echo Installing frontend dependencies
+      - cd dashboardclient
+      - npm install
   build:
     commands:
-      - echo Building backend and frontend
-      - cd backend && npm run build && cd ../dashboardclient && npm run build
+      - echo Building frontend
+      - npm run build
+  post_build:
+    commands:
+      - echo Frontend build complete
 
 artifacts:
   files:
     - '**/*'
-  discard-paths: yes
-
-  # Define the locations for backend and frontend build outputs
-  secondary-artifacts:
-    backend-build:
-      base-directory: 'backend/dist' # Adjust this to your backend build output directory
-      files:
-        - '**/*'
-    frontend-build:
-      base-directory: 'dashboardclient/dist' # Adjust this to your frontend build output directory
-      files:
-        - '**/*'
+  base-directory: 'frontend/dist' # Adjust this to your frontend build output directory
