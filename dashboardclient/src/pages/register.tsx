@@ -88,6 +88,8 @@ function Register() {
     console.log('registered user data');
     console.log(userData);
     dispatch(register(userData));
+    navigate('/');
+
     //}
   };
 
