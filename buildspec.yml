@@ -17,11 +17,11 @@ phases:
     commands:
       - echo Frontend build complete
       - echo Listing contents of dashboardclient directory
-      - ls -la dashboardclient
+      - ls -la ./dashboardclient
       - echo Listing contents of build directory
-      - ls -la dashboardclient/dist
+      - ls -la ./dashboardclient/dist
 
 artifacts:
   files:
     - '**/*'
-  base-directory: 'dashboardclient/dist' # Ensure this matches your build output directory
+  base-directory: './dashboardclient/dist' # Ensure this matches your build output directory
