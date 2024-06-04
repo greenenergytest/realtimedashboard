@@ -9,7 +9,6 @@ const jwt = require('jsonwebtoken');
 
 //steps
 // make a post request with the user model
-//
 
 router.post('/register', (req, res) => {
   // logic
