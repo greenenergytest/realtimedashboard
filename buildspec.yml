@@ -5,23 +5,26 @@ phases:
     runtime-versions:
       nodejs: 14
     commands:
-      - echo Installing dependencies
-      - cd backend
-      - npm install
-      - cd ../client
-      - npm install
+      - echo Installing dependencies for backend and frontend
+      - cd backend && npm install && cd ../dashboardclient && npm install
+
   build:
     commands:
-      - echo Build started on `date`
-      # Build the React app
-      - cd ../client
-      - npm run build
-      # Prepare backend for deployment
-      - cd ../backend
-      - npm run build # if you have a build step for your backend
+      - echo Building backend and frontend
+      - cd backend && npm run build && cd ../dashboardclient && npm run build
 
 artifacts:
   files:
     - '**/*'
-  base-directory: backend
-  discard-paths: no
+  discard-paths: yes
+
+  # Define the locations for backend and frontend build outputs
+  secondary-artifacts:
+    backend-build:
+      base-directory: 'backend/dist' # Adjust this to your backend build output directory
+      files:
+        - '**/*'
+    frontend-build:
+      base-directory: 'dashboardclient/dist' # Adjust this to your frontend build output directory
+      files:
+        - '**/*'
