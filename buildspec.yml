@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 14
+      nodejs: 16
     commands:
       - echo Entering dashboardclient directory
       - cd dashboardclient
@@ -16,6 +16,10 @@ phases:
   post_build:
     commands:
       - echo Frontend build complete
+      - echo Listing contents of dashboardclient directory
+      - ls -la dashboardclient
+      - echo Listing contents of build directory
+      - ls -la dashboardclient/dist
 
 artifacts:
   files:
