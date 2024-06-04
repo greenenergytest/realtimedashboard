@@ -1,0 +1,21 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 14
+    commands:
+      - echo Installing frontend dependencies
+      - npm install
+  build:
+    commands:
+      - echo Building frontend
+      - npm run build
+  post_build:
+    commands:
+      - echo Frontend build complete
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: 'dist' # Adjust this to your frontend build output directory
