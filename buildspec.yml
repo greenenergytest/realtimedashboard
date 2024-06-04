@@ -13,15 +13,16 @@ phases:
     commands:
       - echo Building frontend
       - npm run build
-  post_build:
+   post_build:
     commands:
       - echo Frontend build complete
       - echo Listing contents of dashboardclient directory
-      - ls -la ./dashboardclient
+      - ls -la  # Check current directory
+      - ls -la dashboardclient  # Check contents of dashboardclient directory
       - echo Listing contents of build directory
-      - ls -la ./dashboardclient/dist
+      - ls -la dashboardclient/dist  # Check contents of build directory
 
 artifacts:
   files:
     - '**/*'
-  base-directory: './dashboardclient/dist' # Ensure this matches your build output directory
+  base-directory: 'dashboardclient/dist'
