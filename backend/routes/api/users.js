@@ -12,10 +12,6 @@ const jwt = require('jsonwebtoken');
 //
 
 router.post('/register', (req, res) => {
-  // const {errors, isValid} = validateRegisterInput(req.body)
-  // console.log(errors)
-  //console.log(isValid)
-
   // logic
   // check if user already exist
   //pass the email to the database
