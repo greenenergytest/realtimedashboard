@@ -19,4 +19,4 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: 'frontend/dist' # Adjust this to your frontend build output directory
+  base-directory: 'dashboardclient/dist' # Adjust this to your frontend build output directory
