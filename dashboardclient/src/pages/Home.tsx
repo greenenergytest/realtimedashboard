@@ -129,7 +129,7 @@ const Home = () => {
           >
             <div style={{ display: 'flex' }}>
               <Card
-                title='Flaring and Venting'
+                title='Flaring'
                 // imageUrl={FlaringGas}
                 description='10%'
               >
