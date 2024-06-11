@@ -11,3 +11,13 @@
 .rightItemIcon {
   margin-right: 5px;
 }
+
+/* Hover effect for Nav.Link */
+.nav-link {
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #0b6445 !important; /* Change this to your desired hover color */
+}

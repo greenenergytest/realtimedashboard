@@ -121,6 +121,7 @@ function Register() {
           marginLeft: 'auto',
           marginRight: 'auto',
           marginTop: '90px',
+          height: '400px',
         }}
       >
         <Card.Body>
@@ -235,7 +236,7 @@ function Register() {
             </>
             <Button
               className='registerSubmitButton'
-              variant='primary'
+              variant='success'
               type='submit'
             >
               Submit

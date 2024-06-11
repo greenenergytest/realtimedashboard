@@ -11,8 +11,8 @@ const PlotGraph: React.FC<PlotGraphProps> = ({ xData, yData }) => {
     return <div>No data to display</div>;
   }
 
-  console.log('PlotGraph xData:', xData);
-  console.log('PlotGraph yData:', yData);
+  // console.log('PlotGraph xData:', xData);
+  // console.log('PlotGraph yData:', yData);
 
   const trace = {
     x: xData,

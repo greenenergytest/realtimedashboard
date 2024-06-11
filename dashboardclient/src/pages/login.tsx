@@ -82,6 +82,7 @@ function Login() {
           marginRight: 'auto',
           marginLeft: 'auto',
           marginTop: '100px',
+          height: '250px',
         }}
       >
         <Card.Body>
@@ -148,7 +149,7 @@ function Login() {
             </>
             <Button
               className='loginSubmitButton'
-              variant='primary'
+              variant='success'
               type='submit'
             >
               Submit

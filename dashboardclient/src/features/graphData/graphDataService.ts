@@ -9,7 +9,7 @@ export const fetchGraphData = async (
   fileName: any
 ) => {
   try {
-    const response = await axios.post(config.apiBaseUrl + '/getGraphData', {
+    const response = await axios.post(config.localUrl + '/getGraphData', {
       selectedXColumns,
       selectedYColumns,
       fileName,
