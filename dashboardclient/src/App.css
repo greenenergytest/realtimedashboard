@@ -1,3 +1,6 @@
+body {
+  background: url('./assets/greenenergybgtemplate.png');
+}
 #root {
   width: 100%;
   /* margin: 0 auto;

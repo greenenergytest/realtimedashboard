@@ -21,6 +21,7 @@ router.post('/getGraphData', upload.single('file'), (req, res) => {
   const { selectedXColumns, selectedYColumns, fileName } = req.body;
 
   const workbook = xlsx.readFile(`${uploadDirectory}/${fileName}`);
+  const sheetNames = workbook.SheetNames;
   const sheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
   const data = xlsx.utils.sheet_to_json(worksheet, { header: 1 });
@@ -41,7 +42,7 @@ router.post('/getGraphData', upload.single('file'), (req, res) => {
     })
   );
 
-  res.json({ xData, yData });
+  res.json({ xData, yData, sheetNames });
 });
 
 // Function to check if a value is a date

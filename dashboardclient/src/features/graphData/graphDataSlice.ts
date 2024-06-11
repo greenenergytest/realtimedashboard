@@ -8,6 +8,7 @@ interface graphDataState {
   fileName: string;
   xData: string[];
   yData: string[];
+  sheetNames: string[];
 }
 
 const initialState: graphDataState = {
@@ -17,6 +18,7 @@ const initialState: graphDataState = {
   fileName: '',
   xData: [],
   yData: [],
+  sheetNames: [],
 };
 export const graphDataSlice = createSlice({
   name: 'graphData',
@@ -37,6 +39,9 @@ export const graphDataSlice = createSlice({
     setYData: (state, action) => {
       state.yData = action.payload;
     },
+    setSheetNames: (state, action) => {
+      state.sheetNames = action.payload;
+    },
   },
 });
 
@@ -46,6 +51,7 @@ export const {
   selectFileName,
   setXData,
   setYData,
+  setSheetNames,
 } = graphDataSlice.actions;
 
 export const fetchGraphDataFromBackend =
@@ -62,6 +68,7 @@ export const fetchGraphDataFromBackend =
 
       dispatch(setXData(formattedDate));
       dispatch(setYData(response.yData));
+      dispatch(setSheetNames(response.sheetNames));
     } catch (error) {
       console.error('Error fetching data:', error);
     }

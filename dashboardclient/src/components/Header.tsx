@@ -5,6 +5,9 @@ import Navbar from 'react-bootstrap/Navbar';
 //import NavDropdown from 'react-bootstrap/NavDropdown';
 import HeaderIcon from '../assets/Greenenergyicon.png';
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
+import { GoGraph } from 'react-icons/go';
+import { FaCloudUploadAlt } from 'react-icons/fa';
+import { FaOilWell } from 'react-icons/fa6';
 //import Button from 'react-bootstrap/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
@@ -31,6 +34,17 @@ const Header = () => {
     dispatch(reset());
     navigate('/register');
   };
+
+  const handleUploadClick = () => {
+    navigate('/');
+  };
+
+  const handleWellDetailsClick = () => {
+    navigate('/welldetails');
+  };
+  const handlePlotGraphClick = () => {
+    navigate('/plotgraph');
+  };
   return (
     <Navbar expand='lg' className='bg-body-tertiary headerStyle'>
       <Container fluid>
@@ -39,18 +53,31 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='navbarAcroll' />
         <Navbar.Collapse id='navbarScroll'>
-          <Nav
-            className='my-2 my-lg-0 headerRightItemStyle'
-            style={{ maxHeight: '100px' }}
-            navbarScroll
-          >
-            {user && Object.keys(user).length > 0 ? (
-              <Nav.Link href='#' onClick={handleLogOutClick}>
-                <FaSignInAlt className='rightItemIcon' />
-                logout
-              </Nav.Link>
-            ) : (
-              <>
+          {/* <Nav className='mx-auto' style={{ maxHeight: '100px' }} navbarScroll> */}
+          {user && Object.keys(user).length > 0 ? (
+            <>
+              <Nav
+                className='mx-auto'
+                style={{ maxHeight: '100px' }}
+                navbarScroll
+              >
+                <Nav.Link href='#' onClick={handleUploadClick}>
+                  <FaCloudUploadAlt className='rightItemIcon' />
+                  Upload
+                </Nav.Link>
+                <Nav.Link href='#' onClick={handleWellDetailsClick}>
+                  <FaOilWell className='rightItemIcon' />
+                  Well Details
+                </Nav.Link>
+                <Nav.Link href='#' onClick={handlePlotGraphClick}>
+                  <GoGraph className='rightItemIcon' />
+                  Plot graph
+                </Nav.Link>
+              </Nav>
+            </>
+          ) : (
+            <>
+              <Nav className='ml-auto headerRightItemStyle'>
                 <Nav.Link href='#' onClick={handleLoginClick}>
                   <FaSignOutAlt className='rightItemIcon' />
                   Login
@@ -59,9 +86,22 @@ const Header = () => {
                   <FaUser className='rightItemIcon' />
                   Register
                 </Nav.Link>
-              </>
-            )}
-          </Nav>
+              </Nav>
+            </>
+          )}
+
+          {user && Object.keys(user).length > 0 && (
+            <Nav className='ml-auto'>
+              <Nav.Link
+                href='#'
+                onClick={handleLogOutClick}
+                className='headerRightItemStyle'
+              >
+                <FaSignInAlt className='rightItemIcon' />
+                Logout
+              </Nav.Link>
+            </Nav>
+          )}
         </Navbar.Collapse>
       </Container>
     </Navbar>

@@ -1,4 +1,4 @@
-.column1 {
+/* .column1 {
   width: 50px;
   background-color: gray;
   height: 560px;
@@ -8,4 +8,12 @@
   width: 300px;
   background-color: white;
   height: 560px;
+} */
+
+.fileUploadContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+  margin: 0;
 }

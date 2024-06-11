@@ -1,0 +1,29 @@
+.detailsContainer {
+  display: flex;
+  margin-top: 20px;
+}
+
+.detailsDropDownContainer {
+  width: 40%;
+  position: relative;
+}
+
+.detailsDropDownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  max-height: 200px; /* Set a max height */
+  overflow-y: auto; /* Make it scrollable */
+}
+
+.cardContainer {
+  display: flex;
+}
+
+.cardDiv {
+  margin-right: 20px;
+}

@@ -7,8 +7,13 @@ type CardProps = {
   // imageUrl?: string;
   description?: string;
   children?: React.ReactNode;
+  toolTipDescription?: string;
 };
-const Card: React.FC<CardProps> = ({ title, description }) => {
+const Card: React.FC<CardProps> = ({
+  title,
+  description,
+  toolTipDescription,
+}) => {
   return (
     <div className='card'>
       <div>
@@ -19,7 +24,7 @@ const Card: React.FC<CardProps> = ({ title, description }) => {
         <span>
           <OverlayTrigger
             placement='top'
-            overlay={<Tooltip id='tooltip-top'>Tooltip on top</Tooltip>}
+            overlay={<Tooltip id='tooltip-top'>{toolTipDescription}</Tooltip>}
           >
             <span className='tooltip-icon'>ℹ️</span>
           </OverlayTrigger>

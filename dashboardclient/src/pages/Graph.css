@@ -1,0 +1,20 @@
+.graphDropDownContainer {
+  display: flex;
+  margin-top: 20px;
+}
+
+.gDropDownContainer {
+  width: 20%;
+}
+
+.graphDropDownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  max-height: 200px; /* Set a max height */
+  overflow-y: auto; /* Make it scrollable */
+}

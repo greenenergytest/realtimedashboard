@@ -79,6 +79,15 @@ FileUploadModalProps) => {
   };
 
   const handleCloseModal = () => {
+    if (uploadSuccess) {
+      dispatch(
+        fetchGraphDataFromBackend(
+          selectedXHeadings,
+          selectedYHeadings,
+          fileName
+        ) as any
+      );
+    }
     setShowModal(false);
   };
 
@@ -114,13 +123,13 @@ FileUploadModalProps) => {
         </Button>
         <Modal show={showModal} onHide={handleCloseModal}>
           <Modal.Header closeButton>
-            <Modal.Title>Select X-Axis Data</Modal.Title>
+            {/* <Modal.Title>Select X-Axis Data</Modal.Title> */}
           </Modal.Header>
           <Modal.Body>
             {uploadSuccess ? (
               <div>
                 <p>File uploaded successfully</p>
-                <p>Select variables for x axis</p>
+                {/* <p>Select variables for x axis</p>
                 <FormGroup>
                   {headers.map((heading: any, index: any) => (
                     <Form.Check
@@ -133,7 +142,7 @@ FileUploadModalProps) => {
                       onChange={handleCheckboxChange}
                     />
                   ))}
-                </FormGroup>
+                </FormGroup> */}
               </div>
             ) : errorMessage ? (
               <p>Error uploading file: {errorMessage.message}</p>
@@ -142,13 +151,13 @@ FileUploadModalProps) => {
             )}
           </Modal.Body>
           <Modal.Footer>
-            <Button
+            {/* <Button
               variant='secondary'
               onClick={handleSelectData}
               disabled={selectedXHeadings.length === 0}
             >
               Select
-            </Button>
+            </Button> */}
             <Button variant='secondary' onClick={handleCloseModal}>
               Close
             </Button>

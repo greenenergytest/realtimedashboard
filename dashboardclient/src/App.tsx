@@ -8,49 +8,21 @@ import LoginPage from './pages/login';
 import HomePage from './pages/Home';
 import Header from './components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import WellDetailsPage from './pages/WellDetails';
+import GraphPage from './pages/Graph';
 //import { Card, Form, Button, Row, Col } from 'react-bootstrap';
 
 function App() {
-  //const [usernameValue, setusernameValue] = useState('');
-  //const [emailValue, setEmailValue] = useState('');
-  // const [passwordValue, setuserPasswordValue] = useState('');
-  //const [confirmPasswordValue, setConfirmPasswordValue] = useState('');
-  //const [notAMemberValue, setNotAMemberValue] = useState(false);
-  // const [alreadyAMember, setAlreadyAMember] = useState(true);
-
-  // const handleUsernameChange = (event: any) => {
-  //   setusernameValue(event.target.value);
-  // };
-
-  // const handleEmailChange = (event: any) => {
-  //   setEmailValue(event.target.value);
-  // };
-  // const handlePasswordChange = (event: any) => {
-  //   setuserPasswordValue(event.target.value);
-  // };
-  // const confirmPasswordChange = (event: any) => {
-  //   setConfirmPasswordValue(event.target.value);
-  // };
-
-  // const notAMemberClicked = (event: any) => {
-  //   console.log('not a member clicked');
-  //   setNotAMemberValue(true);
-  //   setAlreadyAMember(false);
-  // };
-
-  // const alreadyAMemberClicked = (event: any) => {
-  //   console.log('already a member clicked');
-  //   setAlreadyAMember(true);
-  //   setNotAMemberValue(false);
-  // };
-
   return (
     <>
       <Router>
         <div style={{ height: '100%' }}>
           <Header />
+
           <Routes>
             <Route path='/' element={<HomePage />} />
+            <Route path='/welldetails' element={<WellDetailsPage />} />
+            <Route path='/plotgraph' element={<GraphPage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
           </Routes>
