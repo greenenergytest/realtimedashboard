@@ -35,7 +35,7 @@ const login = async (userData: any) => {
   console.log('in login service');
   console.log(userData);
   try {
-    const response = await axios.post(config.localUrl + '/login', userData, {
+    const response = await axios.post(config.apiBaseUrl + '/login', userData, {
       headers: {
         'Content-Type': 'application/json',
       },
