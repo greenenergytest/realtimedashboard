@@ -8,7 +8,7 @@ export const uploadAFile = async (file: File) => {
   formData.append('file', file);
 
   try {
-    const response = await axios.post(config.localUrl + '/upload', formData, {
+    const response = await axios.post(config.apiBaseUrl + '/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
       },

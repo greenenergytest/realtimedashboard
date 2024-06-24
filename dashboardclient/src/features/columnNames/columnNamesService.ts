@@ -3,7 +3,7 @@ import config from '../../config';
 
 export const fetchColumnNames = async (fileName: any, sheetName: any) => {
   try {
-    const response = await axios.post(config.localUrl + '/getColumnNames', {
+    const response = await axios.post(config.apiBaseUrl + '/getColumnNames', {
       fileName,
       sheetName,
     });

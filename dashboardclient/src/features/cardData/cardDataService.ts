@@ -3,7 +3,7 @@ import config from '../../config';
 
 export const fetchCardData = async (sheetName: string) => {
   try {
-    const response = await axios.post(config.localUrl + '/getCardData', {
+    const response = await axios.post(config.apiBaseUrl + '/getCardData', {
       sheetName,
     });
     return response.data;
