@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 //.import {uploadFile} from '../features/'
 import Button from 'react-bootstrap/Button';
 import { uploadFile, resetUploadState } from '../features/upload/uploadSlice';
-import { fetchGraphDataFromBackend } from '../features/graphData/graphDataSlice';
+//import { fetchGraphDataFromBackend } from '../features/graphData/graphDataSlice';
 // const [selectedHeadings, setSelectedHeadings] = useState([]);
 import { Form, FormGroup, Modal } from 'react-bootstrap';
 
@@ -20,19 +20,20 @@ interface FileUploadModalProps {
 
 const FileUpload: React.FC<FileUploadModalProps> = ({
   //headings = [],
-  onSelectX,
+  //onSelectX,
   onSelectY,
   onClose,
 }: // show,
 FileUploadModalProps) => {
   const [selectedFile, setSelectedFile] = useState(null);
-  const { uploading, uploadSuccess, errorMessage, headers, fileName } =
-    useSelector((state: any) => state.fileUpload);
+  const { uploading, uploadSuccess, errorMessage, headers } = useSelector(
+    (state: any) => state.fileUpload
+  );
 
   //   const { selectXColumns, selectYColumns } = useSelector(
   //     (state: any) => state.graphData
   //   );
-  const [selectedXHeadings, setSelectedXHeadings]: any = useState([]);
+  //const [selectedXHeadings, setSelectedXHeadings]: any = useState([]);
   const [selectedYHeadings, setSelectedYHeadings] = useState<string[]>([]);
 
   // const [data, setData] = useState([]);
@@ -59,24 +60,24 @@ FileUploadModalProps) => {
     dispatch(resetUploadState());
   };
 
-  const handleCheckboxChange = (event: any) => {
-    const { value, checked } = event.target;
-    if (checked) {
-      setSelectedXHeadings([...selectedXHeadings, value]);
-    } else {
-      setSelectedXHeadings(
-        selectedXHeadings.filter((heading: any) => heading !== value)
-      );
-    }
-  };
+  // const handleCheckboxChange = (event: any) => {
+  //   const { value, checked } = event.target;
+  //   if (checked) {
+  //     setSelectedXHeadings([...selectedXHeadings, value]);
+  //   } else {
+  //     setSelectedXHeadings(
+  //       selectedXHeadings.filter((heading: any) => heading !== value)
+  //     );
+  //   }
+  // };
 
-  const handleSelectData = () => {
-    // Handle Select Data
-    // console.log('Selected headings:', selectedXHeadings);
-    onSelectX(selectedXHeadings);
-    setShowModal(false);
-    setShowYModal(true);
-  };
+  // const handleSelectData = () => {
+  //   // Handle Select Data
+  //   // console.log('Selected headings:', selectedXHeadings);
+  //   onSelectX(selectedXHeadings);
+  //   setShowModal(false);
+  //   setShowYModal(true);
+  // };
 
   const handleCloseModal = () => {
     if (uploadSuccess) {

@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
-import VerticalHeader from '../components/VerticalHeader';
+//import VerticalHeader from '../components/VerticalHeader';
 // import Container from 'react-bootstrap/Container';
 // import Row from 'react-bootstrap/Row';
 // import Col from 'react-bootstrap/Col';
@@ -12,7 +12,7 @@ import './Home.css';
 
 // import FlaringGas from '../assets/flaringGas.jpeg';
 import FileUpload from '../components/FIleUpload';
-import PlotGraph from '../components/PlotGraph';
+//import PlotGraph from '../components/PlotGraph';
 import LoginPage from '../pages/login';
 
 const Home = () => {

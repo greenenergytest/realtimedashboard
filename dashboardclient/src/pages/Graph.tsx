@@ -23,7 +23,7 @@ const Graph = () => {
   const [showXModal, setShowXModal] = useState(false);
   const [showPrimaryYModal, setShowPrimaryYModal] = useState(false);
   const [showSecondaryYModal, setShowSecondaryYModal] = useState(false);
-  const { headers, fileName } = useSelector((state: any) => state.fileUpload);
+  const { fileName } = useSelector((state: any) => state.fileUpload);
   const [selectedXHeadings, setSelectedXHeadings]: any = useState([]);
   const [selectedPrimaryYHeadings, setSelectedPrimaryYHeadings] = useState<
     string[]
@@ -112,7 +112,7 @@ const Graph = () => {
     handleCloseSecondaryYModal();
   };
   // Flatten yData
-  const flattenYData = primaryYData.map((item: any) => item[0]);
+  //const flattenYData = primaryYData.map((item: any) => item[0]);
   return (
     <div className='graphDropDownContainer'>
       <div className='gDropDownContainer'>
