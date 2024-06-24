@@ -80,26 +80,27 @@ FileUploadModalProps) => {
 
   const handleCloseModal = () => {
     if (uploadSuccess) {
-      dispatch(
-        fetchGraphDataFromBackend(
-          selectedXHeadings,
-          selectedYHeadings,
-          fileName
-        ) as any
-      );
+      // dispatch(
+      //   fetchGraphDataFromBackend(
+      //     selectedXHeadings,
+      //     selectedYHeadings,
+      //     fileName
+      //   ) as any
+      // );
     }
     setShowModal(false);
   };
 
   const handleCloseYModal = () => {
     // console.log(fileName);
-    dispatch(
-      fetchGraphDataFromBackend(
-        selectedXHeadings,
-        selectedYHeadings,
-        fileName
-      ) as any
-    );
+    // dispatch(
+    //   fetchGraphDataFromBackend(
+    //     selectedXHeadings,
+    //     selectedYHeadings,
+    //     fileName,
+    //     sheetName
+    //   ) as any
+    // );
     setShowYModal(false);
     onClose();
   };

@@ -18,11 +18,20 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 router.post('/getGraphData', upload.single('file'), (req, res) => {
-  const { selectedXColumns, selectedYColumns, fileName } = req.body;
+  const {
+    selectedXColumns,
+    selectedPrimaryYColumns,
+    selectedSecondaryYColumns,
+    fileName,
+    sheetName,
+  } = req.body;
+
+  console.log('logging sheet name');
+  console.log(sheetName);
 
   const workbook = xlsx.readFile(`${uploadDirectory}/${fileName}`);
   const sheetNames = workbook.SheetNames;
-  const sheetName = workbook.SheetNames[0];
+  const testSheetName = workbook.SheetNames[0];
   const worksheet = workbook.Sheets[sheetName];
   const data = xlsx.utils.sheet_to_json(worksheet, { header: 1 });
 
@@ -35,14 +44,22 @@ router.post('/getGraphData', upload.single('file'), (req, res) => {
     });
   });
 
-  const yData = data.map((row) =>
-    selectedYColumns.map((col) => {
+  const yPrimaryData = data.map((row) =>
+    selectedPrimaryYColumns.map((col) => {
+      const cellValue = row[headers.indexOf(col)];
+      // console.log(cellValue);
+      return isDate(cellValue) ? formatDate(cellValue) : cellValue;
+    })
+  );
+
+  const ySecondaryData = data.map((row) =>
+    selectedSecondaryYColumns.map((col) => {
       const cellValue = row[headers.indexOf(col)];
       return isDate(cellValue) ? formatDate(cellValue) : cellValue;
     })
   );
 
-  res.json({ xData, yData, sheetNames });
+  res.json({ xData, yPrimaryData, ySecondaryData, sheetNames });
 });
 
 // Function to check if a value is a date

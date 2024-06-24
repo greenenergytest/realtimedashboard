@@ -7,7 +7,8 @@ interface graphDataState {
   selectedYColumns: string[];
   fileName: string;
   xData: string[];
-  yData: string[];
+  primaryYData: string[];
+  secondaryYData: string[];
   sheetNames: string[];
 }
 
@@ -17,7 +18,8 @@ const initialState: graphDataState = {
   selectedYColumns: [],
   fileName: '',
   xData: [],
-  yData: [],
+  primaryYData: [],
+  secondaryYData: [],
   sheetNames: [],
 };
 export const graphDataSlice = createSlice({
@@ -36,8 +38,11 @@ export const graphDataSlice = createSlice({
     setXData: (state, action) => {
       state.xData = action.payload;
     },
-    setYData: (state, action) => {
-      state.yData = action.payload;
+    setPrimaryYData: (state, action) => {
+      state.primaryYData = action.payload;
+    },
+    setSecondaryYData: (state, action) => {
+      state.secondaryYData = action.payload;
     },
     setSheetNames: (state, action) => {
       state.sheetNames = action.payload;
@@ -50,24 +55,39 @@ export const {
   selectYColumns,
   selectFileName,
   setXData,
-  setYData,
+  setPrimaryYData,
+  setSecondaryYData,
   setSheetNames,
 } = graphDataSlice.actions;
 
 export const fetchGraphDataFromBackend =
-  (xColumns: any, yColumns: any, fileName: any) => async (dispatch: any) => {
+  (
+    xColumns: any,
+    primaryYColumns: any,
+    secondaryYColumns: any,
+    fileName: any,
+    sheetName: any
+  ) =>
+  async (dispatch: any) => {
     console.log(fileName);
     console.log(xColumns);
-    console.log(yColumns);
+    console.log(primaryYColumns);
 
     //const { fileName } = getState().data;
     try {
-      const response = await fetchGraphData(xColumns, yColumns, fileName);
+      const response = await fetchGraphData(
+        xColumns,
+        primaryYColumns,
+        secondaryYColumns,
+        fileName,
+        sheetName
+      );
       console.log(response);
       const formattedDate = getNormalDate(response.xData);
 
       dispatch(setXData(formattedDate));
-      dispatch(setYData(response.yData));
+      dispatch(setPrimaryYData(response.yPrimaryData));
+      dispatch(setSecondaryYData(response.ySecondaryData));
       dispatch(setSheetNames(response.sheetNames));
     } catch (error) {
       console.error('Error fetching data:', error);

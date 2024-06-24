@@ -42,6 +42,7 @@ router.post('/upload', (req, res) => {
     }
 
     const workbook = xlsx.readFile(`${uploadDirectory}/${file.name}`);
+    const sheetNames = workbook.SheetNames;
     const sheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[sheetName];
     const columnNames = [];
@@ -59,7 +60,7 @@ router.post('/upload', (req, res) => {
       }
     }
 
-    res.json({ fileName, columnNames }); // Send column names as response
+    res.json({ fileName, columnNames, sheetNames }); // Send column names as response
   });
 });
 
