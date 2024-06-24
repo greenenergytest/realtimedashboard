@@ -1,13 +1,13 @@
 import './VerticalHeader.css';
 //import { useState } from 'react';
 import { Navbar, Nav } from 'react-bootstrap';
-import HomePage from '../pages/Home';
+//import HomePage from '../pages/Home';
 import { Link } from 'react-router-dom';
 
 const VerticalHeaders = () => {
-  const handleClick = (e: any) => {
-    e.preventDefault();
-  };
+  // const handleClick = (e: any) => {
+  //   e.preventDefault();
+  // };
 
   return (
     <div className='verticalHeader'>
