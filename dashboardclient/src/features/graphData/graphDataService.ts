@@ -11,7 +11,7 @@ export const fetchGraphData = async (
   sheetName: any
 ) => {
   try {
-    const response = await axios.post(config.localUrl + '/getGraphData', {
+    const response = await axios.post(config.apiBaseUrl + '/getGraphData', {
       selectedXColumns,
       selectedPrimaryYColumns,
       selectedSecondaryYColumns,

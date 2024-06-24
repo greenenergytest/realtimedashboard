@@ -7,11 +7,15 @@ import config from '../../config';
 const register = async (userData: any) => {
   console.log('in register service');
   try {
-    const response = await axios.post(config.localUrl + '/register', userData, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await axios.post(
+      config.apiBaseUrl + '/register',
+      userData,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
     if ((response.status = 200 && response.data)) {
       console.log('storing user to local host');
