@@ -5,14 +5,18 @@ import config from '../../config';
 
 export const fetchGraphData = async (
   selectedXColumns: any,
-  selectedYColumns: any,
-  fileName: any
+  selectedPrimaryYColumns: any,
+  selectedSecondaryYColumns: any,
+  fileName: any,
+  sheetName: any
 ) => {
   try {
     const response = await axios.post(config.localUrl + '/getGraphData', {
       selectedXColumns,
-      selectedYColumns,
+      selectedPrimaryYColumns,
+      selectedSecondaryYColumns,
       fileName,
+      sheetName,
     });
     console.log(response);
     return response.data;

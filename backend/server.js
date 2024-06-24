@@ -5,6 +5,8 @@ const profileRoutes = require('./routes/api/profile');
 const fileRoutes = require('./routes/api/file');
 const graphDataRoutes = require('./routes/api/graphData');
 const cardDataRoutes = require('./routes/api/cardData');
+const columnNamesRoutes = require('./routes/api/columnNames');
+
 const cors = require('cors');
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -33,6 +35,7 @@ app.use('/', profileRoutes);
 app.use('/', fileRoutes);
 app.use('/', graphDataRoutes);
 app.use('/', cardDataRoutes);
+app.use('/', columnNamesRoutes);
 
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);

@@ -7,7 +7,7 @@ import './WellDetails.css';
 
 const WellDetails = () => {
   const dispatch = useDispatch();
-  const sheetNames = useSelector((state: any) => state.graphData.sheetNames);
+  const sheetNames = useSelector((state: any) => state.fileUpload.sheetNames);
   const {
     chokeData,
     fthpData,

@@ -14,6 +14,7 @@ interface FileUploadState {
   uploading: boolean;
   uploadSuccess: boolean;
   errorMessage: string | null;
+  sheetNames: string[];
 }
 
 const initialState: FileUploadState = {
@@ -23,6 +24,7 @@ const initialState: FileUploadState = {
   fileName: '',
   uploadSuccess: false,
   errorMessage: null,
+  sheetNames: [],
 };
 
 export const fileUploadSlice = createSlice({
@@ -57,6 +59,9 @@ export const fileUploadSlice = createSlice({
       state.uploadSuccess = false;
       state.errorMessage = null;
     },
+    setSheetNames: (state, action) => {
+      state.sheetNames = action.payload;
+    },
   },
 });
 
@@ -68,6 +73,7 @@ export const {
   uploadFileFailure,
   resetUploadState,
   setFileName,
+  setSheetNames,
 } = fileUploadSlice.actions;
 
 export default fileUploadSlice.reducer;
@@ -86,6 +92,7 @@ export const uploadFile =
       dispatch(setHeaders(response.columnNames));
       dispatch(setFileName(response.fileName));
       dispatch(uploadFileSuccess());
+      dispatch(setSheetNames(response.sheetNames));
     } catch (error: any) {
       dispatch(uploadFileFailure(error.message));
     }
