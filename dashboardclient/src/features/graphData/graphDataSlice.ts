@@ -64,9 +64,9 @@ export const fetchGraphDataFromBackend =
   (
     xColumns: any,
     primaryYColumns: any,
-    secondaryYColumns: any,
     fileName: any,
-    sheetName: any
+    sheetName: any,
+    secondaryYColumns?: any
   ) =>
   async (dispatch: any) => {
     console.log(fileName);

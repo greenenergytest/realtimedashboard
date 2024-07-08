@@ -18,3 +18,7 @@
   max-height: 200px; /* Set a max height */
   overflow-y: auto; /* Make it scrollable */
 }
+
+.graphContainer {
+  width: 80%;
+}

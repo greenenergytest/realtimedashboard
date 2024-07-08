@@ -45,6 +45,16 @@ router.post('/getCardData', (req, res) => {
     const FTHPColumn = 'FTHP';
     //extract column data
     const columnData = data.map((row) => row[FTHPColumn]);
+    const fthpFilteredData = data.filter(
+      (row) => row[FTHPColumn] !== undefined
+    );
+
+    //sort the filtered data by index to get the most recent value
+    fthpFilteredData.sort((a, b) => a._index - b._index);
+
+    //get the most recent value of the column
+    //const currentFthp = fthpFilteredData.length > 0? fthpFiltered
+
     // console.log('logging column data');
     // console.log(columnData);
 

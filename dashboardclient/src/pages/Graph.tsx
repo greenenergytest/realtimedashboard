@@ -5,7 +5,11 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import './Graph.css';
 import { Form, FormGroup, Modal } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import { fetchGraphDataFromBackend } from '../features/graphData/graphDataSlice';
+import {
+  fetchGraphDataFromBackend,
+  setPrimaryYData,
+  setSecondaryYData,
+} from '../features/graphData/graphDataSlice';
 import { getColumnNames } from '../features/columnNames/columnNamesSlice';
 
 const Graph = () => {
@@ -36,8 +40,11 @@ const Graph = () => {
   const handleItemClick = (sheetName: string) => {
     console.log(sheetName);
     setSheetName(sheetName);
+    dispatch(setPrimaryYData([]));
+    dispatch(setSecondaryYData([]));
     setSelectedXHeadings([]);
     setSelectedPrimaryYHeadings([]);
+    setSelectedSecondaryYHeadings([]);
 
     dispatch(getColumnNames(fileName, sheetName) as any);
     setShowXModal(true);
@@ -49,13 +56,19 @@ const Graph = () => {
 
   const handleClosePrimaryYModal = () => {
     // console.log(fileName);
-    // dispatch(
-    //   fetchGraphDataFromBackend(
-    //     selectedXHeadings,
-    //     selectedYHeadings,
-    //     fileName
-    //   ) as any
-    // );
+    console.log(selectedPrimaryYHeadings);
+    if (selectedPrimaryYHeadings && selectedPrimaryYHeadings.length > 0) {
+      dispatch(
+        fetchGraphDataFromBackend(
+          selectedXHeadings,
+          selectedPrimaryYHeadings,
+          fileName,
+          sheetName,
+          selectedSecondaryYHeadings
+        ) as any
+      );
+    }
+
     setShowPrimaryYModal(false);
     //onClose();
   };
@@ -70,8 +83,8 @@ const Graph = () => {
     //     sheetName
     //   ) as any
     // );
+    setShowPrimaryYModal(false);
     setShowSecondaryYModal(true);
-    handleClosePrimaryYModal();
   };
 
   const handleCheckboxChange = (event: any) => {
@@ -95,6 +108,15 @@ const Graph = () => {
   };
 
   const handleCloseSecondaryYModal = () => {
+    dispatch(
+      fetchGraphDataFromBackend(
+        selectedXHeadings,
+        selectedPrimaryYHeadings,
+        fileName,
+        sheetName,
+        selectedSecondaryYHeadings
+      ) as any
+    );
     setShowSecondaryYModal(false);
   };
 
@@ -103,9 +125,9 @@ const Graph = () => {
       fetchGraphDataFromBackend(
         selectedXHeadings,
         selectedPrimaryYHeadings,
-        selectedSecondaryYHeadings,
         fileName,
-        sheetName
+        sheetName,
+        selectedSecondaryYHeadings
       ) as any
     );
 
@@ -260,7 +282,19 @@ const Graph = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-      <div>
+      <div className='graphContainer'>
+        {/* {xData &&
+          primaryYData &&
+          xData.length > 0 &&
+          primaryYData.length > 0 &&
+          secondaryYData &&
+          secondaryYData.length > 0 && (
+            <PlotGraph
+              xData={xData}
+              yPrimaryData={primaryYData}
+              ySecondaryData={secondaryYData}
+            />
+          )} */}
         {xData &&
           primaryYData &&
           xData.length > 0 &&
@@ -272,6 +306,14 @@ const Graph = () => {
               yPrimaryData={primaryYData}
               ySecondaryData={secondaryYData}
             />
+          )}
+      </div>
+      <div>
+        {xData &&
+          primaryYData &&
+          xData.length > 0 &&
+          primaryYData.length > 0 && (
+            <PlotGraph xData={xData} yPrimaryData={primaryYData} />
           )}
       </div>
     </div>

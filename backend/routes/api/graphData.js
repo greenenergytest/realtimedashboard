@@ -44,17 +44,20 @@ router.post('/getGraphData', upload.single('file'), (req, res) => {
     });
   });
 
-  const yPrimaryData = data.map((row) =>
-    selectedPrimaryYColumns.map((col) => {
+  const yPrimaryData = data.map((row) => {
+    console.log(selectedPrimaryYColumns);
+    return selectedPrimaryYColumns.map((col) => {
       const cellValue = row[headers.indexOf(col)];
-      // console.log(cellValue);
+      //console.log(cellValue);
       return isDate(cellValue) ? formatDate(cellValue) : cellValue;
-    })
-  );
+    });
+  });
 
   const ySecondaryData = data.map((row) =>
     selectedSecondaryYColumns.map((col) => {
+      console.log(col);
       const cellValue = row[headers.indexOf(col)];
+      //console.log(cellValue);
       return isDate(cellValue) ? formatDate(cellValue) : cellValue;
     })
   );
