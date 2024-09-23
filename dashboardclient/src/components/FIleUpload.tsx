@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 //import axios from 'axios';
 import './FileUpload.css';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +29,9 @@ FileUploadModalProps) => {
   const { uploading, uploadSuccess, errorMessage, headers } = useSelector(
     (state: any) => state.fileUpload
   );
-
+  // useEffect(()=> {
+  //   console.log('component mounted or updated');
+  // })
   //   const { selectXColumns, selectYColumns } = useSelector(
   //     (state: any) => state.graphData
   //   );

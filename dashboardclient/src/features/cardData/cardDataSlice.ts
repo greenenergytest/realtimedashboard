@@ -74,13 +74,14 @@ export const fetchCardDetails =
       console.log(response);
 
       dispatch(setChokeData(response.currentChoke));
-      dispatch(setFthpData(response.averageFTHP));
-      dispatch(setCondensateRateData(response.averageCondensateRate));
-      dispatch(setGasRateData(response.averageGasRate));
-      dispatch(setWaterCutData(response.averageWaterCut));
-      dispatch(setGasOilRatioData(response.averageGasOilRatio));
+      dispatch(setFthpData(response.currentFTHP));
+      dispatch(setCondensateRateData(response.currentCondensateRate));
+      dispatch(setGasRateData(response.currentGasRate));
+      dispatch(setWaterCutData(response.currentWaterCut));
+      dispatch(setGasOilRatioData(response.currentGasOilRatio));
       dispatch(setCondensateCummData(response.currentCondensateCumm));
-      dispatch(setOilRateData(response.averageOilRate));
+      dispatch(setOilRateData(response.currentOilRate));
+      return response;
     } catch (error) {
       console.error('Error fetching data:', error);
     }
