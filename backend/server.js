@@ -3,6 +3,7 @@ const bodyParser = require('body-parser');
 const userRoutes = require('./routes/api/users');
 const profileRoutes = require('./routes/api/profile');
 const fileRoutes = require('./routes/api/file');
+const fileAuthenticationRoutes = require('./routes/api/fileAuthentication');
 const graphDataRoutes = require('./routes/api/graphData');
 const cardDataRoutes = require('./routes/api/cardData');
 const columnNamesRoutes = require('./routes/api/columnNames');
@@ -36,6 +37,7 @@ app.use('/', fileRoutes);
 app.use('/', graphDataRoutes);
 app.use('/', cardDataRoutes);
 app.use('/', columnNamesRoutes);
+app.use('/', fileAuthenticationRoutes);
 
 app.listen(port, () => {
   console.log(`Server is listening at http://localhost:${port}`);

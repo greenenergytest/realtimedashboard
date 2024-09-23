@@ -85,6 +85,9 @@ export const fetchGraphDataFromBackend =
       console.log(response);
       const formattedDate = getNormalDate(response.xData);
 
+      console.log('logging formatted dates');
+      console.log(formattedDate);
+
       dispatch(setXData(formattedDate));
       dispatch(setPrimaryYData(response.yPrimaryData));
       dispatch(setSecondaryYData(response.ySecondaryData));
@@ -95,10 +98,15 @@ export const fetchGraphDataFromBackend =
   };
 
 const getNormalDate = (serialDates: any) => {
-  const formattedDates = serialDates.map((serialDate: any) => {
+  console.log('logging serial dates');
+  console.log(serialDates);
+  console.log('logging serial dates slice');
+  console.log(serialDates.slice(2));
+  const formattedDates = serialDates.slice(1).map((serialDate: any) => {
     const date = new Date((serialDate - 25569) * 86400 * 1000); // Convert serial date to milliseconds
     return formatDate(date);
   });
+  formattedDates[0] = '';
   return formattedDates;
 };
 

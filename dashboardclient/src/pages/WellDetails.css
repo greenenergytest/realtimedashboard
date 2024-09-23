@@ -1,8 +1,10 @@
 .detailsContainer {
-  display: flex;
+  /* display: flex; */
   margin-top: 20px;
 }
-
+.detailsDropDownMainContainer {
+  display: flex;
+}
 .detailsDropDownContainer {
   width: 40%;
   position: relative;
@@ -18,6 +20,10 @@
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
   max-height: 200px; /* Set a max height */
   overflow-y: auto; /* Make it scrollable */
+}
+
+.informationTickerContainer {
+  margin-top: 10px;
 }
 
 .cardContainer {
