@@ -1,6 +1,32 @@
 .field-card-container {
-  background-color: white;
+  background-color: #d9d9d9;
   margin-top: 10px;
   width: 220px;
   height: 216px;
+  display: flex;
+  flex-direction: column;
+}
+
+.field-card-container div {
+  display: flex;
+  align-items: center;
+}
+
+.field-card-text {
+  flex: 1;
+  margin-right: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-left: 10px;
+}
+
+/* Add margin-left to the first item of field-card-text */
+.field-card-container div:first-child .field-card-text {
+  margin-left: 40px; /* Margin for the first item */
+}
+.value-text {
+  min-width: 50px;
+  text-align: right;
+  margin-right: 20px;
 }

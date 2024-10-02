@@ -6,25 +6,26 @@ const path = require('path');
 const router = express.Router();
 
 const uploadDirectory = path.join(__dirname, '../../uploads');
+const utilityFunctions = require('../../utils/utilities');
 
-//get the most recent file
-function getMostRecentFile(dir) {
-  const files = fs.readdirSync(dir);
+// //get the most recent file
+// function getMostRecentFile(dir) {
+//   const files = fs.readdirSync(dir);
 
-  //Map the files to an array of objects with file names and their stats
-  const fileStats = files.map((file) => {
-    const filePath = path.join(dir, file);
-    const stats = fs.statSync(filePath);
+//   //Map the files to an array of objects with file names and their stats
+//   const fileStats = files.map((file) => {
+//     const filePath = path.join(dir, file);
+//     const stats = fs.statSync(filePath);
 
-    return { file, mtime: stats.mtime };
-  });
+//     return { file, mtime: stats.mtime };
+//   });
 
-  //sort the array by modification time in descending order
-  fileStats.sort((a, b) => b.mtime - a.mtime);
+//   //sort the array by modification time in descending order
+//   fileStats.sort((a, b) => b.mtime - a.mtime);
 
-  //Return the most recent file's name (or undefined if the directory is empty)
-  return fileStats.length > 0 ? fileStats[0].file : undefined;
-}
+//   //Return the most recent file's name or undefined if the directory is empty)
+//   return fileStats.length > 0 ? fileStats[0].file : undefined;
+// }
 function isArrayFilledWithUndefined(arr) {
   return arr.every((element) => element === undefined);
 }
@@ -32,7 +33,9 @@ function isArrayFilledWithUndefined(arr) {
 router.post('/getCardData', (req, res) => {
   console.log('in getCard data');
   const { sheetName } = req.body;
-  const mostRecentFile = getMostRecentFile(uploadDirectory);
+  const mostRecentFile = utilityFunctions.getMostRecentFile(uploadDirectory);
+
+  //getMostRecentFile(uploadDirectory);
 
   if (mostRecentFile) {
     const workbook = xlsx.readFile(`${uploadDirectory}/${mostRecentFile}`);
@@ -79,7 +82,7 @@ router.post('/getCardData', (req, res) => {
       (row) => row[chokeColumn] !== undefined
     );
 
-    // sort the filtered data by index to get the most recent value
+    // sort the filtered data by index
     chokeFilteredData.sort((a, b) => a._index - b._index);
 
     // Get the most recent value of the column
