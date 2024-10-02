@@ -6,6 +6,7 @@ import fileUploadReducer from './features/upload/uploadSlice';
 import graphDataReducer from './features/graphData/graphDataSlice';
 import cardDataReducer from './features/cardData/cardDataSlice';
 import columnNamesReducer from './features/columnNames/columnNamesSlice';
+import fieldDataReducer from './features/FieldData/FieldDataSlice';
 
 const store = configureStore({
   reducer: {
@@ -14,6 +15,7 @@ const store = configureStore({
     graphData: graphDataReducer,
     cardData: cardDataReducer,
     columnData: columnNamesReducer,
+    fieldData: fieldDataReducer,
   },
 });
 

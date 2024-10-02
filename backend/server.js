@@ -6,7 +6,9 @@ const fileRoutes = require('./routes/api/file');
 // const fileAuthenticationRoutes = require('./routes/api/fileAuthentication');
 const graphDataRoutes = require('./routes/api/graphData');
 const cardDataRoutes = require('./routes/api/cardData');
+const fieldDataRoutes = require('./routes/api/fieldData');
 const columnNamesRoutes = require('./routes/api/columnNames');
+const problemWellsRoutes = require('./routes/api/problemWells');
 
 const cors = require('cors');
 require('dotenv').config();
@@ -37,6 +39,8 @@ app.use('/', fileRoutes);
 app.use('/', graphDataRoutes);
 app.use('/', cardDataRoutes);
 app.use('/', columnNamesRoutes);
+app.use('/', fieldDataRoutes);
+app.use('/', problemWellsRoutes);
 // app.use('/', fileAuthenticationRoutes);
 
 app.listen(port, () => {
