@@ -45,6 +45,10 @@ const Header = () => {
   const handlePlotGraphClick = () => {
     navigate('/plotgraph');
   };
+
+  const handleFieldViewClick = () => {
+    navigate('/fieldview');
+  };
   return (
     <Navbar expand='lg' className='bg-body-tertiary headerStyle'>
       <Container fluid>
@@ -72,6 +76,10 @@ const Header = () => {
                 <Nav.Link href='#' onClick={handlePlotGraphClick}>
                   <GoGraph className='rightItemIcon' />
                   Plot graph
+                </Nav.Link>
+                <Nav.Link href='#' onClick={handleFieldViewClick}>
+                  <GoGraph className='rightItemIcon' />
+                  Field View
                 </Nav.Link>
               </Nav>
             </>

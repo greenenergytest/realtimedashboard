@@ -10,6 +10,8 @@ import Header from './components/Header';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import WellDetailsPage from './pages/WellDetails';
 import GraphPage from './pages/Graph';
+import FieldViewPage from './pages/FieldView';
+
 //import { Card, Form, Button, Row, Col } from 'react-bootstrap';
 
 function App() {
@@ -25,6 +27,7 @@ function App() {
             <Route path='/plotgraph' element={<GraphPage />} />
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
+            <Route path='/fieldview' element={<FieldViewPage />} />
           </Routes>
         </div>
       </Router>

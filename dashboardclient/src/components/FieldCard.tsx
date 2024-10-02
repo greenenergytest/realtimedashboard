@@ -1,9 +1,21 @@
 import './FieldCard.css';
 
-const FieldCard = () => {
+interface FieldCardProps {
+  items: string[];
+  valueOfItems: string[];
+}
+
+const FieldCard: React.FC<FieldCardProps> = ({ items, valueOfItems }) => {
   return (
     <div className='field-card-container'>
-      <p>test</p>
+      {items.map((item: string, index: number) => (
+        <div key={index}>
+          <span className='field-card-text'>{item}</span>
+          <span className='value-text'>
+            {valueOfItems[index] !== undefined ? valueOfItems[index] : 'N/A'}
+          </span>
+        </div>
+      ))}
     </div>
   );
 };
