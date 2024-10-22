@@ -2,7 +2,7 @@ import './FieldCard.css';
 
 interface FieldCardProps {
   items: string[];
-  valueOfItems: string[];
+  valueOfItems?: string[];
 }
 
 const FieldCard: React.FC<FieldCardProps> = ({ items, valueOfItems }) => {
@@ -12,7 +12,9 @@ const FieldCard: React.FC<FieldCardProps> = ({ items, valueOfItems }) => {
         <div key={index}>
           <span className='field-card-text'>{item}</span>
           <span className='value-text'>
-            {valueOfItems[index] !== undefined ? valueOfItems[index] : 'N/A'}
+            {valueOfItems && valueOfItems[index] !== undefined
+              ? valueOfItems[index]
+              : 'N/A'}
           </span>
         </div>
       ))}

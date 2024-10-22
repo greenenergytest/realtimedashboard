@@ -9,6 +9,7 @@ const cardDataRoutes = require('./routes/api/cardData');
 const fieldDataRoutes = require('./routes/api/fieldData');
 const columnNamesRoutes = require('./routes/api/columnNames');
 const problemWellsRoutes = require('./routes/api/problemWells');
+const wellGraphRoute = require('./routes/api/wellGraphs');
 
 const cors = require('cors');
 require('dotenv').config();
@@ -41,6 +42,7 @@ app.use('/', cardDataRoutes);
 app.use('/', columnNamesRoutes);
 app.use('/', fieldDataRoutes);
 app.use('/', problemWellsRoutes);
+app.use('/', wellGraphRoute);
 // app.use('/', fileAuthenticationRoutes);
 
 app.listen(port, () => {
