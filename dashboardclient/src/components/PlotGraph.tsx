@@ -33,11 +33,36 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
   const [xMax, setXMax] = useState(xRange[1]);
   const [yMin, setYMin] = useState(yRange[0]);
   const [yMax, setYMax] = useState(yRange[1]);
-
   const [dimensions, setDimensions] = useState({
     width: Number('100%'),
     height: 400,
   });
+
+  const validDates: any = xData.filter((date) => {
+    const parsedDate = new Date(date);
+    return !isNaN(parsedDate.getTime());
+  });
+
+  const minimumDate: any =
+    validDates.length > 0
+      ? new Date(Math.min(...validDates.map((date: any) => new Date(date))))
+      : null;
+
+  const maximumDate =
+    validDates.length > 0
+      ? new Date(Math.max(...validDates.map((date: any) => new Date(date))))
+      : null;
+
+  let minimumDateFormatted =
+    minimumDate instanceof Date && !isNaN(minimumDate.getTime())
+      ? minimumDate.toISOString().split('T')[0]
+      : 'No valid dates';
+
+  minimumDateFormatted = '2016-02-20';
+  const maximumDateFormatted =
+    maximumDate instanceof Date && !isNaN(maximumDate.getTime())
+      ? maximumDate.toISOString().split('T')[0]
+      : 'No Valid Dates';
 
   if (
     !xData ||
@@ -84,6 +109,8 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
     title: 'Production Data Plot',
     xaxis: {
       title: 'Date',
+      tickformat: '%b %Y',
+      range: [minimumDateFormatted, maximumDateFormatted],
     },
     yaxis: {
       title: yPrimaryHeaders.join(' / '),
@@ -101,8 +128,11 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
     },
   };
 
-  const config = {
+  const config: any = {
     responsive: true,
+    displayModeBar: true,
+    modeBarButtonsToRemove: ['toImage', 'zoomOut2d'], // Remove "Download as PNG" and "Zoom Out" icons
+    displaylogo: false, // Optionally hide the Plotly logo
   };
 
   const handleResize: ResizableBoxProps['onResize'] = (
@@ -165,10 +195,10 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
     <>
       {primaryTraces && ySecondaryData && ySecondaryData.length > 0 && (
         <>
-          <Button variant='outlined' onClick={handleShow}>
+          {/* <Button variant='outlined' onClick={handleShow}>
             Customise Scales
-          </Button>
-          <ResizableBox
+          </Button> */}
+          {/* <ResizableBox
             width={dimensions.width}
             height={dimensions.height}
             minConstraints={[400, 300]}
@@ -176,16 +206,16 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
             onResize={handleResize}
             resizeHandles={['se']}
             style={{ position: 'relative' }}
-          >
-            <Plot
-              data={[...primaryTraces, ...secondaryTraces]}
-              layout={layout}
-              useResizeHandler={true}
-              style={{ width: '100%', height: '100%' }}
-              config={config}
-            />
-          </ResizableBox>
-          <button onClick={downloadExcel}>Download Excel</button>
+          > */}
+          <Plot
+            data={[...primaryTraces, ...secondaryTraces]}
+            layout={layout}
+            useResizeHandler={true}
+            style={{ width: '50%', height: '100%' }}
+            config={config}
+          />
+          {/* </ResizableBox> */}
+          {/* <button onClick={downloadExcel}></button> */}
         </>
       )}
 
@@ -194,15 +224,16 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
           <Button variant='outlined' onClick={handleShow}>
             Customise Scales
           </Button>
-
-          <Plot
-            data={[...primaryTraces]}
-            layout={layout}
-            useResizeHandler={true}
-            style={{ width: '100%', height: '100%' }}
-            config={config}
-          />
-          <button onClick={downloadExcel}>Download Excel</button>
+          <div>
+            <Plot
+              data={[...primaryTraces]}
+              layout={layout}
+              useResizeHandler={true}
+              style={{ width: '100%', height: '100%' }}
+              config={config}
+            />
+          </div>
+          {/* <button onClick={downloadExcel}>Download Excel</button> */}
           <Modal show={show} onHide={handleClose}>
             <Modal.Header closeButton>
               <Modal.Title>Customise Scales</Modal.Title>

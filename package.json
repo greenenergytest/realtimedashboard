@@ -4,13 +4,21 @@
     "description": "Root package.json to point to backend",
     "main": "backend/server.js",
     "scripts": {
-      "postinstall": "cd backend && npm install",
-      "start": "cd backend && npm start"
+        "postinstall": "cd backend && npm install",
+        "start": "cd backend && npm start"
     },
-    "dependencies": {},
     "engines": {
-      "node": "20.x",
-      "npm": "10.x"
+        "node": "20.x",
+        "npm": "10.x"
+    },
+    "devDependencies": {
+        "@vitejs/plugin-react": "^4.3.2",
+        "process": "^0.11.10",
+        "rollup": "^4.24.0",
+        "rollup-plugin-polyfill-node": "^0.13.0",
+        "vite-plugin-node-polyfills": "^0.22.0"
+    },
+    "dependencies": {
+        "vite-plugin-node-stdlib-browser": "^0.2.1"
     }
-  }
-  
+}
