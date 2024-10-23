@@ -49,7 +49,7 @@ export const fetchWellDataFromBackend =
         fileName,
         sheetName
       );
-      console.log(response);
+
       const formattedDate = getNormalDate(response.xData);
 
       dispatch(setXData(formattedDate));
