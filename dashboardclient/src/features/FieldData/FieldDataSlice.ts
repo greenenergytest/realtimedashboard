@@ -39,11 +39,10 @@ export const FieldDataSlice = createSlice({
 export const { setCummData, setWaterCutData, setGorData, setRateData } =
   FieldDataSlice.actions;
 
-// To be continued built the actual actions out
 export const fetchFieldDetails =
-  (sheetName: string) => async (dispatch: any) => {
+  (sheetName: string, fileName: string) => async (dispatch: any) => {
     try {
-      const response = await fetchFieldData(sheetName);
+      const response = await fetchFieldData(sheetName, fileName);
       console.log(response);
       dispatch(setCummData(response.currentCummulative));
       dispatch(setWaterCutData(response.currentWaterCut));
