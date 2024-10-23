@@ -77,15 +77,47 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
   const yPrimaryHeaders = yPrimaryData[0];
   const ySecondaryHeaders = ySecondaryData ? ySecondaryData[0] : [];
 
+  const primaryHeaderUnits = yPrimaryData[1];
+  const secondaryHeaderUnits = ySecondaryData ? ySecondaryData[1] : [];
+
+  const getHeadersUnit = (unit: any) => {
+    const yPrimaryHeadersUnits =
+      unit != null && typeof unit != 'number' ? ` (${unit})` : '';
+    return yPrimaryHeadersUnits;
+  };
+
+  function customJoinWithUnits(array: any, units: any, separator: string) {
+    if (separator === undefined) {
+      separator = '/';
+    }
+
+    if (array.length === 0 || units.length !== array.length) {
+      return '';
+    }
+
+    let firstUnit = getHeadersUnit(units[0]);
+    let result = `${array[0]}${firstUnit}`;
+
+    for (let i = 1; i < array.length; i++) {
+      let unit = getHeadersUnit(units[i]);
+      result += `${separator} ${array[i]}${unit}`;
+    }
+
+    return result;
+  }
+
   // Prepare traces for primary y-axis
   const primaryTraces = yPrimaryHeaders.map((header: any, headerIndex: any) => {
     const yValues = yPrimaryData.slice(1).map((row) => row[headerIndex]);
+    let headerNameUnit =
+      header + getHeadersUnit(primaryHeaderUnits[headerIndex]);
+
     return {
       x: xData,
       y: yValues,
       type: 'scatter',
       mode: 'lines+markers',
-      name: header,
+      name: `${headerNameUnit} `,
       yaxis: 'y1',
     };
   });
@@ -94,12 +126,14 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
   const secondaryTraces = ySecondaryHeaders.map(
     (header: any, headerIndex: any) => {
       const yValues = ySecondaryData?.slice(1).map((row) => row[headerIndex]);
+      let headerNameUnit =
+        header + getHeadersUnit(secondaryHeaderUnits[headerIndex]);
       return {
         x: xData,
         y: yValues,
         type: 'scatter',
         mode: 'lines+markers',
-        name: header,
+        name: `${headerNameUnit}`,
         yaxis: 'y2',
       };
     }
@@ -113,11 +147,12 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
       range: [minimumDateFormatted, maximumDateFormatted],
     },
     yaxis: {
-      title: yPrimaryHeaders.join(' / '),
+      title: customJoinWithUnits(yPrimaryHeaders, primaryHeaderUnits, ','),
+      // title: yPrimaryHeaders.join(' / '),
       automargin: true,
     },
     yaxis2: {
-      title: ySecondaryHeaders.join(' / '),
+      title: customJoinWithUnits(ySecondaryHeaders, secondaryHeaderUnits, ','),
       overlaying: 'y',
       side: 'right',
       automargin: true,

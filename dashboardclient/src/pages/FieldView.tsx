@@ -46,6 +46,11 @@ const FieldView = () => {
       secondaryYColumns = ['BS&W', 'API'];
     }
 
+    if (item == '2L Daily') {
+      primaryYColumns = ['Oil', 'GOR', 'FTHP'];
+      secondaryYColumns = ['Water Cut', 'Choke'];
+    }
+
     dispatch(fetchFieldDetails(item, fileName) as any);
     dispatch(
       fetchWellDataFromBackend(
@@ -92,9 +97,13 @@ const FieldView = () => {
             ySecondaryData={secondaryYData}
           />
         ) : (
-          <Spinner animation='border' role='status'>
-            <span className='sr-only'></span>
-          </Spinner>
+          <>
+            {fileName && (
+              <Spinner animation='border' role='status'>
+                <span className='sr-only'></span>
+              </Spinner>
+            )}
+          </>
         )}
 
         <div className='dropDownContainer'>
