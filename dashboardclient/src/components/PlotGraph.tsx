@@ -11,6 +11,7 @@ interface PlotGraphProps {
   xData: any[];
   yPrimaryData: any[];
   ySecondaryData?: any[];
+  annotations: any;
 }
 
 // Define the shape of the resize data
@@ -25,6 +26,7 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
   xData,
   yPrimaryData,
   ySecondaryData,
+  annotations,
 }) => {
   const [xRange, setXRange] = useState([0, 6]);
   const [yRange, setYRange] = useState([5, 25]);
@@ -141,6 +143,7 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
 
   const layout: Partial<Plotly.Layout> = {
     title: 'Production Data Plot',
+    annotations: annotations,
     xaxis: {
       title: 'Date',
       tickformat: '%b %Y',

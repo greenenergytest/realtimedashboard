@@ -55,6 +55,7 @@ export const fetchWellDataFromBackend =
       dispatch(setXData(formattedDate));
       dispatch(setPrimaryYData(response.yPrimaryData));
       dispatch(setSecondaryYData(response.ySecondaryData));
+      return response.yPrimaryData;
     } catch (error) {
       console.error('Error fetching data:', error);
     }

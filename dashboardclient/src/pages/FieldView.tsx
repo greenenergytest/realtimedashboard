@@ -24,7 +24,8 @@ const FieldView = () => {
   const { cummData, waterCutData, gorData, rateData } = useSelector(
     (state: any) => state.fieldData
   );
-
+  const [annotations, setAnnotations] = useState([]);
+  const [spinnerVisible, showSpinnerVisibility] = useState(false);
   const { problemWells } = useSelector((state: any) => state.problemWellsData);
   const sheetNames = useSelector((state: any) => state.fileUpload.sheetNames);
   const [selectedItem, setSelectedItem] = useState<string>(sheetNames[0]);
@@ -34,9 +35,9 @@ const FieldView = () => {
   gorData ? valueOfItems.push(gorData) : valueOfItems.push('-');
   rateData ? valueOfItems.push(rateData) : valueOfItems.push('-');
 
-  const handleDropDownSelect = (item: string) => {
+  const handleDropDownSelect = async (item: string) => {
     setSelectedItem(item);
-
+    showSpinnerVisibility(true);
     let xColumns: any = ['Date'];
     let primaryYColumns: any = [];
     let secondaryYColumns: any = [];
@@ -46,13 +47,47 @@ const FieldView = () => {
       secondaryYColumns = ['BS&W', 'API'];
     }
 
+    if (item == '2S Daily') {
+      primaryYColumns = ['Oil', 'GOR', 'FTHP'];
+      secondaryYColumns = ['Water Cut', 'Choke'];
+    }
     if (item == '2L Daily') {
       primaryYColumns = ['Oil', 'GOR', 'FTHP'];
       secondaryYColumns = ['Water Cut', 'Choke'];
     }
 
+    if (item == '3S Daily') {
+      primaryYColumns = ['Oil', 'GOR', 'FTHP'];
+      secondaryYColumns = ['Water Cut', 'Choke'];
+    }
+
+    if (item == '3L Daily') {
+      primaryYColumns = ['Oil', 'GOR', 'FTHP'];
+      secondaryYColumns = ['Water Cut', 'Choke'];
+    }
+
+    if (item == '4S Daily') {
+      primaryYColumns = ['Oil', 'GOR', 'FTHP'];
+      secondaryYColumns = ['Water Cut', 'Choke'];
+    }
+
+    if (item == '4L Daily') {
+      primaryYColumns = ['Oil', 'GOR', 'FTHP'];
+      secondaryYColumns = ['Water Cut', 'Choke'];
+    }
+
+    if (item == '5S Daily') {
+      primaryYColumns = ['Oil', 'GOR', 'FTHP'];
+      secondaryYColumns = ['Water Cut', 'Choke'];
+    }
+
+    if (item == '5L Daily') {
+      primaryYColumns = ['Oil', 'GOR', 'FTHP'];
+      secondaryYColumns = ['Water Cut', 'Choke'];
+    }
     dispatch(fetchFieldDetails(item, fileName) as any);
-    dispatch(
+
+    const result = await dispatch(
       fetchWellDataFromBackend(
         xColumns,
         primaryYColumns,
@@ -61,6 +96,10 @@ const FieldView = () => {
         secondaryYColumns
       ) as any
     );
+    if (result) {
+      showSpinnerVisibility(false);
+    }
+    //console.log(result);
   };
 
   useEffect(() => {
@@ -69,32 +108,60 @@ const FieldView = () => {
     let primaryYColumns = ['Oil production (bbls)', 'GOR (SCF/bbls)'];
     let secondaryYColumns = ['BS&W', 'API'];
     let item = 'Summary';
-    if (fileName) {
-      dispatch(
-        fetchWellDataFromBackend(
-          xColumns,
-          primaryYColumns,
-          [fileName],
-          [item],
-          secondaryYColumns
-        ) as any
-      );
 
-      dispatch(fetchFieldDetails('Summary', fileName) as any);
-      dispatch(fetchProblemWellsData(fileName) as any);
+    const fetchData = async () => {
+      if (fileName) {
+        dispatch(
+          fetchWellDataFromBackend(
+            xColumns,
+            primaryYColumns,
+            [fileName],
+            [item],
+            secondaryYColumns
+          ) as any
+        );
+
+        dispatch(fetchFieldDetails('Summary', fileName) as any);
+        dispatch(fetchProblemWellsData(fileName) as any);
+      }
+    };
+
+    const newAnnotations: any = [];
+
+    console.log(`primary Y Data`);
+    console.log(primaryYData);
+    for (let i = 1; i < primaryYData.length; i++) {
+      if (primaryYData[i] < primaryYData[i - 1]) {
+        console.log('primary Y Data');
+        console.log(primaryYData[i]);
+        newAnnotations.push({
+          x: xData[i],
+          y: primaryYData[i],
+          xref: 'x',
+          yref: 'y',
+          text: 'Decline detected here',
+          showarrow: true,
+          arrowhead: 2,
+          ax: -30,
+          ay: -40,
+        });
+      }
     }
+    console.log('annotations');
+    console.log(annotations);
+    setAnnotations(newAnnotations);
+    fetchData();
   }, []);
 
   return (
     <div style={{ display: 'block' }}>
       <div className='fieldGraphContainer'>
-        {xData.length > 0 &&
-        primaryYData.length > 0 &&
-        secondaryYData.length > 0 ? (
+        {!spinnerVisible ? (
           <PlotGraph
             xData={xData}
             yPrimaryData={primaryYData}
             ySecondaryData={secondaryYData}
+            annotations={annotations}
           />
         ) : (
           <>
