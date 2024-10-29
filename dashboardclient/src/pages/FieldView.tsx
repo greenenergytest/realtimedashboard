@@ -29,6 +29,7 @@ const FieldView = () => {
   const { problemWells } = useSelector((state: any) => state.problemWellsData);
   const sheetNames = useSelector((state: any) => state.fileUpload.sheetNames);
   const [selectedItem, setSelectedItem] = useState<string>(sheetNames[0]);
+  const [hoverData, setHoverData]: any = useState(null);
   const valueOfItems: string[] = [];
   cummData ? valueOfItems.push(cummData) : valueOfItems.push('-');
   waterCutData ? valueOfItems.push(waterCutData) : valueOfItems.push('-');
@@ -102,16 +103,57 @@ const FieldView = () => {
     //console.log(result);
   };
 
+  const handleHover = (data: any) => {
+    const trendExplanation = getTrendExplanation(data.x, data.y);
+    setHoverData({
+      x: data.x,
+      y: data.y,
+      trendExplanation,
+    });
+  };
+
+  const getTrendExplanation = (index: number, yValues: any) => {
+    if (index == 0) {
+      return 'Starting point';
+    }
+
+    const previousY = index > 0 ? yValues[index - 1] : null;
+    const nextY = index < yValues.length - 1 ? yValues[index + 1] : null;
+    const currentY = yValues[index];
+
+    if (previousY !== null && nextY != null) {
+      if (currentY > previousY && currentY > nextY) {
+        return 'This point is a peak, showing an increase followed by a decrease';
+      } else if (currentY < previousY && currentY < nextY) {
+        return 'This point is a trough, indicating a decrease followed by an increase.';
+      } else {
+        return 'This point is a part of a trend with fluctuations.';
+      }
+    } else if (previousY !== null) {
+      return currentY > previousY
+        ? 'This point shows an increase.'
+        : 'This point shows a decrease';
+    } else if (nextY !== null) {
+      return currentY < nextY
+        ? 'This point shows a decrease'
+        : 'This point shows an increase';
+    } else {
+      return 'No surrounding data for comparison';
+    }
+  };
+
   useEffect(() => {
     // useEffect displays the first item which is the summary
     let xColumns = ['Date'];
     let primaryYColumns = ['Oil production (bbls)', 'GOR (SCF/bbls)'];
     let secondaryYColumns = ['BS&W', 'API'];
     let item = 'Summary';
+    let result: any = '';
+    const newAnnotations: any = [];
 
     const fetchData = async () => {
       if (fileName) {
-        dispatch(
+        result = await dispatch(
           fetchWellDataFromBackend(
             xColumns,
             primaryYColumns,
@@ -121,35 +163,30 @@ const FieldView = () => {
           ) as any
         );
 
+        if (result.yPrimaryData) {
+          for (let i = 1; i < result.yPrimaryData.length; i++) {
+            if (result.yPrimaryData[i] < result.yPrimaryData[i - 1]) {
+              newAnnotations.push({
+                x: xData[i],
+                y: result.yPrimaryData[i],
+                xref: 'x',
+                yref: 'y',
+                text: 'Decline detected here',
+                showarrow: true,
+                arrowhead: 2,
+                ax: -30,
+                ay: -40,
+              });
+            }
+          }
+
+          setAnnotations(newAnnotations);
+        }
+
         dispatch(fetchFieldDetails('Summary', fileName) as any);
         dispatch(fetchProblemWellsData(fileName) as any);
       }
     };
-
-    const newAnnotations: any = [];
-
-    console.log(`primary Y Data`);
-    console.log(primaryYData);
-    for (let i = 1; i < primaryYData.length; i++) {
-      if (primaryYData[i] < primaryYData[i - 1]) {
-        console.log('primary Y Data');
-        console.log(primaryYData[i]);
-        newAnnotations.push({
-          x: xData[i],
-          y: primaryYData[i],
-          xref: 'x',
-          yref: 'y',
-          text: 'Decline detected here',
-          showarrow: true,
-          arrowhead: 2,
-          ax: -30,
-          ay: -40,
-        });
-      }
-    }
-    console.log('annotations');
-    console.log(annotations);
-    setAnnotations(newAnnotations);
     fetchData();
   }, []);
 
@@ -162,6 +199,7 @@ const FieldView = () => {
             yPrimaryData={primaryYData}
             ySecondaryData={secondaryYData}
             annotations={annotations}
+            onHover={handleHover}
           />
         ) : (
           <>

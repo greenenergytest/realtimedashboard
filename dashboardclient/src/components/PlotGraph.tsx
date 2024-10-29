@@ -12,6 +12,7 @@ interface PlotGraphProps {
   yPrimaryData: any[];
   ySecondaryData?: any[];
   annotations?: any;
+  onHover?: any;
 }
 
 // Define the shape of the resize data
