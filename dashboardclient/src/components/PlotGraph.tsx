@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Plot from 'react-plotly.js';
-import { ResizableBox, ResizableBoxProps } from 'react-resizable';
-import * as XLSX from 'xlsx';
+// import { ResizableBoxProps } from 'react-resizable';
+// import * as XLSX from 'xlsx';
 import 'react-resizable/css/styles.css';
 import './PlotGraph.css';
 import { Modal, Button, Form } from 'react-bootstrap';
@@ -13,33 +13,139 @@ interface PlotGraphProps {
   ySecondaryData?: any[];
   annotations?: any;
   onHover?: any;
+  getTrendExplanation?: any;
+  onMouseLeave?: any;
+  hoverBoxExplanation?: any;
 }
 
-// Define the shape of the resize data
-interface ResizeData {
-  size: {
-    width: number;
-    height: number;
-  };
-}
+// // Define the shape of the resize data
+// interface ResizeData {
+//   size: {
+//     width: number;
+//     height: number;
+//   };
+// }
 
 const PlotGraph: React.FC<PlotGraphProps> = ({
   xData,
   yPrimaryData,
   ySecondaryData,
-  annotations,
+  // annotations,
+  // getTrendExplanation,
+  onHover,
+  // onMouseLeave,
+  hoverBoxExplanation,
 }) => {
   const [xRange, setXRange] = useState([0, 6]);
   const [yRange, setYRange] = useState([5, 25]);
   const [show, setShow] = useState(false);
   const [xMin, setXMin] = useState(xRange[0]);
-  const [xMax, setXMax] = useState(xRange[1]);
+  const [xMax] = useState(xRange[1]);
   const [yMin, setYMin] = useState(yRange[0]);
   const [yMax, setYMax] = useState(yRange[1]);
-  const [dimensions, setDimensions] = useState({
-    width: Number('100%'),
-    height: 400,
-  });
+  // const [, setDimensions] = useState({
+  //   width: Number('100%'),
+  //   height: 400,
+  // });
+  // const debouncedHover = debounce(onHover, 200);
+
+  function addLineBreaks(text: string, maxLineLength: number) {
+    const regex = new RegExp(`(.{1,${maxLineLength}})(\\s|$)`, 'g');
+    if (text) {
+      return text.match(regex)?.join('<br>') || text;
+    }
+  }
+
+  // useEffect(() => {
+  //   // Whenever hoverBoxExplanation changes, log the new value to check
+  //   console.log('hoverBoxExplanation updated:', hoverBoxExplanation);
+  // }, [hoverBoxExplanation]);
+  // const getExplanation = (index: number) => {
+  //   if (index == 0) {
+  //     return 'Starting point';
+  //   }
+
+  //   const primaryY = yPrimaryData[index];
+  //   const secondaryY = ySecondaryData ? ySecondaryData[index] : null;
+  //   let enteredPrimaryLogic = false;
+
+  //   const prevPrimaryY = index > 0 ? yPrimaryData[index - 1] : null;
+  //   const nextPrimaryY =
+  //     index < yPrimaryData.length - 1 ? yPrimaryData[index + 1] : null;
+  //   const prevSecondaryY =
+  //     ySecondaryData && index > 0 ? ySecondaryData[index - 1] : null;
+  //   const nextSecondaryY =
+  //     ySecondaryData && index < ySecondaryData.length - 1
+  //       ? ySecondaryData[index + 1]
+  //       : null;
+
+  //   let explanation = '';
+
+  //   console.log(yPrimaryData);
+
+  //   console.log('this method is called');
+  //   console.log('previous data');
+  //   console.log(prevPrimaryY);
+
+  //   console.log('next primary data ');
+  //   console.log(nextPrimaryY);
+
+  //   console.log('current primary data');
+  //   console.log(primaryY);
+
+  //   if (prevPrimaryY !== null && nextPrimaryY != null) {
+  //     console.log('entered primary axis');
+  //     enteredPrimaryLogic = true;
+  //     if (primaryY > prevPrimaryY && primaryY > nextPrimaryY) {
+  //       explanation +=
+  //         'This point is a peak, showing an increase followed by a decrease';
+  //     } else if (primaryY < prevPrimaryY && primaryY < nextPrimaryY) {
+  //       explanation +=
+  //         'This point is a trough, indicating a decrease followed by an increase.';
+  //     } else if (primaryY > prevPrimaryY) {
+  //       explanation +=
+  //         'This point on the primary axis shows an increase from the previous point';
+  //     } else if (primaryY < prevPrimaryY) {
+  //       explanation +=
+  //         'This point on the primary axis shows a decrease from the previous point.';
+  //     }
+  //   } else {
+  //     explanation += 'No surrounding data for comparison on the primary axis';
+  //   }
+
+  //   if (!enteredPrimaryLogic) {
+  //     if (prevSecondaryY !== null && nextSecondaryY != null) {
+  //       if (secondaryY > prevSecondaryY && secondaryY > nextSecondaryY) {
+  //         console.log('entered secondary axis');
+  //         explanation +=
+  //           'This point is a peak, showing an increase followed by a decrease ';
+  //       } else if (secondaryY < prevSecondaryY && secondaryY < nextSecondaryY) {
+  //         explanation +=
+  //           'This point is a trough, indicating a decrease followed by an increase';
+  //       } else if (secondaryY > prevSecondaryY) {
+  //         explanation +=
+  //           'Secondary Y shows an increase from the previous point.';
+  //       } else {
+  //         explanation += 'Secondary y shows a decrease from the previous point';
+  //       }
+  //     } else {
+  //       explanation += 'No surrounding data for secondary y comparison';
+  //     }
+  //   }
+
+  //   return explanation;
+  // };
+
+  // const primaryDataExplanations = yPrimaryData.map((_, index) => {
+  //   if (typeof getTrendExplanation === 'function' && index !== undefined) {
+  //     return getTrendExplanation(index)?.replace(/\n/g, '<br>');
+  //   }
+  // });
+  // const secondaryDataExplanations = ySecondaryData?.map((_, index) => {
+  //   if (typeof getTrendExplanation === 'function' && index !== undefined) {
+  //     return getTrendExplanation(index)?.replace(/\n/g, '<br>');
+  //   }
+  // });
 
   const validDates: any = xData.filter((date) => {
     const parsedDate = new Date(date);
@@ -115,12 +221,32 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
     let headerNameUnit =
       header + getHeadersUnit(primaryHeaderUnits[headerIndex]);
 
+    // const wrappedExplanations = primaryDataExplanations.map(
+    //   (explanation: any) => addLineBreaks(explanation, 30) // Adjust character limit per line
+    // );
+    //const wrappedExplanations = addLineBreaks(hoverBoxExplanation, 30);
+    const wrappedExplanations = xData.map(() =>
+      addLineBreaks(hoverBoxExplanation, 30)
+    );
     return {
       x: xData,
       y: yValues,
       type: 'scatter',
       mode: 'lines+markers',
       name: `${headerNameUnit} `,
+      hovertemplate: `%{x}<br>Primary Value: %{y}<br>%{text}`,
+      text: wrappedExplanations,
+      hoverlabel: {
+        bgcolor: 'rgba(255,255,255,0.5)',
+        font: { color: 'black', size: 12 },
+        align: 'left',
+        bordercolor: 'rgba(255, 255, 255, 0.5)',
+        borderwidth: 1,
+        text: {
+          wrap: true,
+        },
+        width: 10,
+      },
       yaxis: 'y1',
     };
   });
@@ -131,12 +257,35 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
       const yValues = ySecondaryData?.slice(1).map((row) => row[headerIndex]);
       let headerNameUnit =
         header + getHeadersUnit(secondaryHeaderUnits[headerIndex]);
+      // const wrappedExplanations = secondaryDataExplanations?.map(
+      //   (explanation: any) => addLineBreaks(explanation, 30) // Adjust character limit per line
+      // );
+      //const wrappedExplanations = addLineBreaks(hoverBoxExplanation, 30);
+      const wrappedExplanations = xData.map(() =>
+        addLineBreaks(hoverBoxExplanation, 30)
+      );
+      console.log('wrapped explanations');
+      console.log(wrappedExplanations);
       return {
         x: xData,
         y: yValues,
         type: 'scatter',
         mode: 'lines+markers',
         name: `${headerNameUnit}`,
+        hovertemplate: `%{x}<br>Secondary Value: %{y}<br>%{text}`,
+        // hovertemplate: `${wrappedExplanations}`,
+        text: wrappedExplanations,
+        hoverlabel: {
+          bgcolor: 'rgba(255,255,255,0.5)',
+          font: { color: 'black', size: 12 },
+          align: 'left',
+          bordercolor: 'rgba(255, 255, 255, 0.5)',
+          borderwidth: 1,
+          text: {
+            wrap: true,
+          },
+          width: 10,
+        },
         yaxis: 'y2',
       };
     }
@@ -144,7 +293,8 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
 
   const layout: Partial<Plotly.Layout> = {
     title: 'Production Data Plot',
-    annotations: annotations,
+    // annotations: annotations,
+    hovermode: 'closest',
     xaxis: {
       title: 'Date',
       tickformat: '%b %Y',
@@ -174,52 +324,52 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
     displaylogo: false, // Optionally hide the Plotly logo
   };
 
-  const handleResize: ResizableBoxProps['onResize'] = (
-    event: React.SyntheticEvent<Element>,
-    data: ResizeData
-  ) => {
-    setDimensions({
-      width: data.size.width,
-      height: data.size.height,
-    });
-  };
+  // const handleResize: ResizableBoxProps['onResize'] = (
+  //   event: React.SyntheticEvent<Element>,
+  //   data: ResizeData
+  // ) => {
+  //   setDimensions({
+  //     width: data.size.width,
+  //     height: data.size.height,
+  //   });
+  // };
 
-  const downloadExcel = () => {
-    // Prepare the data for Excel
-    const excelData = [];
+  // const downloadExcel = () => {
+  //   // Prepare the data for Excel
+  //   const excelData = [];
 
-    // Add headers
-    const headers = ['Date', ...yPrimaryHeaders, ...ySecondaryHeaders];
-    excelData.push(headers);
+  //   // Add headers
+  //   const headers = ['Date', ...yPrimaryHeaders, ...ySecondaryHeaders];
+  //   excelData.push(headers);
 
-    // Combine xData, yPrimaryData, and ySecondaryData
-    for (let i = 0; i < xData.length; i++) {
-      const row = [xData[i]];
-      for (let j = 0; j < yPrimaryHeaders.length; j++) {
-        if (yPrimaryData[i + 1]) {
-          row.push(yPrimaryData[i + 1][j]);
-        } else {
-          row.push(null); // or some default value
-        }
-      }
-      for (let k = 0; k < ySecondaryHeaders.length; k++) {
-        if (ySecondaryData && ySecondaryData[i + 1]) {
-          row.push(ySecondaryData[i + 1][k]);
-        } else {
-          row.push(null); // or some default value
-        }
-      }
-      excelData.push(row);
-    }
+  //   // Combine xData, yPrimaryData, and ySecondaryData
+  //   for (let i = 0; i < xData.length; i++) {
+  //     const row = [xData[i]];
+  //     for (let j = 0; j < yPrimaryHeaders.length; j++) {
+  //       if (yPrimaryData[i + 1]) {
+  //         row.push(yPrimaryData[i + 1][j]);
+  //       } else {
+  //         row.push(null); // or some default value
+  //       }
+  //     }
+  //     for (let k = 0; k < ySecondaryHeaders.length; k++) {
+  //       if (ySecondaryData && ySecondaryData[i + 1]) {
+  //         row.push(ySecondaryData[i + 1][k]);
+  //       } else {
+  //         row.push(null); // or some default value
+  //       }
+  //     }
+  //     excelData.push(row);
+  //   }
 
-    // Create worksheet and workbook
-    const worksheet = XLSX.utils.aoa_to_sheet(excelData);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
+  //   // Create worksheet and workbook
+  //   const worksheet = XLSX.utils.aoa_to_sheet(excelData);
+  //   const workbook = XLSX.utils.book_new();
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, 'Data');
 
-    // Save the Excel file
-    XLSX.writeFile(workbook, 'plotly_data.xlsx');
-  };
+  //   // Save the Excel file
+  //   XLSX.writeFile(workbook, 'plotly_data.xlsx');
+  // };
 
   const handleShow = () => setShow(true);
   const handleClose = () => setShow(false);
@@ -229,6 +379,57 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
     setYRange([yMin, yMax]);
     handleClose();
   };
+  // const handleHover = (index: number) => {
+  //   //getExplanation(index);
+  //   // setHoverData({
+  //   //   index,
+  //   //   explanation: trendExplanation,
+  //   // });
+  // };
+
+  const handlePlotClick = (event: any) => {
+    console.log('handle plot called');
+    if (event.points.length > 0) {
+      const point = event.points[0];
+      const index = event.points[0].pointIndex;
+      // const datasetId = point.curveNumber;
+      console.log('yaxis id');
+      console.log(point.yaxis._id);
+      let axisType = point.yaxis._id === 'y' ? 'primary' : 'secondary';
+
+      // console.log('y axis title');
+      // console.log(point.yaxis.title);
+      // if (
+      //   point.yaxis &&
+      //   point.yaxis.title &&
+      //   point.yaxis.title.text === 'Primary Y Axis Label'
+      // ) {
+      //   axisType = 'primary';
+      // } else if (
+      //   point.yaxis &&
+      //   point.yaxis.title &&
+      //   point.yaxis.title.text === 'Secondary Y Axis Label'
+      // ) {
+      //   axisType = 'secondary';
+      // } else {
+      //   console.warn('Could not determine axis type from plotly event.');
+      //   return;
+      // }
+      // debouncedHover(index);
+      onHover(index, axisType);
+      //handleHover(index);
+    }
+    // (event) => {
+    //   if (event.points.length > 0) {
+    //     const index = event.points[0].pointIndex;
+    //     onHover(index);
+    //   }
+    // }
+  };
+
+  // const handleUnhover = () => {
+  //   onMouseLeave();
+  // };
 
   return (
     <>
@@ -252,6 +453,8 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
             useResizeHandler={true}
             style={{ width: '50%', height: '100%' }}
             config={config}
+            onHover={handlePlotClick}
+            //onUnhover={handleUnhover}
           />
           {/* </ResizableBox> */}
           {/* <button onClick={downloadExcel}></button> */}
