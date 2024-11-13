@@ -12,6 +12,7 @@
   "devDependencies": {
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@types/globalthis": "^1.0.4",
+    "@types/lodash.debounce": "^4.0.9",
     "@types/node": "^20.12.12",
     "@types/plotly.js": "^2.29.4",
     "@types/react": "^18.3.3",
@@ -43,6 +44,7 @@
     "buffer": "^6.0.3",
     "circular-json": "^0.5.9",
     "globalthis": "^1.0.4",
+    "lodash.debounce": "^4.0.8",
     "plotly.js": "^2.32.0",
     "react-bootstrap": "^2.10.2",
     "react-icons": "^5.1.0",

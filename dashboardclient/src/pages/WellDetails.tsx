@@ -6,16 +6,16 @@ import Card from '../components/Card';
 import './WellDetails.css';
 import InformationTicker from '../components/InformationTicker';
 
-interface CardData {
-  chokeData: any;
-  fthpData: any;
-  condensateRateData: any;
-  gasRateData: any;
-  waterCutData: any;
-  gasOilRatioData: any;
-  condensateCummData: any;
-  oilRateData: any;
-}
+// interface CardData {
+//   chokeData: any;
+//   fthpData: any;
+//   condensateRateData: any;
+//   gasRateData: any;
+//   waterCutData: any;
+//   gasOilRatioData: any;
+//   condensateCummData: any;
+//   oilRateData: any;
+// }
 
 const WellDetails = () => {
   const dispatch = useDispatch();

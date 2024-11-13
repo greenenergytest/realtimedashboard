@@ -8,7 +8,7 @@ import cardDataReducer from './features/cardData/cardDataSlice';
 import columnNamesReducer from './features/columnNames/columnNamesSlice';
 import fieldDataReducer from './features/FieldData/FieldDataSlice';
 import problemWellsReducer from './features/problemWells/problemWellsSlice';
-import fieldGraphReducer from './features/fieldGraphData/fieldGraphDataSlice';
+// import fieldGraphReducer from './features/fieldGraphData/fieldGraphDataSlice';
 import wellGraphReducer from './features/wellGraph/wellGraphPlotSlice';
 
 const store = configureStore({
@@ -20,7 +20,7 @@ const store = configureStore({
     columnData: columnNamesReducer,
     fieldData: fieldDataReducer,
     problemWellsData: problemWellsReducer,
-    fieldGraphData: fieldGraphReducer,
+    // fieldGraphData: fieldGraphReducer,
     wellGraphData: wellGraphReducer,
   },
 });
