@@ -17,7 +17,7 @@ const register = async (userData: any) => {
       }
     );
 
-    if ((response.status = 200 && response.data)) {
+    if (response.status == 200 && response.data) {
       console.log('storing user to local host');
       console.log(response);
       localStorage.setItem('user', JSON.stringify(response.data));
@@ -40,7 +40,7 @@ const login = async (userData: any) => {
         'Content-Type': 'application/json',
       },
     });
-    if ((response.status = 200 && response.data)) {
+    if (response.status == 200 && response.data) {
       console.log('storing user to local host');
       localStorage.setItem('user', JSON.stringify(response.data));
     }
