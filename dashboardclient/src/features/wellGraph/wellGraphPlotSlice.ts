@@ -55,8 +55,9 @@ export const fetchWellDataFromBackend =
       dispatch(setXData(formattedDate));
       dispatch(setPrimaryYData(response.yPrimaryData));
       dispatch(setSecondaryYData(response.ySecondaryData));
-      console.log('response y primary Data');
-      console.log(response.yPrimaryData);
+
+      console.log('response y Secondary Data');
+      console.log(response.ySecondaryData);
       return {
         formattedXData: formattedDate,
         yPrimaryData: response.yPrimaryData,

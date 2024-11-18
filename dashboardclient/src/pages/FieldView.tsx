@@ -102,6 +102,7 @@ const FieldView = () => {
       secondaryYColumns = ['Water Cut', 'Choke'];
       setInSummary(false);
     }
+
     dispatch(fetchFieldDetails(item, fileName) as any);
 
     const result = await dispatch(
@@ -240,17 +241,32 @@ const FieldView = () => {
   };
 
   useEffect(() => {
-    // useEffect displays the first item which is the summary
-    let xColumns = ['Date'];
-    let primaryYColumns = ['Oil production (bbls)', 'GOR (SCF/bbls)'];
-    let secondaryYColumns = ['BS&W', 'API'];
-    let item = 'Summary';
+    console.log('in useEffect fieldview');
+    const searchString = 'AGEL';
+    let xColumns = [];
+    let primaryYColumns = [];
+    let secondaryYColumns: any = [];
+    let item = '';
+    console.log('logging out fileName');
+    console.log(fileName);
+    // useEffect displays the first item which is the summary'
+    if (fileName.includes(searchString)) {
+      xColumns = ['Date'];
+      primaryYColumns = ['Oil production (bbls)'];
+      secondaryYColumns = ['Water production (bbls)'];
+      console.log('in AGEL if statement');
+      item = 'Summary';
+    } else {
+      xColumns = ['Date'];
+      primaryYColumns = ['Oil production (bbls)', 'GOR (SCF/bbls)'];
+      secondaryYColumns = ['BS&W', 'API'];
+      item = 'Summary';
+    }
     // let result: any = '';
     // const newAnnotations: any = [];
-
     const fetchData = async () => {
       if (fileName) {
-        dispatch(
+        await dispatch(
           fetchWellDataFromBackend(
             xColumns,
             primaryYColumns,
@@ -260,33 +276,14 @@ const FieldView = () => {
           ) as any
         );
 
-        // if (result.yPrimaryData) {
-        //   for (let i = 1; i < result.yPrimaryData.length; i++) {
-        //     if (result.yPrimaryData[i] < result.yPrimaryData[i - 1]) {
-        //       newAnnotations.push({
-        //         x: xData[i],
-        //         y: result.yPrimaryData[i],
-        //         xref: 'x',
-        //         yref: 'y',
-        //         text: 'Decline detected here',
-        //         showarrow: true,
-        //         arrowhead: 2,
-        //         ax: -30,
-        //         ay: -40,
-        //       });
-        //     }
-        //   }
-
-        //   setAnnotations(newAnnotations);
-        // }
-
         dispatch(fetchFieldDetails('Summary', fileName) as any);
         dispatch(fetchProblemWellsData(fileName) as any);
       }
     };
     fetchData();
-  }, [fileName, dispatch]);
+  }, []);
 
+  //fileName, dispatch
   return (
     <div style={{ display: 'block' }}>
       <div className='fieldGraphContainer'>
