@@ -28,7 +28,6 @@ router.use('/uploads', express.static(uploadDirectory));
 
 //Route to handle file upload
 router.post('/upload', (req, res) => {
-  console.log('here');
   if (!req.files || Object.keys(req.files).length === 0) {
     console.log('here in 400');
     return res.status(400).send('No files were uploaded.');

@@ -33,6 +33,9 @@ router.post('/getWellGraph', upload.single('file'), (req, res) => {
 
   const headers = data[0];
 
+  console.log('in well graph');
+  console.log(data);
+
   const xData = data.map((row) => {
     return selectedXColumns.map((col) => {
       const cellValue = row[headers.indexOf(col)];
@@ -49,14 +52,15 @@ router.post('/getWellGraph', upload.single('file'), (req, res) => {
 
   const ySecondaryData = data.map((row) => {
     return selectedSecondaryYColumns.map((col) => {
-      //console.log(col);
       const cellValue = row[headers.indexOf(col)];
       return isDate(cellValue) ? formatDate(cellValue) : cellValue;
     });
   });
 
   //console.log(yPrimaryData);
-  //console.log(ySecondaryData);
+  console.log('logging out secondary data');
+  console.log(ySecondaryData);
+
   res.json({ xData, yPrimaryData, ySecondaryData, sheetNames });
 });
 
