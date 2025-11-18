@@ -11,6 +11,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import WellDetailsPage from './pages/WellDetails';
 import GraphPage from './pages/Graph';
 import FieldViewPage from './pages/FieldView';
+import DocumentFieldView from './pages/documents';
 
 //import { Card, Form, Button, Row, Col } from 'react-bootstrap';
 
@@ -28,6 +29,7 @@ function App() {
             <Route path='/login' element={<LoginPage />} />
             <Route path='/register' element={<RegisterPage />} />
             <Route path='/fieldview' element={<FieldViewPage />} />
+            <Route path='/documents' element={<DocumentFieldView />} />
           </Routes>
         </div>
       </Router>

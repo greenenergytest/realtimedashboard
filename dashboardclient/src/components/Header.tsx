@@ -1,21 +1,19 @@
-//import React from 'react';
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-//import NavDropdown from 'react-bootstrap/NavDropdown';
 import HeaderIcon from '../assets/Greenenergyicon.png';
 import { FaSignInAlt, FaSignOutAlt, FaUser } from 'react-icons/fa';
 import { GoGraph } from 'react-icons/go';
 import { FaCloudUploadAlt } from 'react-icons/fa';
 import { FaOilWell } from 'react-icons/fa6';
-//import Button from 'react-bootstrap/Button';
 import { useSelector, useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import './Header.css';
 import { logout, reset } from '../features/auth/authSlice';
+import { RootState } from '../store';
 
 const Header = () => {
-  const { user } = useSelector((state: any) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -49,6 +47,11 @@ const Header = () => {
   const handleFieldViewClick = () => {
     navigate('/fieldview');
   };
+
+  const handleDocumentsClick = () => {
+    navigate('/documents');
+  };
+
   return (
     <Navbar expand='lg' className='bg-body-tertiary headerStyle'>
       <Container fluid>
@@ -57,7 +60,6 @@ const Header = () => {
         </Navbar.Brand>
         <Navbar.Toggle aria-controls='navbarAcroll' />
         <Navbar.Collapse id='navbarScroll'>
-          {/* <Nav className='mx-auto' style={{ maxHeight: '100px' }} navbarScroll> */}
           {user && Object.keys(user).length > 0 ? (
             <>
               <Nav
@@ -80,6 +82,9 @@ const Header = () => {
                 <Nav.Link href='#' onClick={handleFieldViewClick}>
                   <GoGraph className='rightItemIcon' />
                   Field View
+                </Nav.Link>
+                <Nav.Link href='#' onClick={handleDocumentsClick}>
+                  Documents
                 </Nav.Link>
               </Nav>
             </>

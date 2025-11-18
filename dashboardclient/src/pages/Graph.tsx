@@ -12,33 +12,90 @@ import {
 } from '../features/graphData/graphDataSlice';
 import { getColumnNames } from '../features/columnNames/columnNamesSlice';
 
+interface xDataState {
+  xData: [];
+}
+interface primaryYDataState {
+  primaryYData: [];
+}
+interface secondaryYData {
+  secondaryYData: [];
+}
+
+interface sheetNamesState {
+  sheetNames: [];
+}
+
+interface columnDataState {
+  columnNames: [];
+}
+
+interface FileUploadState {
+  fileName: string;
+}
+
+interface xDataRootState {
+  graphData: xDataState;
+}
+interface primaryYDataRootState {
+  graphData: primaryYDataState;
+}
+interface secondaryYDataRootState {
+  graphData: secondaryYData;
+}
+
+interface sheetNamesRootState {
+  fileUpload: sheetNamesState;
+}
+
+interface columnDataRootState {
+  columnData: columnDataState;
+}
+
+interface fileUploadRootState {
+  fileUpload: FileUploadState;
+}
+
 const Graph = () => {
-  const xData = useSelector((state: any) => state.graphData.xData);
+  const xData = useSelector((state: xDataRootState) => state.graphData.xData);
+
   const primaryYData = useSelector(
-    (state: any) => state.graphData.primaryYData
-  );
-  const secondaryYData = useSelector(
-    (state: any) => state.graphData.secondaryYData
+    (state: primaryYDataRootState) => state.graphData.primaryYData
   );
 
-  const sheetNames = useSelector((state: any) => state.fileUpload.sheetNames);
-  const columnNames = useSelector((state: any) => state.columnData.columnNames);
+  const secondaryYData = useSelector(
+    (state: secondaryYDataRootState) => state.graphData.secondaryYData
+  );
+  const sheetNames = useSelector(
+    (state: sheetNamesRootState) => state.fileUpload.sheetNames
+  );
+
+  const columnNames = useSelector(
+    (state: columnDataRootState) => state.columnData.columnNames
+  );
+
   const [sheetName, setSheetName] = useState('');
   const [showXModal, setShowXModal] = useState(false);
   const [showPrimaryYModal, setShowPrimaryYModal] = useState(false);
   const [showSecondaryYModal, setShowSecondaryYModal] = useState(false);
-  const { fileName } = useSelector((state: any) => state.fileUpload);
-  const [selectedXHeadings, setSelectedXHeadings]: any = useState([]);
+
+  const { fileName } = useSelector(
+    (state: fileUploadRootState) => state.fileUpload
+  );
+
+  const [selectedXHeadings, setSelectedXHeadings] = useState<string[]>([]);
+
   const [selectedPrimaryYHeadings, setSelectedPrimaryYHeadings] = useState<
     string[]
   >([]);
+
   const [selectedSecondaryYHeadings, setSelectedSecondaryYHeadings] = useState<
     string[]
   >([]);
+
   const dispatch = useDispatch();
 
   const handleItemClick = (sheetName: string) => {
-    console.log(sheetName);
     setSheetName(sheetName);
     dispatch(setPrimaryYData([]));
     dispatch(setSecondaryYData([]));
@@ -55,8 +112,6 @@ const Graph = () => {
   };
 
   const handleClosePrimaryYModal = () => {
-    // console.log(fileName);
-    console.log(selectedPrimaryYHeadings);
     if (selectedPrimaryYHeadings && selectedPrimaryYHeadings.length > 0) {
       dispatch(
         fetchGraphDataFromBackend(
@@ -70,39 +125,25 @@ const Graph = () => {
     }
 
     setShowPrimaryYModal(false);
-    //onClose();
   };
 
   const handleSelectPrimaryYData = () => {
-    // onSelectY(selectedYHeadings);
-    // dispatch(
-    //   fetchGraphDataFromBackend(
-    //     selectedXHeadings,
-    //     selectedYHeadings,
-    //     fileName,
-    //     sheetName
-    //   ) as any
-    // );
     setShowPrimaryYModal(false);
     setShowSecondaryYModal(true);
   };
 
-  const handleCheckboxChange = (event: any) => {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = event.target;
     if (checked) {
       setSelectedXHeadings([...selectedXHeadings, value]);
     } else {
       setSelectedXHeadings(
-        selectedXHeadings.filter((heading: any) => heading !== value)
+        selectedXHeadings.filter((heading: string) => heading !== value)
       );
     }
   };
 
   const handleSelectXData = () => {
-    // Handle Select Data
-    console.log('logging selected X headings');
-    console.log(selectedXHeadings);
-    //onSelectX(selectedXHeadings);
     setShowXModal(false);
     setShowPrimaryYModal(true);
   };
@@ -133,8 +174,7 @@ const Graph = () => {
 
     handleCloseSecondaryYModal();
   };
-  // Flatten yData
-  //const flattenYData = primaryYData.map((item: any) => item[0]);
+
   return (
     <div className='graphDropDownContainer'>
       <div className='gDropDownContainer'>
@@ -144,7 +184,7 @@ const Graph = () => {
           </Dropdown.Toggle>
 
           <Dropdown.Menu className='graphDropDownMenu'>
-            {sheetNames.map((item: string, index: Number) => (
+            {sheetNames.map((item: string, index: number) => (
               <Dropdown.Item
                 key={String(index)}
                 onClick={() => handleItemClick(item)}
@@ -163,7 +203,7 @@ const Graph = () => {
           <Modal.Body>
             <p>Select variables for x axis</p>
             <FormGroup>
-              {columnNames.map((heading: any, index: any) => (
+              {columnNames.map((heading: string, index: number) => (
                 <Form.Check
                   key={index}
                   type='checkbox'
@@ -196,7 +236,7 @@ const Graph = () => {
         </Modal.Header>
         <Modal.Body>
           <FormGroup>
-            {columnNames.map((heading: any, index: any) => (
+            {columnNames.map((heading: string, index: number) => (
               <Form.Check
                 key={index}
                 type='checkbox'
@@ -242,7 +282,7 @@ const Graph = () => {
         </Modal.Header>
         <Modal.Body>
           <FormGroup>
-            {columnNames.map((heading: any, index: any) => (
+            {columnNames.map((heading: string, index: number) => (
               <Form.Check
                 key={index}
                 type='checkbox'
@@ -283,18 +323,6 @@ const Graph = () => {
         </Modal.Footer>
       </Modal>
       <div className='graphContainer'>
-        {/* {xData &&
-          primaryYData &&
-          xData.length > 0 &&
-          primaryYData.length > 0 &&
-          secondaryYData &&
-          secondaryYData.length > 0 && (
-            <PlotGraph
-              xData={xData}
-              yPrimaryData={primaryYData}
-              ySecondaryData={secondaryYData}
-            />
-          )} */}
         {xData &&
           primaryYData &&
           xData.length > 0 &&

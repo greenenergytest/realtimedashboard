@@ -45,6 +45,23 @@ app.use('/', problemWellsRoutes);
 app.use('/', wellGraphRoute);
 // app.use('/', fileAuthenticationRoutes);
 
-app.listen(port, () => {
-  console.log(`Server is listening at http://localhost:${port}`);
+const os = require('os');
+
+function getLocalIpAddress() {
+  const interfaces = os.networkInterfaces();
+  for (const iface in interfaces) {
+    for (const alias of interfaces[iface]) {
+      if (alias.family === 'IPv4' && !alias.internal) {
+        return alias.address;
+      }
+    }
+  }
+  return '127.0.0.1'; // Fallback if no local IP found
+}
+
+// const localIP = '172.21.240.1';
+const localIP = getLocalIpAddress();
+
+app.listen(port, localIP, () => {
+  console.log(`Server running at http://${localIP}:${port}/`);
 });

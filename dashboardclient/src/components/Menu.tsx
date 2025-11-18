@@ -1,15 +1,15 @@
 import React from 'react';
 import MenuItem from './menuItem'; // Import MenuItem component
 
-// type MenuItemType = {
-//   name: string;
-//   price: string;
-//   menuItems: any;
-// };
+type MenuItemType = {
+  name: string;
+  price?: number;
+};
 
 type MenuProps = {
-  menuItems: any;
+  menuItems: MenuItemType[];
   onItemClick: (name: string) => void;
+  price?: number;
 };
 
 const Menu: React.FC<MenuProps> = ({ menuItems, onItemClick }) => {

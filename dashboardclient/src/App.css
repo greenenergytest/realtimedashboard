@@ -1,5 +1,10 @@
 body {
   background: url('./assets/greenenergybgtemplate.jpeg');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  margin: 0;
 }
 #root {
   width: 100%;

@@ -20,14 +20,6 @@ function Login() {
 
   const { email, password } = formData;
   const [showPlainTextPassword, setShowPlainTextPassword] = useState(false);
-  //const location = useLocation();
-
-  console.log('user');
-  console.log(user);
-
-  // const handleSignUpClick = (event: any) => {
-  //   navigate('/register');
-  // };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
@@ -36,8 +28,6 @@ function Login() {
       email,
       password,
     };
-
-    console.log(userData);
 
     dispatch(login(userData));
   };
@@ -55,25 +45,19 @@ function Login() {
 
   useEffect(() => {
     if (isSuccess || (user && Object.keys(user).length > 0 && user != null)) {
-      console.log('is in user not where you want');
       navigate('/');
     } else {
       setTimeout(() => {
-        navigate('/login'); // Navigate to '/newpage' route
+        navigate('/login');
       }, 10);
     }
     const timer = setTimeout(() => {
-      // Reset state when navigating away from the page
       dispatch(reset());
     }, 100);
 
     return () => clearTimeout(timer);
-    // return () => {
-
-    //   dispatch(reset());
-    // };
   }, [user, isSuccess]);
-  // }, [user, isError, isSuccess, message, navigate, dispatch, location]);
+
   return (
     <>
       <Card
@@ -155,13 +139,6 @@ function Login() {
               Submit
             </Button>
           </Form>
-          {/* <Link
-            to='/register'
-            className='notAMemberClass'
-            onClick={handleSignUpClick}
-          >
-            Not a member? sign up
-          </Link> */}
         </Card.Body>
       </Card>
     </>

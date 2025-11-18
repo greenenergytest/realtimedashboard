@@ -1,57 +1,40 @@
 import React, { useState } from 'react';
-//import axios from 'axios';
 import './FileUpload.css';
 import { useDispatch, useSelector } from 'react-redux';
-//import { RootState } from '../store';
-//.import {uploadFile} from '../features/'
 import Button from 'react-bootstrap/Button';
 import { uploadFile, resetUploadState } from '../features/upload/uploadSlice';
-//import { fetchGraphDataFromBackend } from '../features/graphData/graphDataSlice';
-// const [selectedHeadings, setSelectedHeadings] = useState([]);
 import { Form, FormGroup, Modal } from 'react-bootstrap';
+import { RootState } from '../store';
+import { AppDispatch } from '../store';
 
 interface FileUploadModalProps {
-  // headings: string[];
   onSelectX: (selectedHeadings: string[]) => void;
   onSelectY: (selectedHeadings: string[]) => void;
   onClose: () => void;
-  //show: boolean;
 }
 
 const FileUpload: React.FC<FileUploadModalProps> = ({
-  //headings = [],
-  //onSelectX,
   onSelectY,
   onClose,
-}: // show,
-FileUploadModalProps) => {
-  const [selectedFile, setSelectedFile] = useState(null);
+}: FileUploadModalProps) => {
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { uploading, uploadSuccess, errorMessage, headers } = useSelector(
-    (state: any) => state.fileUpload
+    (state: RootState) => state.fileUpload
   );
-  // useEffect(()=> {
-  //   console.log('component mounted or updated');
-  // })
-  //   const { selectXColumns, selectYColumns } = useSelector(
-  //     (state: any) => state.graphData
-  //   );
-  //const [selectedXHeadings, setSelectedXHeadings]: any = useState([]);
   const [selectedYHeadings, setSelectedYHeadings] = useState<string[]>([]);
-
-  // const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showYModal, setShowYModal] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleUpload = () => {
     if (selectedFile) {
-      dispatch(uploadFile(selectedFile) as any);
+      dispatch(uploadFile(selectedFile));
       setShowModal(true);
     }
   };
 
-  const handleFileChange = (event: any) => {
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setSelectedFile(event.target.files[0]);
     }
@@ -62,48 +45,13 @@ FileUploadModalProps) => {
     dispatch(resetUploadState());
   };
 
-  // const handleCheckboxChange = (event: any) => {
-  //   const { value, checked } = event.target;
-  //   if (checked) {
-  //     setSelectedXHeadings([...selectedXHeadings, value]);
-  //   } else {
-  //     setSelectedXHeadings(
-  //       selectedXHeadings.filter((heading: any) => heading !== value)
-  //     );
-  //   }
-  // };
-
-  // const handleSelectData = () => {
-  //   // Handle Select Data
-  //   // console.log('Selected headings:', selectedXHeadings);
-  //   onSelectX(selectedXHeadings);
-  //   setShowModal(false);
-  //   setShowYModal(true);
-  // };
-
   const handleCloseModal = () => {
     if (uploadSuccess) {
-      // dispatch(
-      //   fetchGraphDataFromBackend(
-      //     selectedXHeadings,
-      //     selectedYHeadings,
-      //     fileName
-      //   ) as any
-      // );
     }
     setShowModal(false);
   };
 
   const handleCloseYModal = () => {
-    // console.log(fileName);
-    // dispatch(
-    //   fetchGraphDataFromBackend(
-    //     selectedXHeadings,
-    //     selectedYHeadings,
-    //     fileName,
-    //     sheetName
-    //   ) as any
-    // );
     setShowYModal(false);
     onClose();
   };
@@ -126,27 +74,11 @@ FileUploadModalProps) => {
           {uploading ? 'Uploading...' : uploadSuccess ? 'Uploaded' : 'Upload'}
         </Button>
         <Modal show={showModal} onHide={handleCloseModal}>
-          <Modal.Header closeButton>
-            {/* <Modal.Title>Select X-Axis Data</Modal.Title> */}
-          </Modal.Header>
+          <Modal.Header closeButton></Modal.Header>
           <Modal.Body>
             {uploadSuccess ? (
               <div>
                 <p>File uploaded successfully</p>
-                {/* <p>Select variables for x axis</p>
-                <FormGroup>
-                  {headers.map((heading: any, index: any) => (
-                    <Form.Check
-                      key={index}
-                      type='checkbox'
-                      id={heading}
-                      label={heading}
-                      value={heading}
-                      checked={selectedXHeadings.includes(heading)}
-                      onChange={handleCheckboxChange}
-                    />
-                  ))}
-                </FormGroup> */}
               </div>
             ) : errorMessage ? (
               <p>Error uploading file: {errorMessage.message}</p>
@@ -155,13 +87,6 @@ FileUploadModalProps) => {
             )}
           </Modal.Body>
           <Modal.Footer>
-            {/* <Button
-              variant='secondary'
-              onClick={handleSelectData}
-              disabled={selectedXHeadings.length === 0}
-            >
-              Select
-            </Button> */}
             <Button variant='secondary' onClick={handleCloseModal}>
               Close
             </Button>
@@ -173,7 +98,7 @@ FileUploadModalProps) => {
           </Modal.Header>
           <Modal.Body>
             <FormGroup>
-              {headers.map((heading: any, index: any) => (
+              {headers.map((heading: string, index: number) => (
                 <Form.Check
                   key={index}
                   type='checkbox'
@@ -208,7 +133,7 @@ FileUploadModalProps) => {
             </Button>
           </Modal.Footer>
         </Modal>
-        {errorMessage && <p>{errorMessage}</p>}
+        {errorMessage && <p>{errorMessage.message}</p>}
         <Button variant='success' onClick={handleReset}>
           Reset
         </Button>

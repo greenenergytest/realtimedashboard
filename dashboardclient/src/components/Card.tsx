@@ -17,9 +17,6 @@ const Card: React.FC<CardProps> = ({
   return (
     <div className='card'>
       <div>
-        {/* <span>
-          <img src={imageUrl} className='card-img-top' alt='Card' />
-        </span> */}
         <span>{title}</span>
         <span>
           <OverlayTrigger

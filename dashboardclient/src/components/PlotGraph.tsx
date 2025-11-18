@@ -214,6 +214,16 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
 
     return result;
   }
+  const colorMap: { [key: string]: string } = {
+    'Oil production (bbls)': 'red',
+    'GOR (SCF/bbls)': 'Green',
+    'BS&W': 'deepskyblue',
+    Oil: 'red',
+    GOR: 'Green',
+    'Water Cut': 'deepskyblue',
+    Choke: 'purple',
+    FTHP: 'black',
+  };
 
   // Prepare traces for primary y-axis
   const primaryTraces = yPrimaryHeaders.map((header: any, headerIndex: any) => {
@@ -228,12 +238,14 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
     const wrappedExplanations = xData.map(() =>
       addLineBreaks(hoverBoxExplanation, 30)
     );
+
     return {
       x: xData,
       y: yValues,
       type: 'scatter',
-      mode: 'lines+markers',
+      mode: 'lines',
       name: `${headerNameUnit} `,
+      line: { color: colorMap[header] || 'gray' },
       hovertemplate: `%{x}<br>Primary Value: %{y}<br>%{text}`,
       text: wrappedExplanations,
       hoverlabel: {
@@ -264,14 +276,14 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
       const wrappedExplanations = xData.map(() =>
         addLineBreaks(hoverBoxExplanation, 30)
       );
-      console.log('wrapped explanations');
-      console.log(wrappedExplanations);
+
       return {
         x: xData,
         y: yValues,
         type: 'scatter',
-        mode: 'lines+markers',
+        mode: 'lines',
         name: `${headerNameUnit}`,
+        line: { color: colorMap[header] || 'gray' },
         hovertemplate: `%{x}<br>Secondary Value: %{y}<br>%{text}`,
         // hovertemplate: `${wrappedExplanations}`,
         text: wrappedExplanations,
@@ -387,14 +399,14 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
   //   // });
   // };
 
-  const handlePlotClick = (event: any) => {
-    console.log('handle plot called');
+  const handlePlotClick = (event: any, totalPrimaryTraces: number) => {
     if (event.points.length > 0) {
       const point = event.points[0];
       const index = event.points[0].pointIndex;
+      const traceIndex = event.points[0].curveNumber;
+      const secondaryIndex = traceIndex - totalPrimaryTraces;
+
       // const datasetId = point.curveNumber;
-      console.log('yaxis id');
-      console.log(point.yaxis._id);
       let axisType = point.yaxis._id === 'y' ? 'primary' : 'secondary';
 
       // console.log('y axis title');
@@ -416,7 +428,7 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
       //   return;
       // }
       // debouncedHover(index);
-      onHover(index, axisType);
+      onHover(index, axisType, secondaryIndex);
       //handleHover(index);
     }
     // (event) => {
@@ -453,7 +465,7 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
             useResizeHandler={true}
             style={{ width: '50%', height: '100%' }}
             config={config}
-            onHover={handlePlotClick}
+            onHover={(event) => handlePlotClick(event, primaryTraces.length)}
             //onUnhover={handleUnhover}
           />
           {/* </ResizableBox> */}

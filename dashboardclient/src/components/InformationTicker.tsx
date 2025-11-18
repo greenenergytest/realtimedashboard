@@ -11,7 +11,7 @@ const InformationTicker: React.FC<InformationTickerProps> = ({
   return (
     <div className='information-ticker-container'>
       <div className='information-ticker'>
-        {informationItems.map((item: any, index: any) => (
+        {informationItems.map((item: string, index: number) => (
           <span key={index} className='information-item'>
             {item}
           </span>

@@ -4,7 +4,7 @@
 // };
 
 const config = {
-  apiBaseUrl: 'http://localhost:5000',
+  apiBaseUrl: 'http://192.168.1.232:5000',
   localUrl: 'http://localhost:3000',
 };
 
