@@ -3,7 +3,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const xlsx = require('xlsx');
-
 const router = express.Router();
 
 //Create the upload directory if it doesn't exist
@@ -29,7 +28,6 @@ router.use('/uploads', express.static(uploadDirectory));
 //Route to handle file upload
 router.post('/upload', (req, res) => {
   if (!req.files || Object.keys(req.files).length === 0) {
-    console.log('here in 400');
     return res.status(400).send('No files were uploaded.');
   }
 

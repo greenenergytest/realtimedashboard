@@ -1,6 +1,7 @@
 import {
   createSlice,
   PayloadAction,
+  UnknownAction,
   //createAsyncThunk,
   // Slice,
 } from '@reduxjs/toolkit';
@@ -13,7 +14,7 @@ interface FileUploadState {
   fileName: string;
   uploading: boolean;
   uploadSuccess: boolean;
-  errorMessage: string | null;
+  errorMessage: { message: string };
   sheetNames: string[];
 }
 
@@ -23,7 +24,7 @@ const initialState: FileUploadState = {
   headers: [],
   fileName: '',
   uploadSuccess: false,
-  errorMessage: null,
+  errorMessage: { message: '' },
   sheetNames: [],
 };
 
@@ -43,7 +44,7 @@ export const fileUploadSlice = createSlice({
     uploadFileStart: (state) => {
       state.uploading = true;
       state.uploadSuccess = false;
-      state.errorMessage = null;
+      state.errorMessage.message = '';
     },
     uploadFileSuccess: (state) => {
       state.uploading = false;
@@ -51,13 +52,13 @@ export const fileUploadSlice = createSlice({
     },
     uploadFileFailure: (state, action: PayloadAction<string>) => {
       state.uploading = false;
-      state.errorMessage = action.payload;
+      state.errorMessage.message = action.payload;
     },
     resetUploadState: (state) => {
       state.file = null;
       state.uploading = false;
       state.uploadSuccess = false;
-      state.errorMessage = null;
+      state.errorMessage.message = '';
     },
     setSheetNames: (state, action) => {
       state.sheetNames = action.payload;
@@ -86,9 +87,7 @@ export const uploadFile =
     dispatch(uploadFileStart());
 
     try {
-      //console.log(file);
       const response = await uploadFileService(file);
-      console.log(response);
       dispatch(setHeaders(response.columnNames));
       dispatch(setFileName(response.fileName));
       dispatch(uploadFileSuccess());

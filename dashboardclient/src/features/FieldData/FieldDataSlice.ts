@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchFieldData } from '../../features/FieldData/FieldDataService';
+import { AppDispatch } from '../../store';
 
 interface fieldDataState {
   sheetName: string;
@@ -40,10 +41,9 @@ export const { setCummData, setWaterCutData, setGorData, setRateData } =
   FieldDataSlice.actions;
 
 export const fetchFieldDetails =
-  (sheetName: string, fileName: string) => async (dispatch: any) => {
+  (sheetName: string, fileName: string) => async (dispatch: AppDispatch) => {
     try {
       const response = await fetchFieldData(sheetName, fileName);
-      console.log(response);
       dispatch(setCummData(response.currentCummulative));
       dispatch(setWaterCutData(response.currentWaterCut));
       dispatch(setGorData(response.currentGor));
