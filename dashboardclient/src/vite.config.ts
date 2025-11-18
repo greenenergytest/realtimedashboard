@@ -19,8 +19,17 @@ export default defineConfig({
     },
   },
   server: {
-    port: 3000, // Specify the port for the dev server
-    open: true, // Open the browser on server start
+    // port: 3000, // Specify the port for the dev server
+    // open: true, // Open the browser on server start
+    host: '0.0.0.0', // Listen on all network interfaces
+    port: 5173, // Specify the port
+    strictPort: true, // Exit if the port is already in use
+    watch: {
+      usePolling: true, // Enable polling for file watching
+    },
+    proxy: {
+      '/api': 'http://backend:5000', // Redirect API calls to the backend service
+    },
   },
   build: {
     sourcemap: true, // Enable source maps for debugging

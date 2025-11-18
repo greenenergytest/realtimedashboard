@@ -1,6 +1,4 @@
-// import FieldCard from '../components/FieldCard';
 import { useEffect, useState, useCallback } from 'react';
-// import debounce from 'lodash.debounce';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchFieldDetails } from '../features/FieldData/FieldDataSlice';
 import { fetchWellDataFromBackend } from '../features/wellGraph/wellGraphPlotSlice';
@@ -10,33 +8,92 @@ import { Table } from 'react-bootstrap';
 import './FieldView.css';
 import PlotGraph from '../components/PlotGraph';
 import { Spinner } from 'react-bootstrap';
+import { AppDispatch } from '../store';
+
+interface FileUploadState {
+  fileName: string;
+  fileSize: number;
+}
+interface wellGraphDataState {
+  primaryYData: [];
+  secondaryYData: [];
+  xData: number[];
+}
+interface xDataState {
+  xData: number[];
+  yData: number[];
+}
+interface sheetNamesState {
+  sheetNames: string[];
+}
+
+interface problemWellState {
+  [key: string]: string;
+}
+
+interface fieldDataState {
+  cummData: string;
+  waterCutData: string;
+  gorData: string;
+  rateData: string;
+}
+
+interface sheetNamesRootState {
+  fileUpload: sheetNamesState;
+}
+interface FileUploadRootState {
+  fileUpload: FileUploadState;
+}
+interface wellGraphDataRootState {
+  wellGraphData: wellGraphDataState;
+}
+interface xDataRootState {
+  wellGraphData: xDataState;
+}
+interface fieldDataRootState {
+  fieldData: fieldDataState;
+}
+interface problemWellsRootState {
+  problemWellsData: problemWellState;
+}
+
+//const dispatch = useDispatch<AppDispatch>();
 
 const FieldView = () => {
-  const { fileName } = useSelector((state: any) => state.fileUpload);
-  const xData = useSelector((state: any) => state.wellGraphData.xData);
+  const { fileName } = useSelector(
+    (state: FileUploadRootState) => state.fileUpload
+  );
+  const xData = useSelector(
+    (state: xDataRootState) => state.wellGraphData.xData
+  );
   const primaryYData = useSelector(
-    (state: any) => state.wellGraphData.primaryYData
+    (state: wellGraphDataRootState) => state.wellGraphData.primaryYData
   );
+
   const secondaryYData = useSelector(
-    (state: any) => state.wellGraphData.secondaryYData
+    (state: wellGraphDataRootState) => state.wellGraphData.secondaryYData
   );
-  // const FieldCardItems = ['Cumm', 'WC', 'GOR', 'Rate'];
+
   const dispatch = useDispatch();
+
   const { cummData, waterCutData, gorData, rateData } = useSelector(
-    (state: any) => state.fieldData
+    (state: fieldDataRootState) => state.fieldData
   );
-  // const [annotations, setAnnotations] = useState([]);
   const [spinnerVisible, showSpinnerVisibility] = useState(false);
-  const { problemWells } = useSelector((state: any) => state.problemWellsData);
-  const sheetNames = useSelector((state: any) => state.fileUpload.sheetNames);
+
+  const { problemWells } = useSelector(
+    (state: problemWellsRootState) => state.problemWellsData
+  );
+  let sheetNames = useSelector(
+    (state: sheetNamesRootState) => state.fileUpload.sheetNames
+  );
+
+  // sheetNames = ['sheet1'];
   const [selectedItem, setSelectedItem] = useState<string>(sheetNames[0]);
   const [inSummary, setInSummary] = useState(true);
-  // const [isHovering, setIsHovering] = useState(false);
-  // const [hoverData, setHoverData] = useState<{
-  //   index: number | null;
-  //   explanation: string | null;
-  // } | null>(null);
+
   const valueOfItems: string[] = [];
+
   const [hoverExplanation, setHoverExplanation] = useState('');
   cummData ? valueOfItems.push(cummData) : valueOfItems.push('-');
   waterCutData ? valueOfItems.push(waterCutData) : valueOfItems.push('-');
@@ -46,13 +103,13 @@ const FieldView = () => {
   const handleDropDownSelect = async (item: string) => {
     setSelectedItem(item);
     showSpinnerVisibility(true);
-    let xColumns: any = ['Date'];
-    let primaryYColumns: any = [];
-    let secondaryYColumns: any = [];
+    let xColumns: string[] = ['Date'];
+    let primaryYColumns: Array<String> = [];
+    let secondaryYColumns: Array<String> = [];
 
     if (item == 'Summary') {
       primaryYColumns = ['Oil production (bbls)', 'GOR (SCF/bbls)'];
-      secondaryYColumns = ['BS&W', 'API'];
+      secondaryYColumns = ['BS&W'];
       setInSummary(true);
     }
 
@@ -119,28 +176,22 @@ const FieldView = () => {
     }
   };
   const getTrendExplanation = useCallback(
-    (index: number, axisType: 'primary' | 'secondary') => {
+    (index: number, axisType: 'primary' | 'secondary', traceIndex: number) => {
       if (index == 0) {
         return 'Starting point';
       }
 
       let enteredPrimaryLogic = false;
 
-      console.log(primaryYData[index]);
-
       let explanation = '';
 
       if (axisType === 'primary') {
-        console.log('in axis type primary');
-
         const primaryY = primaryYData[index][0];
-
         const prevPrimaryY = index > 0 ? primaryYData[index - 1][0] : null;
         const nextPrimaryY =
           index < primaryYData.length - 1 ? primaryYData[index + 1][0] : null;
 
         if (prevPrimaryY !== null && nextPrimaryY != null) {
-          console.log('entered primary axis');
           enteredPrimaryLogic = true;
           if (primaryY > prevPrimaryY && primaryY > nextPrimaryY) {
             explanation +=
@@ -160,26 +211,17 @@ const FieldView = () => {
             'No surrounding data for comparison on the primary axis';
         }
       } else if (axisType === 'secondary') {
-        const secondaryY = secondaryYData[index][1];
-        const prevSecondaryY = index > 0 ? secondaryYData[index - 1][1] : null;
+        const secondaryY = secondaryYData[index][traceIndex];
+        const prevSecondaryY =
+          index > 0 ? secondaryYData[index - 1][traceIndex] : null;
         const nextSecondaryY =
           index < secondaryYData.length - 1
-            ? secondaryYData[index + 1][1]
+            ? secondaryYData[index + 1][traceIndex]
             : null;
 
-        console.log('this method is called');
-        console.log('previous secondary');
-        console.log(prevSecondaryY);
-
-        console.log('next secondary data');
-        console.log(nextSecondaryY);
-
-        console.log('current secondary y');
-        console.log(secondaryY);
         if (!enteredPrimaryLogic) {
           if (prevSecondaryY !== null && nextSecondaryY != null) {
             if (secondaryY > prevSecondaryY && secondaryY > nextSecondaryY) {
-              console.log('entered secondary axis');
               explanation +=
                 'This point on the secondary axis is a peak, showing an increase followed by a decrease ';
             } else if (
@@ -200,72 +242,56 @@ const FieldView = () => {
           }
         }
       }
-      console.log(explanation);
       return explanation;
     },
     [primaryYData, secondaryYData]
   );
 
-  // const debouncedHandleHover = useCallback(
-  //   debounce((index: number, axisType: 'primary' | 'secondary') => {
-  //     if (index !== undefined) {
-  //       console.log('setting hovering to true');
-  //       setIsHovering(true);
-  //       const explanation = getTrendExplanation(index, axisType);
-  //       console.log('explanation');
-  //       console.log(explanation);
-  //       setHoverExplanation(explanation);
-  //     }
-  //   }, 100),
-  //   [getTrendExplanation]
-  // );
-
   const handleHover = (
     index: number,
-    axisType: 'primary' | 'secondary'
-    // datasetId: any
+    axisType: 'primary' | 'secondary',
+    traceIndex: number
   ) => {
-    // debouncedHandleHover(index, axisType);
     if (index !== undefined) {
-      console.log('setting hovering to true');
-      // setIsHovering(true);
-      const explanation = getTrendExplanation(index, axisType);
-      console.log('explanation');
-      console.log(explanation);
+      const explanation = getTrendExplanation(index, axisType, traceIndex);
       setHoverExplanation(explanation);
     }
   };
 
-  const handleMouseLeave = () => {
-    // setIsHovering(false);
-  };
+  const handleMouseLeave = () => {};
 
   useEffect(() => {
-    console.log('in useEffect fieldview');
     const searchString = 'AGEL';
     let xColumns = [];
     let primaryYColumns = [];
-    let secondaryYColumns: any = [];
+    let secondaryYColumns: Array<String> = [];
     let item = '';
-    console.log('logging out fileName');
-    console.log(fileName);
+
     // useEffect displays the first item which is the summary'
     if (fileName.includes(searchString)) {
       xColumns = ['Date'];
       primaryYColumns = ['Oil production (bbls)'];
       secondaryYColumns = ['Water production (bbls)'];
-      console.log('in AGEL if statement');
       item = 'Summary';
     } else {
       xColumns = ['Date'];
       primaryYColumns = ['Oil production (bbls)', 'GOR (SCF/bbls)'];
-      secondaryYColumns = ['BS&W', 'API'];
+      secondaryYColumns = ['BS&W'];
       item = 'Summary';
     }
-    // let result: any = '';
-    // const newAnnotations: any = [];
+
     const fetchData = async () => {
       if (fileName) {
+        //await dispatch(
+        // fetchWellDataFromBackend(
+        //   xColumns,
+        //   primaryYColumns,
+        //   [fileName],
+        //   [item],
+        //   secondaryYColumns
+        // ) as any
+        // );
+
         await dispatch(
           fetchWellDataFromBackend(
             xColumns,
@@ -283,7 +309,71 @@ const FieldView = () => {
     fetchData();
   }, []);
 
-  //fileName, dispatch
+  function getFieldData(value: string) {
+    let stringValue: string = value.toString();
+    let newString = stringValue.split('.')[0];
+
+    let stringToGetCharFrom = stringValue.split('.')[0];
+    let afterTheDotString = stringValue.split('.')[1];
+
+    if (stringToGetCharFrom.length == 8) {
+      newString =
+        stringToGetCharFrom.charAt(0) +
+        stringToGetCharFrom.charAt(1) +
+        ',' +
+        stringToGetCharFrom.charAt(2) +
+        stringToGetCharFrom.charAt(3) +
+        stringToGetCharFrom.charAt(4) +
+        ',' +
+        stringToGetCharFrom.charAt(5) +
+        stringToGetCharFrom.charAt(6) +
+        stringToGetCharFrom.charAt(7);
+    } else if (stringToGetCharFrom.length == 7) {
+      newString =
+        stringToGetCharFrom.charAt(0) +
+        '' +
+        ',' +
+        stringToGetCharFrom.charAt(1) +
+        '';
+      stringToGetCharFrom.charAt(2) + '';
+      stringToGetCharFrom.charAt(3) + '' + ',';
+      stringToGetCharFrom.charAt(4) + '';
+      stringToGetCharFrom.charAt(5) + '';
+      stringToGetCharFrom.charAt(6);
+    } else if (stringToGetCharFrom.length == 6) {
+      newString =
+        stringToGetCharFrom.charAt(0) +
+        stringToGetCharFrom.charAt(1) +
+        ',' +
+        stringToGetCharFrom.charAt(2) +
+        stringToGetCharFrom.charAt(3) +
+        stringToGetCharFrom.charAt(4) +
+        stringToGetCharFrom.charAt(5);
+    } else if (stringToGetCharFrom.length == 5) {
+      newString =
+        stringToGetCharFrom.charAt(0) +
+        stringToGetCharFrom.charAt(1) +
+        ',' +
+        stringToGetCharFrom.charAt(2) +
+        stringToGetCharFrom.charAt(3) +
+        stringToGetCharFrom.charAt(4);
+    } else if (stringToGetCharFrom.length == 4) {
+      newString =
+        stringToGetCharFrom.charAt(0) +
+        ',' +
+        stringToGetCharFrom.charAt(1) +
+        stringToGetCharFrom.charAt(2) +
+        stringToGetCharFrom.charAt(3);
+    }
+
+    let finalString = '';
+    afterTheDotString = afterTheDotString == undefined ? '' : afterTheDotString;
+    finalString =
+      afterTheDotString == '' ? newString : newString + '.' + afterTheDotString;
+
+    return finalString;
+  }
+
   return (
     <div style={{ display: 'block' }}>
       <div className='fieldGraphContainer'>
@@ -293,7 +383,6 @@ const FieldView = () => {
               xData={xData}
               yPrimaryData={primaryYData}
               ySecondaryData={secondaryYData}
-              //getTrendExplanation={isHovering ? getTrendExplanation : null}
               onHover={handleHover}
               onMouseLeave={handleMouseLeave}
               hoverBoxExplanation={hoverExplanation}
@@ -346,7 +435,8 @@ const FieldView = () => {
                       {index === 3 ? `Oil Rate (${item.split('-')[1]})` : ''}
                     </td>
                     <td style={{ border: '1px solid black', padding: '8px' }}>
-                      {item.split('-')[0]}
+                      {/* {item.split('-')[0]} */}
+                      {getFieldData(item.split('-')[0])}
                     </td>
                   </tr>
                 ))}
@@ -358,7 +448,7 @@ const FieldView = () => {
           {inSummary && (
             <Table striped bordered hover>
               <tbody>
-                {Object.keys(problemWells).map((key, index) => (
+                {Object.keys(problemWells).map((key: any, index) => (
                   <tr key={index}>
                     <td style={{ border: '1px solid black', padding: '8px' }}>
                       {key}

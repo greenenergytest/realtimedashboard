@@ -17,13 +17,9 @@ router.post('/getFieldData', (req, res) => {
 
   // if (mostRecentFile) {
   const workbook = xlsx.readFile(`${uploadDirectory}/${fileName}`);
-  console.log(sheetName);
   const worksheet = workbook.Sheets[sheetName];
 
   const data = xlsx.utils.sheet_to_json(worksheet);
-
-  console.log('logging out the data');
-  console.log(data);
 
   const cummulativeColumn = ' Cummlative Oil (bbls) ';
   const cummulativeFilteredData = data.filter(
@@ -106,8 +102,6 @@ router.post('/getFieldData', (req, res) => {
         : undefined;
   }
 
-  console.log('Logging out the current water cut');
-  console.log(currentWaterCut);
   currentWaterCut = currentWaterCut.toFixed(2) + '-%';
 
   const gorColumn = ' GOR (SCF/bbls) ';
@@ -155,7 +149,7 @@ router.post('/getFieldData', (req, res) => {
       oilRateFilteredData.length > 0
         ? oilRateFilteredData[oilRateFilteredData.length - 1][oilRateColumn]
         : undefined;
-    currentOilRate = currentOilRate.toFixed(2) + '-bbl';
+    currentOilRate = currentOilRate.toFixed(2) + '-bbls';
   } else if (otherOilRateFilteredData.length > 0) {
     otherOilRateFilteredData.sort((a, b) => a._index - b._index);
 
@@ -166,7 +160,7 @@ router.post('/getFieldData', (req, res) => {
           ]
         : undefined;
 
-    currentOilRate = currentOilRate.toFixed(2) + '-bbl';
+    currentOilRate = currentOilRate.toFixed(2) + '-bbls';
   }
 
   res.json({
