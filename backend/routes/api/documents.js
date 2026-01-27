@@ -17,6 +17,20 @@ router.post('/getDocuments', (req, res) => {
   }
 });
 
+router.post('/deleteDocument', (req, res) => {
+  try {
+    console.log(req.body);
+    const { fileName } = req.body;
+    console.log('Deleting file:', fileName);
+    const filePath = path.join(uploadDirectory, fileName);
+    fs.unlinkSync(filePath);
+    res.json({ message: 'File deleted successfully' });
+  } catch (err) {
+    console.error('Error deleting file:', err);
+    res.status(500).send('Error deleting file');
+  }
+});
+
 router.get('/download/:filename', (req, res) => {
   try {
     const { filename } = req.params;

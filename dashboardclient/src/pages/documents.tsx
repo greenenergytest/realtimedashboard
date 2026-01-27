@@ -5,6 +5,7 @@ import * as path from 'node:path';
 import { fileURLToPath } from 'url';
 import { useLocation } from 'react-router-dom';
 import { getAllDocuments } from '../features/documents/documentsSlice';
+import { deleteDocument } from '../features/documents/documentsSlice';
 import { ListGroup, Badge, Button } from 'react-bootstrap';
 import { Download } from 'react-bootstrap-icons';
 import config from '../config';
@@ -69,8 +70,14 @@ const DocumentFieldView = () => {
     link.click();
   };
 
-  const handleDelete = (value: unknown) => {
+  const handleDelete = async (value: unknown) => {
     console.log(value);
+    // pass filename to backend service
+    // delete the file
+    // refresh the list in useEffect
+    await dispatch(deleteDocument(String(value)) as any);
+    const docs = await dispatch(getAllDocuments() as any);
+    setDocuments(docs);
   };
   // getDocumentLink();
   //   fs.readdir(
@@ -110,7 +117,7 @@ const DocumentFieldView = () => {
                 <ListGroup.Item variant='success'>
                   {value
                     ? (value as string).substring(
-                        (value as string).lastIndexOf('-') + 1
+                        (value as string).lastIndexOf('-') + 1,
                       )
                     : String(value)}
                 </ListGroup.Item>

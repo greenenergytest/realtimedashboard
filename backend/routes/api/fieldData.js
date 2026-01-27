@@ -11,11 +11,14 @@ const uploadDirectory = path.join(__dirname, '../../uploads');
 router.post('/getFieldData', (req, res) => {
   console.log('in get field data');
   const { sheetName, fileName } = req.body;
+
   // console.log('Logging request body');
   // console.log(req.body);
   // const mostRecentFile = utilityFunctions.getMostRecentFile(uploadDirectory);
 
   // if (mostRecentFile) {
+  console.log('logging file name from field data');
+  console.log(fileName);
   const workbook = xlsx.readFile(`${uploadDirectory}/${fileName}`);
   const worksheet = workbook.Sheets[sheetName];
 
@@ -23,18 +26,18 @@ router.post('/getFieldData', (req, res) => {
 
   const cummulativeColumn = ' Cummlative Oil (bbls) ';
   const cummulativeFilteredData = data.filter(
-    (row) => row[cummulativeColumn] !== undefined
+    (row) => row[cummulativeColumn] !== undefined,
   );
   let currentCummulative = 0;
 
   const otherReservoirsCummulativeColumn = 'Cumm Oil';
   const otherReservoirsCummulativeFilteredData = data.filter(
-    (row) => row[otherReservoirsCummulativeColumn] !== undefined
+    (row) => row[otherReservoirsCummulativeColumn] !== undefined,
   );
 
   const remainingReservoirsCummulativeColumn = 'Cumm. Oil';
   const remainingReservoirsCummulativeFilteredData = data.filter(
-    (row) => row[remainingReservoirsCummulativeColumn] !== undefined
+    (row) => row[remainingReservoirsCummulativeColumn] !== undefined,
   );
 
   if (cummulativeFilteredData.length > 0) {
@@ -60,7 +63,7 @@ router.post('/getFieldData', (req, res) => {
     currentCummulative = currentCummulative.toFixed(2) + '-stb';
   } else if (remainingReservoirsCummulativeFilteredData.length > 0) {
     remainingReservoirsCummulativeFilteredData.sort(
-      (a, b) => a._index - b._index
+      (a, b) => a._index - b._index,
     );
     currentCummulative =
       remainingReservoirsCummulativeFilteredData.length > 0
@@ -74,13 +77,13 @@ router.post('/getFieldData', (req, res) => {
   const waterCutColumn = 'BS&W';
   // Get all the bsw data that is not equal to undefined in an array
   const waterCutFilteredData = data.filter(
-    (row) => row[waterCutColumn] !== undefined
+    (row) => row[waterCutColumn] !== undefined,
   );
   let currentWaterCut = 0;
 
   const otherWaterCutColumn = 'Water Cut';
   const otherWaterCutFilteredData = data.filter(
-    (row) => row[otherWaterCutColumn] !== undefined
+    (row) => row[otherWaterCutColumn] !== undefined,
   );
 
   if (waterCutFilteredData.length > 0) {
@@ -110,7 +113,7 @@ router.post('/getFieldData', (req, res) => {
 
   const otherGorColumn = 'GOR';
   const otherGorFilteredData = data.filter(
-    (row) => row[otherGorColumn] !== undefined
+    (row) => row[otherGorColumn] !== undefined,
   );
 
   if (gorFilteredData.length > 0) {
@@ -133,13 +136,13 @@ router.post('/getFieldData', (req, res) => {
 
   const oilRateColumn = ' Oil production (bbls) ';
   const oilRateFilteredData = data.filter(
-    (row) => row[oilRateColumn] !== undefined
+    (row) => row[oilRateColumn] !== undefined,
   );
   let currentOilRate = 0;
 
   const otherOilRateColumn = 'Oil';
   const otherOilRateFilteredData = data.filter(
-    (row) => row[otherOilRateColumn] !== undefined
+    (row) => row[otherOilRateColumn] !== undefined,
   );
 
   if (oilRateFilteredData.length > 0) {

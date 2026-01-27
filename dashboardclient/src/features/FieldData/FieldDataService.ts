@@ -1,8 +1,13 @@
 import axios from 'axios';
 import config from '../../config';
 
-export const fetchFieldData = async (sheetName: string, fileName: string) => {
+export const fetchFieldData = async (
+  sheetName: string,
+  fileName: string,
+  storedFileName: string,
+) => {
   try {
+    fileName = storedFileName;
     const response = await axios.post(config.apiBaseUrl + '/getFieldData', {
       sheetName,
       fileName,

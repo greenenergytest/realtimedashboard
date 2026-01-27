@@ -127,10 +127,12 @@ router.post('/upload', upload.single('file'), (req, res) => {
     console.log('file not found');
     return res.status(400).json({ error: 'No file uploaded' });
   }
-
+  console.log(req);
   const storedFileName = req.file.filename;
   const originalFileName = req.file.originalname;
   const filePath = req.file.path;
+  //const file = req.files.file;
+  const fileName = req.file.originalname;
 
   // Read Excel file
   const workbook = xlsx.readFile(filePath);
@@ -146,6 +148,7 @@ router.post('/upload', upload.single('file'), (req, res) => {
   }
 
   res.json({
+    fileName,
     storedFileName,
     originalFileName,
     columnNames,

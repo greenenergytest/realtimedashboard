@@ -25,6 +25,7 @@ app.use(cors());
 app.use('/healthcheck', (req, res) => {
   res.status(200).send('ok');
 });
+
 const DB_URI = process.env.MONGODB_URI;
 console.log(DB_URI);
 app.use(bodyParser.json());
@@ -34,6 +35,8 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.log(err));
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 //app.use(fileUpload());
 app.use('/', userRoutes);
 app.use('/', profileRoutes);

@@ -41,9 +41,14 @@ export const { setCummData, setWaterCutData, setGorData, setRateData } =
   FieldDataSlice.actions;
 
 export const fetchFieldDetails =
-  (sheetName: string, fileName: string) => async (dispatch: AppDispatch) => {
+  (sheetName: string, fileName: string, storedFileName: string) =>
+  async (dispatch: AppDispatch) => {
     try {
-      const response = await fetchFieldData(sheetName, fileName);
+      const response = await fetchFieldData(
+        sheetName,
+        fileName,
+        storedFileName,
+      );
       dispatch(setCummData(response.currentCummulative));
       dispatch(setWaterCutData(response.currentWaterCut));
       dispatch(setGorData(response.currentGor));
