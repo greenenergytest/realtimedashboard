@@ -10,6 +10,7 @@ const fieldDataRoutes = require('./routes/api/fieldData');
 const columnNamesRoutes = require('./routes/api/columnNames');
 const problemWellsRoutes = require('./routes/api/problemWells');
 const wellGraphRoute = require('./routes/api/wellGraphs');
+const documentsRoute = require('./routes/api/documents');
 
 const cors = require('cors');
 require('dotenv').config();
@@ -33,6 +34,7 @@ mongoose
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.log(err));
 
+//app.use(fileUpload());
 app.use(fileUpload());
 app.use('/', userRoutes);
 app.use('/', profileRoutes);
@@ -43,6 +45,7 @@ app.use('/', columnNamesRoutes);
 app.use('/', fieldDataRoutes);
 app.use('/', problemWellsRoutes);
 app.use('/', wellGraphRoute);
+app.use('/', documentsRoute);
 // app.use('/', fileAuthenticationRoutes);
 
 const os = require('os');
