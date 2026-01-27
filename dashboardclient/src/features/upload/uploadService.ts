@@ -8,12 +8,11 @@ export const uploadAFile = async (file: File) => {
   formData.append('file', file);
 
   try {
-    // const response = await axios.post(config.apiBaseUrl + '/upload', formData, {
-    //   // headers: {
-    //   //   'Content-Type': 'multipart/form-data',
-    //   // },
-    // });
-    const response = await axios.post(config.apiBaseUrl + '/upload', formData);
+    const response = await axios.post(config.apiBaseUrl + '/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
     console.log(response.data);
     return response.data;
   } catch (error) {

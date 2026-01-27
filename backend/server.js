@@ -35,6 +35,7 @@ mongoose
   .catch((err) => console.log(err));
 
 //app.use(fileUpload());
+app.use(fileUpload());
 app.use('/', userRoutes);
 app.use('/', profileRoutes);
 app.use('/', fileRoutes);
@@ -45,6 +46,7 @@ app.use('/', fieldDataRoutes);
 app.use('/', problemWellsRoutes);
 app.use('/', wellGraphRoute);
 app.use('/', documentsRoute);
+// app.use('/', fileAuthenticationRoutes);
 
 const os = require('os');
 
