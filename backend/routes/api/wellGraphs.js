@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.post('/getWellGraph', upload.single('file'), (req, res) => {
+router.post('/getWellGraph', (req, res) => {
   const {
     selectedXColumns,
     selectedPrimaryYColumns,
@@ -26,6 +26,8 @@ router.post('/getWellGraph', upload.single('file'), (req, res) => {
     sheetName,
   } = req.body;
 
+  console.log('logging out fila name');
+  console.log(fileName);
   const workbook = xlsx.readFile(`${uploadDirectory}/${fileName}`);
   const sheetNames = workbook.SheetNames;
   const worksheet = workbook.Sheets[sheetName];

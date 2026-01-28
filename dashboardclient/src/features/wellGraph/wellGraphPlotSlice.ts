@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchWellGraph } from '../../features/wellGraph/wellGraphPlotService';
+import store from '../../store';
 
 interface wellGraphState {
   xData: string[];
@@ -38,16 +39,22 @@ export const fetchWellDataFromBackend =
     primaryYColumns: any,
     fileName: any,
     sheetName: any,
-    secondaryYColumns?: any
+    secondaryYColumns?: any,
+    storedFileName?: any,
   ) =>
   async (dispatch: any) => {
     try {
+      console.log('in well graph plot slice');
+      console.log(storedFileName);
+
       const response = await fetchWellGraph(
         xColumns,
         primaryYColumns,
         secondaryYColumns,
         fileName,
-        sheetName
+
+        sheetName,
+        storedFileName,
       );
 
       const formattedDate = getNormalDate(response.xData);

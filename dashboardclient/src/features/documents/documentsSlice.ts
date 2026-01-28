@@ -29,7 +29,21 @@ export const getAllDocuments = createAsyncThunk(
       console.error('Error', error);
       return rejectWithValue(error);
     }
-  }
+  },
+);
+
+export const deleteDocument = createAsyncThunk(
+  'documents/deleteDocument',
+  async (docsId: string, { rejectWithValue }) => {
+    try {
+      const documentServiceResponse =
+        await documentsService.deleteDocument(docsId);
+      return documentServiceResponse;
+    } catch (error: unknown) {
+      console.error('Error', error);
+      return rejectWithValue(error);
+    }
+  },
 );
 
 export const documentSlice = createSlice({

@@ -22,9 +22,9 @@ export const problemWellsSlice = createSlice({
 export const { setProblemWellsName } = problemWellsSlice.actions;
 
 export const fetchProblemWellsData =
-  (fileName: string) => async (dispatch: any) => {
+  (fileName: string, storedFileName: string) => async (dispatch: any) => {
     try {
-      const response = await fetchProblemWells(fileName);
+      const response = await fetchProblemWells(fileName, storedFileName);
       //TODO: display problem well
       let notHealthyWells: any = {};
       for (let key in response['wellHealth']) {
