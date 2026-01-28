@@ -38,7 +38,7 @@ mongoose
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 //app.use(fileUpload());
-app.use(fileUpload());
+//app.use(fileUpload());
 app.use('/', userRoutes);
 app.use('/', profileRoutes);
 app.use('/', fileRoutes);
