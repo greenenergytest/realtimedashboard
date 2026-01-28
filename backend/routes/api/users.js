@@ -99,6 +99,7 @@ router.post('/login', (req, res) => {
         const isMatch = await comparePasswords(
           req.body.password.toString(),
           user.password.toString(),
+          user.password.toString()
         );
         console.log(isMatch);
 
