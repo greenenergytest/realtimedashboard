@@ -66,7 +66,7 @@ const DocumentFieldView = () => {
                 <Trash size={16} />
               </Button>
 
-              <span>{value.substring(value.lastIndexOf('-') + 1)}</span>
+              <span>{value.replace(/^[a-f0-9-]{36}-/i, '')}</span>
 
               <Badge bg='light'>
                 <Button
