@@ -93,6 +93,16 @@ const FieldView = () => {
     (state: sheetNamesRootState) => state.fileUpload.sheetNames,
   );
 
+  const isProductionSummaryFile = (fileName: string) =>
+    fileName.includes('Production_Summary');
+
+  if (!fileName || !isProductionSummaryFile(fileName)) {
+    return (
+      <div style={{ padding: '20px', color: '#666' }}>
+        Please upload a <strong>Production Summary</strong> file
+      </div>
+    );
+  }
   // sheetNames = ['sheet1'];
   const [selectedItem, setSelectedItem] = useState<string>(sheetNames[0]);
   const [inSummary, setInSummary] = useState(true);
@@ -479,3 +489,220 @@ const FieldView = () => {
   );
 };
 export default FieldView;
+
+// import { useEffect, useState, useCallback } from 'react';
+// import { useDispatch, useSelector } from 'react-redux';
+// import Dropdown from 'react-bootstrap/Dropdown';
+// import { Table, Spinner } from 'react-bootstrap';
+// import PlotGraph from '../components/PlotGraph';
+// import { fetchFieldDetails } from '../features/FieldData/FieldDataSlice';
+// import { fetchWellDataFromBackend } from '../features/wellGraph/wellGraphPlotSlice';
+// import { fetchProblemWellsData } from '../features/problemWells/problemWellsSlice';
+// import './FieldView.css';
+
+// /* ===================== HELPERS ===================== */
+// const isProductionSummaryFile = (fileName: string) =>
+//   fileName.includes('Production_Summary');
+
+// const removeUUID = (fileName: string) =>
+//   fileName.replace(/^[a-f0-9-]{36}-/i, '');
+
+// /* ===================== TYPES ===================== */
+// interface RootState {
+//   fileUpload: {
+//     fileName: string;
+//     storedFileName: string;
+//     sheetNames: string[];
+//   };
+//   wellGraphData: {
+//     xData: number[];
+//     primaryYData: number[][];
+//     secondaryYData: number[][];
+//   };
+//   fieldData: {
+//     cummData: string;
+//     waterCutData: string;
+//     gorData: string;
+//     rateData: string;
+//   };
+//   problemWellsData: {
+//     problemWells: Record<string, string>;
+//   };
+// }
+
+// /* ===================== COMPONENT ===================== */
+// const FieldView = () => {
+//   const dispatch = useDispatch<any>();
+
+//   const { fileName, storedFileName, sheetNames } = useSelector(
+//     (state: RootState) => state.fileUpload,
+//   );
+
+//   /* 🚫 HARD BLOCK NON-PRODUCTION FILES */
+//   if (!fileName || !isProductionSummaryFile(fileName)) {
+//     return (
+//       <div style={{ padding: '20px', color: '#666' }}>
+//         Please upload a <strong>Production Summary</strong> file
+//       </div>
+//     );
+//   }
+
+//   const { xData, primaryYData, secondaryYData } = useSelector(
+//     (state: RootState) => state.wellGraphData,
+//   );
+
+//   const { cummData, waterCutData, gorData, rateData } = useSelector(
+//     (state: RootState) => state.fieldData,
+//   );
+
+//   const { problemWells } = useSelector(
+//     (state: RootState) => state.problemWellsData,
+//   );
+
+//   const [selectedItem, setSelectedItem] = useState('Summary');
+//   const [spinnerVisible, setSpinnerVisible] = useState(false);
+//   const [hoverExplanation, setHoverExplanation] = useState('');
+//   const [inSummary, setInSummary] = useState(true);
+
+//   /* ===================== DROPDOWN ===================== */
+//   const handleDropDownSelect = async (item: string) => {
+//     setSelectedItem(item);
+//     setSpinnerVisible(true);
+
+//     const xColumns = ['Date'];
+//     let primaryY: string[] = [];
+//     let secondaryY: string[] = [];
+
+//     if (item === 'Summary') {
+//       primaryY = ['Oil production (bbls)', 'GOR (SCF/bbls)'];
+//       secondaryY = ['BS&W'];
+//       setInSummary(true);
+//     } else {
+//       primaryY = ['Oil', 'GOR', 'FTHP'];
+//       secondaryY = ['Water Cut', 'Choke'];
+//       setInSummary(false);
+//     }
+
+//     await dispatch(
+//       fetchWellDataFromBackend(
+//         xColumns,
+//         primaryY,
+//         [fileName],
+//         [item],
+//         secondaryY,
+//         storedFileName,
+//       ),
+//     );
+
+//     dispatch(fetchFieldDetails(item, fileName, storedFileName));
+//     setSpinnerVisible(false);
+//   };
+
+//   /* ===================== GRAPH HOVER ===================== */
+//   const getTrendExplanation = useCallback(
+//     (i: number, axis: 'primary' | 'secondary', trace: number) => {
+//       if (i === 0) return 'Starting point';
+
+//       const current =
+//         axis === 'primary' ? primaryYData[i]?.[0] : secondaryYData[i]?.[trace];
+
+//       const previous =
+//         axis === 'primary'
+//           ? primaryYData[i - 1]?.[0]
+//           : secondaryYData[i - 1]?.[trace];
+
+//       if (current == null || previous == null) {
+//         return 'No comparison data';
+//       }
+
+//       return current > previous ? 'Increasing trend' : 'Decreasing trend';
+//     },
+//     [primaryYData, secondaryYData],
+//   );
+
+//   /* ===================== INITIAL LOAD ===================== */
+//   useEffect(() => {
+//     dispatch(
+//       fetchWellDataFromBackend(
+//         ['Date'],
+//         ['Oil production (bbls)', 'GOR (SCF/bbls)'],
+//         [fileName],
+//         ['Summary'],
+//         ['BS&W'],
+//         storedFileName,
+//       ),
+//     );
+
+//     dispatch(fetchFieldDetails('Summary', fileName, storedFileName));
+//     dispatch(fetchProblemWellsData(fileName, storedFileName));
+//   }, [dispatch, fileName, storedFileName]);
+
+//   /* ===================== RENDER ===================== */
+//   return (
+//     <div>
+//       <h6 style={{ marginBottom: '10px' }}>{removeUUID(fileName)}</h6>
+
+//       <div className='fieldGraphContainer'>
+//         {spinnerVisible ? (
+//           <Spinner animation='border' />
+//         ) : (
+//           <PlotGraph
+//             xData={xData}
+//             yPrimaryData={primaryYData}
+//             ySecondaryData={secondaryYData}
+//             onHover={(i: number, a: 'primary' | 'secondary', t: number) =>
+//               setHoverExplanation(getTrendExplanation(i, a, t))
+//             }
+//             onMouseLeave={() => setHoverExplanation('')}
+//             hoverBoxExplanation={hoverExplanation}
+//           />
+//         )}
+
+//         <Dropdown>
+//           <Dropdown.Toggle variant='success'>{selectedItem}</Dropdown.Toggle>
+
+//           <Dropdown.Menu>
+//             {sheetNames.map((item) => (
+//               <Dropdown.Item
+//                 key={item}
+//                 active={item === selectedItem}
+//                 onClick={() => handleDropDownSelect(item)}
+//               >
+//                 {item}
+//               </Dropdown.Item>
+//             ))}
+//           </Dropdown.Menu>
+//         </Dropdown>
+//       </div>
+
+//       <Table striped bordered>
+//         <tbody>
+//           {[cummData, waterCutData, gorData, rateData].map(
+//             (item, index) =>
+//               item && (
+//                 <tr key={index}>
+//                   <td>{item.split('-')[1]}</td>
+//                   <td>{item.split('-')[0]}</td>
+//                 </tr>
+//               ),
+//           )}
+//         </tbody>
+//       </Table>
+
+//       {inSummary && (
+//         <Table striped bordered>
+//           <tbody>
+//             {Object.entries(problemWells).map(([key, value]) => (
+//               <tr key={key}>
+//                 <td>{key}</td>
+//                 <td>{value}</td>
+//               </tr>
+//             ))}
+//           </tbody>
+//         </Table>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default FieldView;
