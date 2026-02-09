@@ -20,7 +20,19 @@ const fileUpload = require('express-fileupload');
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cors());
+app.use(
+  cors({
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:5173',
+      'https://bejewelled-basbousa-30071c.netlify.app',
+    ],
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+  }),
+);
+app.options('*', cors());
+
 // Health check endpoint
 app.use('/healthcheck', (req, res) => {
   res.status(200).send('ok');
@@ -29,14 +41,14 @@ app.use('/healthcheck', (req, res) => {
 const DB_URI = process.env.MONGODB_URI;
 console.log(DB_URI);
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 mongoose
   .connect(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB Connected'))
   .catch((err) => console.log(err));
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 //app.use(fileUpload());
 //app.use(fileUpload());
 app.use('/', userRoutes);
@@ -51,23 +63,27 @@ app.use('/', wellGraphRoute);
 app.use('/', documentsRoute);
 // app.use('/', fileAuthenticationRoutes);
 
-const os = require('os');
+// const os = require('os');
 
-function getLocalIpAddress() {
-  const interfaces = os.networkInterfaces();
-  for (const iface in interfaces) {
-    for (const alias of interfaces[iface]) {
-      if (alias.family === 'IPv4' && !alias.internal) {
-        return alias.address;
-      }
-    }
-  }
-  return '127.0.0.1'; // Fallback if no local IP found
-}
+// function getLocalIpAddress() {
+//   const interfaces = os.networkInterfaces();
+//   for (const iface in interfaces) {
+//     for (const alias of interfaces[iface]) {
+//       if (alias.family === 'IPv4' && !alias.internal) {
+//         return alias.address;
+//       }
+//     }
+//   }
+//   return '127.0.0.1'; // Fallback if no local IP found
+// }
 
-// const localIP = '172.21.240.1';
-const localIP = getLocalIpAddress();
+// // const localIP = '172.21.240.1';
+// const localIP = getLocalIpAddress();
 
-app.listen(port, localIP, () => {
-  console.log(`Server running at http://${localIP}:${port}/`);
+// app.listen(port, localIP, () => {
+//   console.log(`Server running at http://${localIP}:${port}/`);
+// });
+
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
 });

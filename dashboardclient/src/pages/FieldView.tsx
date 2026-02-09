@@ -8,7 +8,6 @@ import { Table } from 'react-bootstrap';
 import './FieldView.css';
 import PlotGraph from '../components/PlotGraph';
 import { Spinner } from 'react-bootstrap';
-import store, { AppDispatch } from '../store';
 
 interface FileUploadState {
   fileName: string;

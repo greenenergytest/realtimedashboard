@@ -1,6 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { fetchWellGraph } from '../../features/wellGraph/wellGraphPlotService';
-import store from '../../store';
 
 interface wellGraphState {
   xData: string[];
