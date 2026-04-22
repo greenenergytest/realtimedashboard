@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const { error } = require('console');
 
 const router = express.Router();
 const uploadDirectory = path.join(__dirname, '../../uploads');
@@ -14,6 +15,18 @@ router.post('/getDocuments', (req, res) => {
     res.json({ files });
   } catch (err) {
     console.error('Error reading directory:', err);
+  }
+});
+
+router.post('/checkIfDocumentExists', (req, res) => {
+  try {
+    const { fileName } = req.params;
+    const filePath = path.join(uploadDirectory, fileName);
+    if (fs.existsSync(filePath)) {
+      res.json({ exists: true, message: 'File exists' });
+    }
+  } catch (err) {
+    res.json({ exists: false, message: err.message });
   }
 });
 
