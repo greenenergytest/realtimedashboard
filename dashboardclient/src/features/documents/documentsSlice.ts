@@ -23,11 +23,29 @@ export const getAllDocuments = createAsyncThunk(
   'documents/getAllDocuments',
   async (docs, { rejectWithValue }) => {
     try {
-      const doucmentServiceResponse = await documentsService.getAllDocuments();
-      return doucmentServiceResponse;
+      const documentServiceResponse = await documentsService.getAllDocuments();
+
+      console.log(
+        `documentSliceResponse :${JSON.stringify(documentServiceResponse)}`,
+      );
+
+      return documentServiceResponse;
     } catch (error: unknown) {
       console.error('Error', error);
       return rejectWithValue(error);
+    }
+  },
+);
+
+export const checkIfDocumentExists = createAsyncThunk(
+  'documents/checkIfDocumentExists',
+  async (fileName: string, { rejectWithValue }) => {
+    try {
+      const documentExistsResponse =
+        await documentsService.checkIfDocumentsExists(fileName);
+      return documentExistsResponse;
+    } catch (error: unknown) {
+      console.error('Error', error);
     }
   },
 );

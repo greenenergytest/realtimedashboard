@@ -21,7 +21,8 @@
   //   "noFallthroughCasesInSwitch": true
   // },
   "compilerOptions": {
-    "target": "es5",
+    // "ignoreDeprecations": "6.0",
+    "target": "es2020",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "types": ["node"],

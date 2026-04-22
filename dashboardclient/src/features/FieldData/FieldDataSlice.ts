@@ -44,11 +44,13 @@ export const fetchFieldDetails =
   (sheetName: string, fileName: string, storedFileName: string) =>
   async (dispatch: AppDispatch) => {
     try {
+      console.log('fetching field details with fileName:', fileName);
       const response = await fetchFieldData(
         sheetName,
         fileName,
         storedFileName,
       );
+      console.log('fileName from response:', fileName);
       dispatch(setCummData(response.currentCummulative));
       dispatch(setWaterCutData(response.currentWaterCut));
       dispatch(setGorData(response.currentGor));

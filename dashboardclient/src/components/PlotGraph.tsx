@@ -236,7 +236,7 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
     // );
     //const wrappedExplanations = addLineBreaks(hoverBoxExplanation, 30);
     const wrappedExplanations = xData.map(() =>
-      addLineBreaks(hoverBoxExplanation, 30)
+      addLineBreaks(hoverBoxExplanation, 30),
     );
 
     return {
@@ -274,7 +274,7 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
       // );
       //const wrappedExplanations = addLineBreaks(hoverBoxExplanation, 30);
       const wrappedExplanations = xData.map(() =>
-        addLineBreaks(hoverBoxExplanation, 30)
+        addLineBreaks(hoverBoxExplanation, 30),
       );
 
       return {
@@ -300,7 +300,7 @@ const PlotGraph: React.FC<PlotGraphProps> = ({
         },
         yaxis: 'y2',
       };
-    }
+    },
   );
 
   const layout: Partial<Plotly.Layout> = {

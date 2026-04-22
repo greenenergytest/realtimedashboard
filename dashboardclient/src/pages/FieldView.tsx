@@ -8,6 +8,11 @@ import { Table } from 'react-bootstrap';
 import './FieldView.css';
 import PlotGraph from '../components/PlotGraph';
 import { Spinner } from 'react-bootstrap';
+import {
+  checkIfDocumentExists,
+  getAllDocuments,
+} from '../features/documents/documentsSlice';
+import { fetchGraphDataFromBackend } from '../features/graphData/graphDataSlice';
 
 interface FileUploadState {
   fileName: string;
@@ -57,16 +62,25 @@ interface problemWellsRootState {
   problemWellsData: problemWellState;
 }
 
-//const dispatch = useDispatch<AppDispatch>();
-
 const FieldView = () => {
-  const { storedFileName } = useSelector(
-    (state: FileUploadRootState) => state.fileUpload,
+  const storedFileNameFromState = useSelector(
+    (state: FileUploadRootState) => state.fileUpload.storedFileName,
   );
 
-  const { fileName } = useSelector(
-    (state: FileUploadRootState) => state.fileUpload,
+  const fileNameFromState = useSelector(
+    (state: FileUploadRootState) => state.fileUpload.fileName,
   );
+
+  const storedFileName: any =
+    storedFileNameFromState || localStorage.getItem('storedFileName');
+  //const { storedFileName } = ;
+
+  const fileName: any = fileNameFromState;
+
+  // || localStorage.getItem('fileName');
+
+  console.log(`file name in field view: ${fileName}`);
+
   const xData = useSelector(
     (state: xDataRootState) => state.wellGraphData.xData,
   );
@@ -78,12 +92,11 @@ const FieldView = () => {
     (state: wellGraphDataRootState) => state.wellGraphData.secondaryYData,
   );
 
-  const dispatch = useDispatch();
-
   const { cummData, waterCutData, gorData, rateData } = useSelector(
     (state: fieldDataRootState) => state.fieldData,
   );
-  const [spinnerVisible, showSpinnerVisibility] = useState(false);
+  const [detailsSpinnerVisible, showDetailsSpinnerVisibility] = useState(true);
+  const [spinnerVisible, showSpinnerVisibility] = useState(true);
 
   const { problemWells } = useSelector(
     (state: problemWellsRootState) => state.problemWellsData,
@@ -91,18 +104,22 @@ const FieldView = () => {
   let sheetNames = useSelector(
     (state: sheetNamesRootState) => state.fileUpload.sheetNames,
   );
+  const dispatch: any = useDispatch();
 
-  const isProductionSummaryFile = (fileName: string) =>
-    fileName.includes('Production_Summary');
+  // const isProductionSummaryFile = (fileName: string) => {
+  //   console.log(`Checking if file is production summary: ${fileName}`);
+  //   return fileName.includes('Otakikpo');
+  // };
 
-  if (!fileName || !isProductionSummaryFile(fileName)) {
-    return (
-      <div style={{ padding: '20px', color: '#666' }}>
-        Please upload a <strong>Production Summary</strong> file
-      </div>
-    );
-  }
-  // sheetNames = ['sheet1'];
+  // if (!fileName || !isProductionSummaryFile(fileName)) {
+  //   console.log(isProductionSummaryFile(fileName));
+  //   return (
+  //     <div style={{ padding: '20px', color: '#666' }}>
+  //       Please upload a <strong>Production Summary</strong> file
+  //     </div>
+  //   );
+  // }
+
   const [selectedItem, setSelectedItem] = useState<string>(sheetNames[0]);
   const [inSummary, setInSummary] = useState(true);
 
@@ -177,8 +194,6 @@ const FieldView = () => {
     //TODO: uncomment this when fixing the drop down
     dispatch(fetchFieldDetails(item, fileName, storedFileName) as any);
 
-    console.log('in drop down');
-    console.log(storedFileName);
     const result = await dispatch(
       fetchWellDataFromBackend(
         xColumns,
@@ -278,10 +293,25 @@ const FieldView = () => {
 
   const handleMouseLeave = () => {};
 
+  const getLatestDocument = (documents: any) => {
+    let documentName = '';
+
+    for (let document of documents.payload.files) {
+      if (document.includes('Otakikpo')) {
+        documentName = document;
+        console.log(`Otakikpo file found: ${document}`);
+        showSpinnerVisibility(true);
+        break;
+      }
+    }
+    return documentName;
+  };
+
+  let count = 0;
   useEffect(() => {
     const searchString = 'AGEL';
-    let xColumns = [];
-    let primaryYColumns = [];
+    let xColumns: any = [];
+    let primaryYColumns: any = [];
     let secondaryYColumns: Array<String> = [];
     let item = '';
 
@@ -299,17 +329,24 @@ const FieldView = () => {
     }
 
     const fetchData = async () => {
-      if (fileName) {
-        //await dispatch(
-        // fetchWellDataFromBackend(
-        //   xColumns,
-        //   primaryYColumns,
-        //   [fileName],
-        //   [item],
-        //   secondaryYColumns
-        // ) as any
-        // );
+      let documents: any = await dispatch(getAllDocuments() as any);
 
+      let latest_document = getLatestDocument(documents);
+      count = documents.payload.files.length;
+
+      console.log(`stored file name in field view: ${storedFileName}`);
+
+      let checkIfDocumentExistsResponse: any = await dispatch(
+        checkIfDocumentExists(storedFileName) as any,
+      );
+
+      if (fileName && localStorage.getItem('fileName')) {
+        console.log(`in file name: ${fileName}`);
+        console.log(
+          `check if document exists response: ${JSON.stringify(checkIfDocumentExistsResponse)}`,
+        );
+
+        console.log(`stored file name: ${storedFileName}`);
         await dispatch(
           fetchWellDataFromBackend(
             xColumns,
@@ -320,13 +357,46 @@ const FieldView = () => {
             storedFileName,
           ) as any,
         );
+        showSpinnerVisibility(false);
 
-        dispatch(fetchFieldDetails('Summary', fileName, storedFileName) as any);
-        dispatch(fetchProblemWellsData(fileName, storedFileName) as any);
+        await dispatch(
+          fetchFieldDetails('Summary', fileName, storedFileName) as any,
+        );
+        showDetailsSpinnerVisibility(false);
+
+        // await dispatch(fetchProblemWellsData(fileName, storedFileName) as any);
+      } else {
+        console.log('why are you here');
+        async function getdocuments() {
+          latest_document = getLatestDocument(documents);
+
+          let result = await dispatch(
+            fetchWellDataFromBackend(
+              xColumns,
+              primaryYColumns,
+              [fileName],
+              [item],
+              secondaryYColumns,
+              latest_document,
+            ) as any,
+          );
+
+          if (result) {
+            showSpinnerVisibility(false);
+          }
+
+          await dispatch(
+            fetchFieldDetails('Summary', fileName, latest_document) as any,
+          );
+
+          showDetailsSpinnerVisibility(false);
+        }
+
+        getdocuments();
       }
     };
     fetchData();
-  }, []);
+  }, [fileName]);
 
   function getFieldData(value: string) {
     let stringValue: string = value.toString();
@@ -397,7 +467,15 @@ const FieldView = () => {
     <>
       <div style={{ display: 'block' }}>
         <div className='fieldGraphContainer'>
-          {!spinnerVisible ? (
+          {spinnerVisible ? (
+            <>
+              {fileName && (
+                <Spinner animation='border' role='status'>
+                  <span className='sr-only'></span>
+                </Spinner>
+              )}
+            </>
+          ) : (
             <>
               <PlotGraph
                 xData={xData}
@@ -408,17 +486,9 @@ const FieldView = () => {
                 hoverBoxExplanation={hoverExplanation}
               />
             </>
-          ) : (
-            <>
-              {fileName && (
-                <Spinner animation='border' role='status'>
-                  <span className='sr-only'></span>
-                </Spinner>
-              )}
-            </>
           )}
 
-          <div className='dropDownContainer'>
+          {/* <div className='dropDownContainer'>
             <Dropdown title={selectedItem}>
               <Dropdown.Toggle variant='success' id='dropdown-basic'>
                 {sheetNames.find((item: string) => item == selectedItem)}
@@ -438,51 +508,69 @@ const FieldView = () => {
                 ))}
               </Dropdown.Menu>
             </Dropdown>
-          </div>
+          </div> */}
         </div>
 
-        <div className='detailTables'>
-          <div style={{ width: '300px' }}>
-            {cummData && waterCutData && gorData && rateData && (
-              <Table striped bordered hover>
-                <tbody>
-                  {valueOfItems.map((item, index) => (
-                    <tr key={index}>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>
-                        {index === 0 ? `Cumm (${item.split('-')[1]})` : ''}
-                        {index === 1 ? `Water Cut (${item.split('-')[1]})` : ''}
-                        {index === 2 ? `GOR (${item.split('-')[1]})` : ''}
-                        {index === 3 ? `Oil Rate (${item.split('-')[1]})` : ''}
-                      </td>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>
-                        {/* {item.split('-')[0]} */}
-                        {getFieldData(item.split('-')[0])}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            )}
+        {detailsSpinnerVisible ? (
+          <Spinner animation='border' role='status'>
+            <span className='sr-only'></span>
+          </Spinner>
+        ) : (
+          <div className='detailTables'>
+            <div style={{ width: '300px' }}>
+              {cummData && waterCutData && gorData && rateData && (
+                <Table striped bordered hover>
+                  <tbody>
+                    {valueOfItems.map((item, index) => (
+                      <tr key={index}>
+                        <td
+                          style={{ border: '1px solid black', padding: '8px' }}
+                        >
+                          {index === 0 ? `Cumm (${item.split('-')[1]})` : ''}
+                          {index === 1
+                            ? `Water Cut (${item.split('-')[1]})`
+                            : ''}
+                          {index === 2 ? `GOR (${item.split('-')[1]})` : ''}
+                          {index === 3
+                            ? `Oil Rate (${item.split('-')[1]})`
+                            : ''}
+                        </td>
+                        <td
+                          style={{ border: '1px solid black', padding: '8px' }}
+                        >
+                          {/* {item.split('-')[0]} */}
+                          {getFieldData(item.split('-')[0])}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+            </div>
+            <div className='problemsTableContainer'>
+              {inSummary && (
+                <Table striped bordered hover>
+                  <tbody>
+                    {Object.keys(problemWells).map((key: any, index) => (
+                      <tr key={index}>
+                        <td
+                          style={{ border: '1px solid black', padding: '8px' }}
+                        >
+                          {key}
+                        </td>
+                        <td
+                          style={{ border: '1px solid black', padding: '8px' }}
+                        >
+                          {problemWells[key]}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </Table>
+              )}
+            </div>
           </div>
-          <div className='problemsTableContainer'>
-            {inSummary && (
-              <Table striped bordered hover>
-                <tbody>
-                  {Object.keys(problemWells).map((key: any, index) => (
-                    <tr key={index}>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>
-                        {key}
-                      </td>
-                      <td style={{ border: '1px solid black', padding: '8px' }}>
-                        {problemWells[key]}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            )}
-          </div>
-        </div>
+        )}
       </div>
     </>
   );

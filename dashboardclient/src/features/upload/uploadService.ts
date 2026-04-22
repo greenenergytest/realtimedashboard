@@ -13,7 +13,12 @@ export const uploadAFile = async (file: File) => {
         'Content-Type': 'multipart/form-data',
       },
     });
-    console.log(response.data);
+
+    console.log(`response data: ${JSON.stringify(response.data)}`);
+
+    localStorage.setItem('storedFileName', response.data.storedFileName);
+    localStorage.setItem('fileName', response.data.fileName);
+
     return response.data;
   } catch (error) {
     throw new Error('Failed to upload file');

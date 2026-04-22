@@ -19,6 +19,8 @@ const Home = () => {
   const { user } = useSelector((state: authRootState) => state.auth);
 
   const handleSelectXData = (selectedHeadings: string[]) => {
+    console.log(prevSelectedXHeadings);
+    console.log(prevSelectedYHeadings);
     setSelectedXHeadings((prevSelectedXHeadings) => [
       ...prevSelectedXHeadings,
       ...selectedHeadings,

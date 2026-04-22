@@ -27,11 +27,34 @@ const deleteDocument = async (fileName: string) => {
         },
       },
     );
+
+    localStorage.removeItem('fileName');
     return response.data;
   } catch (error: unknown) {
     console.error('Error', error);
     throw error;
   }
 };
-const documentService = { getAllDocuments, deleteDocument };
+
+const checkIfDocumentsExists = async (fileName: string) => {
+  try {
+    const response = await axios.post(
+      config.apiBaseUrl + '/checkIfDocumentExists',
+      { fileName },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      },
+    );
+    return response.data;
+  } catch (error: unknown) {
+    console.error('Error', error);
+  }
+};
+const documentService = {
+  getAllDocuments,
+  deleteDocument,
+  checkIfDocumentsExists,
+};
 export default documentService;
